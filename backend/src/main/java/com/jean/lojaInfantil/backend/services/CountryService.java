@@ -1,9 +1,9 @@
 package com.jean.lojaInfantil.backend.services;
 
-import com.ecommerce.udemy.dtos.CountryDto;
-import com.ecommerce.udemy.entities.Country;
-import com.ecommerce.udemy.repositories.CountryRepository;
-import com.ecommerce.udemy.services.exceptions.ResourceNotFoundException;
+import com.jean.lojaInfantil.backend.dtos.CountryDto;
+import com.jean.lojaInfantil.backend.entities.Country;
+import com.jean.lojaInfantil.backend.repositories.CountryRepository;
+import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

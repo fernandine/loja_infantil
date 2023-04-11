@@ -1,6 +1,7 @@
 package com.jean.lojaInfantil.backend.entities;
 
-import com.ecommerce.udemy.entities.PK.OrderItemPK;
+
+import com.jean.lojaInfantil.backend.entities.PK.OrderItemPK;
 
 import javax.persistence.*;
 

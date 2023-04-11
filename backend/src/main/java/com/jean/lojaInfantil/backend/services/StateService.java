@@ -1,8 +1,9 @@
 package com.jean.lojaInfantil.backend.services;
 
-import com.ecommerce.udemy.dtos.StateDto;
-import com.ecommerce.udemy.entities.State;
-import com.ecommerce.udemy.repositories.StateRepository;
+
+import com.jean.lojaInfantil.backend.dtos.StateDto;
+import com.jean.lojaInfantil.backend.entities.State;
+import com.jean.lojaInfantil.backend.repositories.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

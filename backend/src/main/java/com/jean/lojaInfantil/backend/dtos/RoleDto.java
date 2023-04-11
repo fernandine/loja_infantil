@@ -1,6 +1,6 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.ecommerce.udemy.entities.Role;
+import com.jean.lojaInfantil.backend.entities.Role;
 
 import java.io.Serializable;
 

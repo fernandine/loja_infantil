@@ -1,7 +1,8 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.ecommerce.udemy.entities.Order;
-import com.ecommerce.udemy.entities.enums.StatusOrder;
+
+import com.jean.lojaInfantil.backend.entities.Order;
+import com.jean.lojaInfantil.backend.entities.enums.StatusOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

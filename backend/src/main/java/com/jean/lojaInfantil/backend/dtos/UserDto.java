@@ -1,21 +1,17 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.ecommerce.udemy.entities.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jean.lojaInfantil.backend.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+
 import java.util.HashSet;
 import java.util.Set;
 

@@ -1,10 +1,10 @@
 package com.jean.lojaInfantil.backend.services;
 
-import com.ecommerce.udemy.dtos.CategoryDto;
-import com.ecommerce.udemy.entities.Category;
-import com.ecommerce.udemy.repositories.ProductCategoryRepository;
-import com.ecommerce.udemy.services.exceptions.DatabaseException;
-import com.ecommerce.udemy.services.exceptions.ResourceNotFoundException;
+import com.jean.lojaInfantil.backend.dtos.CategoryDto;
+import com.jean.lojaInfantil.backend.entities.Category;
+import com.jean.lojaInfantil.backend.repositories.ProductCategoryRepository;
+import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
+import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;

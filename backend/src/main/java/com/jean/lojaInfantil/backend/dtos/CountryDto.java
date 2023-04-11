@@ -1,6 +1,6 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.ecommerce.udemy.entities.Country;
+import com.jean.lojaInfantil.backend.entities.Country;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

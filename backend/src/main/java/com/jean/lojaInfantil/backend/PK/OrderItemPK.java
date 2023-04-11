@@ -1,7 +1,7 @@
 package com.jean.lojaInfantil.backend.PK;
 
-import com.ecommerce.udemy.entities.Order;
-import com.ecommerce.udemy.entities.Product;
+import com.jean.lojaInfantil.backend.entities.Order;
+import com.jean.lojaInfantil.backend.entities.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

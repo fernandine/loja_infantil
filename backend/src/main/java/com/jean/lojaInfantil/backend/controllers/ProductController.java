@@ -1,7 +1,7 @@
 package com.jean.lojaInfantil.backend.controllers;
 
-import com.ecommerce.udemy.dtos.ProductDto;
-import com.ecommerce.udemy.services.ProductService;
+import com.jean.lojaInfantil.backend.dtos.ProductDto;
+import com.jean.lojaInfantil.backend.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

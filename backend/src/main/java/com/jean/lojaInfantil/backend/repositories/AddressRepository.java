@@ -1,7 +1,8 @@
 package com.jean.lojaInfantil.backend.repositories;
 
-import com.ecommerce.udemy.entities.Address;
-import com.ecommerce.udemy.entities.User;
+
+import com.jean.lojaInfantil.backend.entities.Address;
+import com.jean.lojaInfantil.backend.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

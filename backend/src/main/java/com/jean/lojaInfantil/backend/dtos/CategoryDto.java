@@ -1,6 +1,6 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.ecommerce.udemy.entities.Category;
+import com.jean.lojaInfantil.backend.entities.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,6 @@ public class CategoryDto implements Serializable {
     private String name;
 
     public CategoryDto(Category entity) {
-
         id = entity.getId();
         name = entity.getName();
     }

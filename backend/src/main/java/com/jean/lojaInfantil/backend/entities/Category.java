@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name="product_category")
+@Table(name="tb_category")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class Category implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "category_name")
+    @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "category")

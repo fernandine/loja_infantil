@@ -1,9 +1,9 @@
 package com.jean.lojaInfantil.backend.controllers;
 
-import com.ecommerce.udemy.dtos.UserDto;
-import com.ecommerce.udemy.dtos.UserInsertDto;
-import com.ecommerce.udemy.dtos.UserUpdateDto;
-import com.ecommerce.udemy.services.UserService;
+import com.jean.lojaInfantil.backend.dtos.UserDto;
+import com.jean.lojaInfantil.backend.dtos.UserInsertDto;
+import com.jean.lojaInfantil.backend.dtos.UserUpdateDto;
+import com.jean.lojaInfantil.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,13 +1,12 @@
 package com.jean.lojaInfantil.backend.services;
 
-import com.ecommerce.udemy.dtos.CategoryDto;
-import com.ecommerce.udemy.dtos.ProductDto;
-import com.ecommerce.udemy.entities.Product;
-import com.ecommerce.udemy.entities.Category;
-import com.ecommerce.udemy.repositories.ProductCategoryRepository;
-import com.ecommerce.udemy.repositories.ProductRepository;
-import com.ecommerce.udemy.services.exceptions.DatabaseException;
-import com.ecommerce.udemy.services.exceptions.ResourceNotFoundException;
+import com.jean.lojaInfantil.backend.dtos.ProductDto;
+import com.jean.lojaInfantil.backend.entities.Category;
+import com.jean.lojaInfantil.backend.entities.Product;
+import com.jean.lojaInfantil.backend.repositories.ProductCategoryRepository;
+import com.jean.lojaInfantil.backend.repositories.ProductRepository;
+import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
+import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -100,7 +99,7 @@ public class ProductService {
 
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
-        entity.setImageUrl(dto.getImageUrl());
+        entity.setImage(dto.getImage());
         entity.setSku(dto.getSku());
         entity.setFavorite(dto.isFavorite());
         entity.setDateCreated(dto.getDateCreated());

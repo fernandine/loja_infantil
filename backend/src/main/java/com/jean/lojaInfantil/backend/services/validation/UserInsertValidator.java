@@ -1,10 +1,9 @@
 package com.jean.lojaInfantil.backend.services.validation;
 
-
-import com.ecommerce.udemy.controllers.exceptions.FieldMessage;
-import com.ecommerce.udemy.dtos.UserInsertDto;
-import com.ecommerce.udemy.entities.User;
-import com.ecommerce.udemy.repositories.UserRepository;
+import com.jean.lojaInfantil.backend.controllers.exceptions.FieldMessage;
+import com.jean.lojaInfantil.backend.dtos.UserInsertDto;
+import com.jean.lojaInfantil.backend.entities.User;
+import com.jean.lojaInfantil.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;

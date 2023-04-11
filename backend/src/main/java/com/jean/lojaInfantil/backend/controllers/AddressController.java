@@ -1,8 +1,8 @@
 package com.jean.lojaInfantil.backend.controllers;
 
-import com.ecommerce.udemy.dtos.AddressDto;
-import com.ecommerce.udemy.services.AddressService;
-import com.ecommerce.udemy.services.ViaCepService;
+import com.jean.lojaInfantil.backend.dtos.AddressDto;
+import com.jean.lojaInfantil.backend.services.AddressService;
+import com.jean.lojaInfantil.backend.services.ViaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

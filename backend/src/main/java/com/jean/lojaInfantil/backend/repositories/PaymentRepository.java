@@ -1,6 +1,6 @@
 package com.jean.lojaInfantil.backend.repositories;
 
-import com.ecommerce.udemy.entities.Payment;
+import com.jean.lojaInfantil.backend.entities.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

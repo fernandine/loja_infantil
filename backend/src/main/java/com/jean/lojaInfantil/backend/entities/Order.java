@@ -1,5 +1,6 @@
 package com.jean.lojaInfantil.backend.entities;
-import com.ecommerce.udemy.entities.enums.StatusOrder;
+
+import com.jean.lojaInfantil.backend.entities.enums.StatusOrder;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -1,10 +1,7 @@
 package com.jean.lojaInfantil.backend.controllers;
 
-import com.ecommerce.udemy.dtos.CategoryDto;
-import com.ecommerce.udemy.dtos.UserDto;
-import com.ecommerce.udemy.dtos.UserInsertDto;
-import com.ecommerce.udemy.dtos.UserUpdateDto;
-import com.ecommerce.udemy.services.CategoryService;
+import com.jean.lojaInfantil.backend.dtos.CategoryDto;
+import com.jean.lojaInfantil.backend.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

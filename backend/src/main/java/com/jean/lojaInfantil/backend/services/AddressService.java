@@ -1,20 +1,15 @@
 package com.jean.lojaInfantil.backend.services;
 
-import com.ecommerce.udemy.dtos.AddressDto;
-import com.ecommerce.udemy.dtos.UserDto;
-import com.ecommerce.udemy.entities.Address;
-import com.ecommerce.udemy.entities.User;
-import com.ecommerce.udemy.repositories.AddressRepository;
-import com.ecommerce.udemy.repositories.UserRepository;
-import com.ecommerce.udemy.services.exceptions.DatabaseException;
-import com.ecommerce.udemy.services.exceptions.ResourceNotFoundException;
+import com.jean.lojaInfantil.backend.dtos.AddressDto;
+import com.jean.lojaInfantil.backend.entities.Address;
+import com.jean.lojaInfantil.backend.entities.User;
+import com.jean.lojaInfantil.backend.repositories.AddressRepository;
+import com.jean.lojaInfantil.backend.repositories.UserRepository;
+import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
+import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

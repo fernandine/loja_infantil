@@ -1,6 +1,6 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.ecommerce.udemy.entities.Product;
+import com.jean.lojaInfantil.backend.entities.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +20,7 @@ public class ProductDto implements Serializable {
     private String name;
     private String description;
     private BigDecimal unitPrice;
-    private String imageUrl;
+    private String image;
     private boolean favorite;
     private int unitsInStock;
     private Date dateCreated;
@@ -33,7 +33,7 @@ public class ProductDto implements Serializable {
         name = entity.getName();
         description = entity.getDescription();
         unitPrice = entity.getUnitPrice();
-        imageUrl = entity.getImageUrl();
+        image = entity.getImage();
         favorite = entity.isFavorite();
         unitsInStock = entity.getUnitsInStock();
         dateCreated = entity.getDateCreated();

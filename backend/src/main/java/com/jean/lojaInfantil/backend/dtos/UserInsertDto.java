@@ -1,6 +1,7 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.ecommerce.udemy.services.validation.UserInsertValid;
+
+import com.jean.lojaInfantil.backend.services.validation.UserInsertValid;
 
 @UserInsertValid
 public class UserInsertDto extends UserDto {

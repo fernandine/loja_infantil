@@ -1,6 +1,6 @@
 package com.jean.lojaInfantil.backend.repositories;
 
-import com.ecommerce.udemy.entities.State;
+import com.jean.lojaInfantil.backend.entities.State;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 

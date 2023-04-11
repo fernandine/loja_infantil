@@ -1,8 +1,7 @@
 package com.jean.lojaInfantil.backend.controllers.exceptions;
 
-
-import com.ecommerce.udemy.services.exceptions.DatabaseException;
-import com.ecommerce.udemy.services.exceptions.ResourceNotFoundException;
+import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
+import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

@@ -40,8 +40,8 @@ public class Product extends RepresentationModel<Product> implements Serializabl
     @Column(name = "unit_price")
     private BigDecimal unitPrice;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "image")
+    private String image;
 
     @Column(name = "favorite")
     private boolean favorite;

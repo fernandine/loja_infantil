@@ -1,7 +1,7 @@
 package com.jean.lojaInfantil.backend.repositories;
 
-import com.ecommerce.udemy.entities.Product;
-import com.ecommerce.udemy.entities.Category;
+import com.jean.lojaInfantil.backend.entities.Category;
+import com.jean.lojaInfantil.backend.entities.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
