@@ -21,7 +21,6 @@ import { CheckoutComponent } from './checkout/checkout/checkout.component';
 import { DeliveryComponent } from './checkout/delivery/delivery.component';
 import { PaymentComponent } from './checkout/payment/payment.component';
 import { ProfileFormComponent } from './checkout/profile-form/profile-form.component';
-import { CommonComponent } from './common/common.component';
 import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
@@ -33,6 +32,7 @@ import { SearchComponent } from './components/search/search.component';
 import { UserComponent } from './components/user/user.component';
 import { HttpRequestInterceptor } from './http.interceptor';
 import { PrimeNgModule } from './primeng.module';
+import { CartService } from './services/cart.service';
 
 @NgModule({
   declarations: [
@@ -55,7 +55,6 @@ import { PrimeNgModule } from './primeng.module';
     DeliveryComponent,
     PaymentComponent,
     ProfileFormComponent,
-    CommonComponent,
     HeaderComponent,
     AboutComponent,
     ContactComponent,
@@ -71,6 +70,7 @@ import { PrimeNgModule } from './primeng.module';
     PrimeNgModule
   ],
   providers: [
+    CartService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

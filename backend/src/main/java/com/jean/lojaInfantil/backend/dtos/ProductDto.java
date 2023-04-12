@@ -25,8 +25,8 @@ public class ProductDto implements Serializable {
     private int unitsInStock;
     private Date dateCreated;
     private Date lastUpdated;
+    private int salesCount;
     private CategoryDto category;
-
     public ProductDto(Product entity) {
         id = entity.getId();
         sku = entity.getSku();
@@ -38,6 +38,7 @@ public class ProductDto implements Serializable {
         unitsInStock = entity.getUnitsInStock();
         dateCreated = entity.getDateCreated();
         lastUpdated = entity.getLastUpdated();
+        salesCount = entity.getSalesCount();
         category = new CategoryDto(entity.getCategory());
     }
 }

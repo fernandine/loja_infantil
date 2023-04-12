@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,6 +62,12 @@ public class ProductService {
         return list.map(ProductDto::new);
     }
 
+    @Transactional(readOnly = true)
+    public List<Product> getBestSellers(int limit) {
+        List<Product> products = repository.findAll();
+        products.sort(Comparator.comparingInt(Product::getSalesCount).reversed());
+        return products.subList(0, limit);
+    }
 
     @Transactional
     public ProductDto insert(ProductDto dto) {

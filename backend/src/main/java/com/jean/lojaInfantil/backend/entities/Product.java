@@ -56,4 +56,7 @@ public class Product extends RepresentationModel<Product> implements Serializabl
     @Column(name = "last_updated")
     @UpdateTimestamp
     private Date lastUpdated;
+
+    @Column(name = "sales_count")
+    private int salesCount;
 }

@@ -1,6 +1,7 @@
 package com.jean.lojaInfantil.backend.controllers;
 
 import com.jean.lojaInfantil.backend.dtos.ProductDto;
+import com.jean.lojaInfantil.backend.entities.Product;
 import com.jean.lojaInfantil.backend.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,6 +50,11 @@ public class ProductController {
     @GetMapping(value = "/search/{id}")
     public ResponseEntity<ProductDto> searchById(@PathVariable Long id) {
         return ResponseEntity.ok().body(service.navigateByUrl(id));
+    }
+
+    @GetMapping("/best-sellers")
+    public ResponseEntity<List<Product>> getBestSellers() {
+        return ResponseEntity.ok().body(service.getBestSellers(8));
     }
 
     @PostMapping
