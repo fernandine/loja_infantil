@@ -2,7 +2,7 @@ package com.jean.lojaInfantil.backend.services;
 
 import com.jean.lojaInfantil.backend.dtos.CategoryDto;
 import com.jean.lojaInfantil.backend.entities.Category;
-import com.jean.lojaInfantil.backend.repositories.ProductCategoryRepository;
+import com.jean.lojaInfantil.backend.repositories.CategoryRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
 import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import javax.persistence.EntityNotFoundException;
 public class CategoryService {
 
     @Autowired
-    ProductCategoryRepository repository;
+    CategoryRepository repository;
 
     @Transactional(readOnly = true)
     public Page<CategoryDto> findAllPaged(Pageable pageable) {

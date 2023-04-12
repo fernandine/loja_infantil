@@ -3,7 +3,7 @@ package com.jean.lojaInfantil.backend.services;
 import com.jean.lojaInfantil.backend.dtos.ProductDto;
 import com.jean.lojaInfantil.backend.entities.Category;
 import com.jean.lojaInfantil.backend.entities.Product;
-import com.jean.lojaInfantil.backend.repositories.ProductCategoryRepository;
+import com.jean.lojaInfantil.backend.repositories.CategoryRepository;
 import com.jean.lojaInfantil.backend.repositories.ProductRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
 import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
@@ -27,7 +27,7 @@ public class ProductService {
     private ProductRepository repository;
 
     @Autowired
-    private ProductCategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
     public List<ProductDto> findAll() {
