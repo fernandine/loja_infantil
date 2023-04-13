@@ -82,18 +82,18 @@ public class ProductService {
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
-    public List<ProductDto> findSizes(String limit) {
-        List<Product> list = repository.findSizeProducts(PageRequest.of(0, Integer.parseInt(limit)));
+    public List<ProductDto> findSizes(int limit) {
+        List<Product> list = repository.findSizeProducts(PageRequest.of(0, limit));
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
-    public List<ProductDto> findBrands(String limit) {
-        List<Product> list = repository.findBrandProduct(PageRequest.of(0, Integer.parseInt(limit)));
+    public List<ProductDto> findBrands(int limit) {
+        List<Product> list = repository.findBrandProduct(PageRequest.of(0, limit));
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
-    public List<ProductDto> findColors(String limit) {
-        List<Product> list = repository.findColorProduct(PageRequest.of(0, Integer.parseInt(limit)));
+    public List<ProductDto> findColors(int limit) {
+        List<Product> list = repository.findColorProduct(PageRequest.of(0, limit));
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
