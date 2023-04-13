@@ -22,6 +22,10 @@ export class ProductService {
     return this.http.get<Product[]>(`${this.baseUrl}/best-sellers?limit=${limit}`);
   }
 
+  getMostRecents(limit: number): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.baseUrl}/most-recents?limit=${limit}`);
+  }
+
   findByFavorite(favorite: boolean): Observable<Product[]> {
     const url = `${this.baseUrl}/find?notFavorite=${!favorite}`;
     return this.http.get<Product[]>(url).pipe(

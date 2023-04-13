@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -65,10 +67,18 @@ public class ProductService {
         return page.map(ProductDto::new);
     }
 
-    // Método para buscar os produtos mais vendidos
+    // BUSCA OS PRODUTOS MAIS VENDIDOS
     @Transactional(readOnly = true)
     public List<ProductDto> getBestSellers(int limit) {
         List<Product> bestSellers = repository.findBestSellers(PageRequest.of(0, limit));
+        return bestSellers.stream().map(ProductDto::new).collect(Collectors.toList());
+    }
+
+    //BUSCA OS PRODUTOS RECENTES
+    // BUSCA OS PRODUTOS MAIS VENDIDOS
+    @Transactional(readOnly = true)
+    public List<ProductDto> findMostRecentProductsByCreationDate(int limit) {
+        List<Product> bestSellers = repository.findMostRecentProductsByCreationDate(PageRequest.of(0, limit));
         return bestSellers.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 

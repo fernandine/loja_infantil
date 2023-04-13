@@ -10,6 +10,8 @@ import { ProductService } from '../../services/product.service';
 export class HomeComponent {
 
   bestSellers: Product[] = [];
+  mostRecents: Product[] = [];
+
   responsiveOptions = [
     {
       breakpoint: '1024px',
@@ -36,5 +38,11 @@ export class HomeComponent {
     }, error => {
         console.error('Erro ao buscar os melhores vendedores', error);
     });
-  }
+
+  this.productService.getMostRecents(8).subscribe(products => {
+    this.mostRecents = products;
+  }, error => {
+      console.error('Erro ao buscar os melhores vendedores', error);
+  });
+}
 }

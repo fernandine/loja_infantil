@@ -36,24 +36,31 @@ url(assets/images/banner_front.jpg);">
   </div>
 </div>
 
-<div class="py-3 text-2xl font-bold flex justify-content-center">
+<!--BEST SELLERS-->
+<div class="py-5 text-3xl flex justify-content-center font-bold">
   <span>Mais Vendidos</span>
 </div>
-
-<!--BEST SELLERS-->
-<p-carousel [value]="bestSellers" [numVisible]="3" [circular]="true"
-             [autoplayInterval]="5000" [responsiveOptions]="responsiveOptions">
-  <ng-template let-product pTemplate="item">
-    <div class="product-card">
-      <img src="{{product.imageUrl}}" alt="{{product.name}}">
-      <div class="product-details">
-        <h2>{{product.name}}</h2>
-        <p class="price">Preço: {{product.price | currency:'BRL':'symbol'}}</p>
-        <p class="sales-count">Vendas: {{product.salesCount}}</p>
-      </div>
-    </div>
-  </ng-template>
-</p-carousel>
+<div class="flex justify-content-center">
+<div class="card w-7">
+  <p-carousel [value]="bestSellers" [numVisible]="3" [numScroll]="3" [circular]="false" [responsiveOptions]="responsiveOptions">
+      <ng-template let-product pTemplate="item">
+          <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
+              <div class="mb-3">
+                  <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" [alt]="product.name" class="w-6 shadow-2" />
+              </div>
+              <div>
+                  <h4 class="mb-1">{{ product.name }}</h4>
+                  <h6 class="mt-0 mb-3">{{product.unitPrice | currency:'BRL':'symbol'}}</h6>
+                  <div class="car-buttons mt-5">
+                      <p-button type="button" styleClass="p-button p-button-rounded mr-2" icon="pi pi-search"></p-button>
+                      <p-button type="button" styleClass="p-button-success p-button-rounded mr-2" icon="pi pi-star-fill"></p-button>
+                  </div>
+              </div>
+          </div>
+      </ng-template>
+  </p-carousel>
+</div>
+</div>
 
 <div class="surface-section px-4 py-8 md:px-6 lg:px-8">
   <div class="grid grid-nogutter -ml-3 -mr-3">
@@ -97,6 +104,31 @@ url(assets/images/banner_front.jpg);">
   </div>
 </div>
 
+<!--LANÇAMENTOS-->
+<div class="py-5 text-3xl flex justify-content-center font-bold">
+  <span>Lançamentos</span>
+</div>
+<div class="flex justify-content-center">
+  <div class="card w-7">
+    <p-carousel [value]="mostRecents" [numVisible]="3" [numScroll]="3" [circular]="false" [responsiveOptions]="responsiveOptions">
+        <ng-template let-product pTemplate="item">
+            <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
+                <div class="mb-3">
+                    <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" [alt]="product.name" class="w-6 shadow-2" />
+                </div>
+                <div>
+                    <h4 class="mb-1">{{ product.name }}</h4>
+                    <h6 class="mt-0 mb-3">{{product.unitPrice | currency:'BRL':'symbol'}}</h6>
+                    <div class="car-buttons mt-5">
+                        <p-button type="button" styleClass="p-button p-button-rounded mr-2" icon="pi pi-search"></p-button>
+                        <p-button type="button" styleClass="p-button-success p-button-rounded mr-2" icon="pi pi-star-fill"></p-button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-carousel>
+  </div>
+  </div>
 
 <div class="surface-section px-4 py-8 md:px-6 lg:px-8">
   <div class="flex flex-wrap -mr-3 -ml-3">

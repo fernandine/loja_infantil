@@ -12,6 +12,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +59,13 @@ public class ProductController {
     public ResponseEntity<List<ProductDto>> getBestSellers(@RequestParam("limit") int limit) {
         List<ProductDto> bestSellers = service.getBestSellers(limit);
         return ResponseEntity.ok(bestSellers);
+    }
+
+    @GetMapping("/most-recents")
+    public ResponseEntity<List<ProductDto>> getMostRecentProducts(@RequestParam("limit") int limit) {
+
+        List<ProductDto> mostRecentProducts = service.findMostRecentProductsByCreationDate(limit);
+        return ResponseEntity.ok(mostRecentProducts);
     }
 
     @PostMapping
