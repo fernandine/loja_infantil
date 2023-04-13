@@ -3,6 +3,7 @@ package com.jean.lojaInfantil.backend.services;
 import com.jean.lojaInfantil.backend.dtos.ProductDto;
 import com.jean.lojaInfantil.backend.entities.Category;
 import com.jean.lojaInfantil.backend.entities.Product;
+import com.jean.lojaInfantil.backend.entities.enums.EnumUtils;
 import com.jean.lojaInfantil.backend.repositories.CategoryRepository;
 import com.jean.lojaInfantil.backend.repositories.ProductRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
@@ -70,16 +71,30 @@ public class ProductService {
     // BUSCA OS PRODUTOS MAIS VENDIDOS
     @Transactional(readOnly = true)
     public List<ProductDto> getBestSellers(int limit) {
-        List<Product> bestSellers = repository.findBestSellers(PageRequest.of(0, limit));
-        return bestSellers.stream().map(ProductDto::new).collect(Collectors.toList());
+        List<Product> list = repository.findBestSellers(PageRequest.of(0, limit));
+        return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
     //BUSCA OS PRODUTOS RECENTES
-    // BUSCA OS PRODUTOS MAIS VENDIDOS
     @Transactional(readOnly = true)
     public List<ProductDto> findMostRecentProductsByCreationDate(int limit) {
-        List<Product> bestSellers = repository.findMostRecentProductsByCreationDate(PageRequest.of(0, limit));
-        return bestSellers.stream().map(ProductDto::new).collect(Collectors.toList());
+        List<Product> list = repository.findMostRecentProductsByCreationDate(PageRequest.of(0, limit));
+        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+    }
+
+    public List<ProductDto> findSizes(String limit) {
+        List<Product> list = repository.findSizeProducts(PageRequest.of(0, Integer.parseInt(limit)));
+        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+    }
+
+    public List<ProductDto> findBrands(String limit) {
+        List<Product> list = repository.findBrandProduct(PageRequest.of(0, Integer.parseInt(limit)));
+        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+    }
+
+    public List<ProductDto> findColors(String limit) {
+        List<Product> list = repository.findColorProduct(PageRequest.of(0, Integer.parseInt(limit)));
+        return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
     @Transactional
@@ -126,5 +141,11 @@ public class ProductService {
         entity.setUnitsInStock(dto.getUnitsInStock());
         entity.setUnitPrice(dto.getUnitPrice());
         entity.setLastUpdated(dto.getLastUpdated());
+        entity.setBrand(EnumUtils.parseBrand(dto.getBrand()));
+        entity.setColor(EnumUtils.parseColor(dto.getColor()));
+        entity.setSize(EnumUtils.parseSize(dto.getSize()));
     }
+
+
+
 }

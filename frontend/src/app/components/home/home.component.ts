@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Category } from 'src/app/common/category';
 import { Product } from 'src/app/common/Product';
 import { ProductService } from '../../services/product.service';
 

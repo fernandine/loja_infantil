@@ -52,4 +52,7 @@ public class UserDto implements Serializable {
         entity.getRoles().forEach(role -> this.roles.add(new RoleDto(role)));
         //entity.getAddressList().forEach(address -> this.addressList.add(new AddressDto(address)));
     }
+
+    public UserDto(UserDto user) {
+    }
 }

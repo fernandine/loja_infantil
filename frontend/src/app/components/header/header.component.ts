@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Category } from 'src/app/common/category';
 import { CartService } from 'src/app/services/cart.service';
@@ -17,7 +17,8 @@ export class HeaderComponent {
   constructor(
     private cartService: CartService,
     private route: ActivatedRoute,
-    private categoryService: CategoryService) { }
+    private categoryService: CategoryService,
+    private router: Router) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(() => {
@@ -33,4 +34,8 @@ export class HeaderComponent {
     );
   }
 
+  handleCategoryClick(category: Category) {
+    const categoryId = category.id;
+    this.router.navigateByUrl(`/categories/${categoryId}`);
+  }
 }

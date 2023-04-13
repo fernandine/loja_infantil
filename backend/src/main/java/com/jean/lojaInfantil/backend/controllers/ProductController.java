@@ -1,7 +1,6 @@
 package com.jean.lojaInfantil.backend.controllers;
 
 import com.jean.lojaInfantil.backend.dtos.ProductDto;
-import com.jean.lojaInfantil.backend.entities.Product;
 import com.jean.lojaInfantil.backend.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,10 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -63,8 +59,22 @@ public class ProductController {
 
     @GetMapping("/most-recents")
     public ResponseEntity<List<ProductDto>> getMostRecentProducts(@RequestParam("limit") int limit) {
-
         List<ProductDto> mostRecentProducts = service.findMostRecentProductsByCreationDate(limit);
+        return ResponseEntity.ok(mostRecentProducts);
+    }
+    @GetMapping("/color")
+    public ResponseEntity<List<ProductDto>> getColors(@RequestParam("limit") String limit) {
+        List<ProductDto> mostRecentProducts = service.findColors(limit);
+        return ResponseEntity.ok(mostRecentProducts);
+    }
+    @GetMapping("/brand")
+    public ResponseEntity<List<ProductDto>> getBrands(@RequestParam("limit") String limit) {
+        List<ProductDto> mostRecentProducts = service.findBrands(limit);
+        return ResponseEntity.ok(mostRecentProducts);
+    }
+    @GetMapping("/size")
+    public ResponseEntity<List<ProductDto>> getSizes(@RequestParam("limit") String limit) {
+        List<ProductDto> mostRecentProducts = service.findSizes(limit);
         return ResponseEntity.ok(mostRecentProducts);
     }
 
@@ -87,5 +97,4 @@ public class ProductController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

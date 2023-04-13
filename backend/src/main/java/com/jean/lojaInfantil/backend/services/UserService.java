@@ -52,10 +52,19 @@ public class UserService implements UserDetailsService {
     @Autowired
     private AddressRepository addressRepository;
 
+    @Autowired
+    private AuthService authService;
+
     @Transactional(readOnly = true)
     public List<UserDto> findAll() {
         List<User> list = repository.findAll();
         return list.stream().map(UserDto::new).collect(Collectors.toList());
+    }
+    @Transactional(readOnly = true)
+    public UserDto getAuthUser() {
+        User user = authService.authenticated();
+
+        return new UserDto(user);
     }
 
     @Transactional(readOnly = true)

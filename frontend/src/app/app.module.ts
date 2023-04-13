@@ -33,6 +33,7 @@ import { UserComponent } from './components/user/user.component';
 import { HttpRequestInterceptor } from './http.interceptor';
 import { PrimeNgModule } from './primeng.module';
 import { CartService } from './services/cart.service';
+import { CategoryFilterComponent } from './components/category-filter/category-filter.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { CartService } from './services/cart.service';
     LoginComponent,
     RegisterComponent,
     AdminComponent,
+    CategoryFilterComponent,
     CategoriesComponent,
     ProductEditComponent,
     CheckoutComponent,

@@ -19,6 +19,8 @@ import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
+import { HomeComponent } from './components/home/home.component';
+import { CategoryFilterComponent } from './components/category-filter/category-filter.component';
 
 const routes: Routes = [
 {
@@ -53,8 +55,10 @@ const routes: Routes = [
   { path: 'search/:keyword', component: ProductListComponent },
   { path: 'categories/:id', component: ProductListComponent },
   { path: 'categories', component: ProductListComponent },
+  { path: 'filter', component: CategoryFilterComponent },
   { path: 'products', component: ProductListComponent },
-  { path: '', redirectTo: '/products', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   //{ path: '**', redirectTo: '/products', pathMatch: 'full' },
 ];
 

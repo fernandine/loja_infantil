@@ -37,12 +37,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p ORDER BY p.dateCreated DESC")
     List<Product> findMostRecentProductsByCreationDate(Pageable pageable);
 
-
-
-    // Busca os produtos mais recentes com base na data de atualização
-//    @Query("SELECT p FROM Product p ORDER BY p.lastUpdated DESC")
-//    List<Product> findMostRecentProducts(Pageable pageable);
-
+    // Busca os produtos por tamanho
+    @Query("SELECT p FROM Product p ORDER BY p.size DESC")
+    List<Product> findSizeProducts(Pageable pageable);
+    @Query("SELECT p FROM Product p ORDER BY p.brand DESC")
+    List<Product> findBrandProduct(Pageable pageable);
+    @Query("SELECT p FROM Product p ORDER BY p.color DESC")
+    List<Product> findColorProduct(Pageable pageable);
 
 }
 

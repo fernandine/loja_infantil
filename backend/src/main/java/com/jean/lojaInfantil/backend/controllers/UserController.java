@@ -26,6 +26,12 @@ public class UserController {
 		return ResponseEntity.ok().body(list);
 	}
 
+	@GetMapping(value = "/profile")
+	public ResponseEntity<UserDto> getAuthdUser() {
+		UserDto dto = service.getAuthUser();
+		return ResponseEntity.ok().body(dto);
+	}
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<UserDto> findById(@PathVariable Long id) {
 		UserDto dto = service.findById(id);
