@@ -10,4 +10,5 @@ export class Product {
   dateCreated!: Date;
   lastUpdate!: Date;
   rating!: boolean;
+  salesCount!: number;
 }

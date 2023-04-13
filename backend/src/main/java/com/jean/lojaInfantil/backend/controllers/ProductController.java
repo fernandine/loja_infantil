@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -53,8 +54,9 @@ public class ProductController {
     }
 
     @GetMapping("/best-sellers")
-    public ResponseEntity<List<Product>> getBestSellers() {
-        return ResponseEntity.ok().body(service.getBestSellers(8));
+    public ResponseEntity<List<ProductDto>> getBestSellers(@RequestParam("limit") int limit) {
+        List<ProductDto> bestSellers = service.getBestSellers(limit);
+        return ResponseEntity.ok(bestSellers);
     }
 
     @PostMapping

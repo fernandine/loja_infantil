@@ -15,11 +15,16 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT DISTINCT obj FROM Product obj WHERE "
-            +":category IS NULL OR obj.category IN :category")
+            + ":category IS NULL OR obj.category IN :category")
     Page<Product> findByCategoryId(Category category, Pageable pageable);
+
     Page<Product> findByName(@Param("name") String name, Pageable pageable);
 
     @Query("SELECT obj FROM Product obj WHERE "
             + "(:notFavorite = false OR obj.favorite = false) ")
     List<Product> find(boolean notFavorite);
+
+    @Query("SELECT p FROM Product p ORDER BY p.salesCount DESC")
+    List<Product> findBestSellers(Pageable pageable);
 }
+

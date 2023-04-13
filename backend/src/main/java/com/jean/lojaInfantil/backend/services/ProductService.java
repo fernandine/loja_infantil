@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
@@ -58,15 +61,15 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public Page<ProductDto> findByName(String name, Pageable pageable) {
-        Page<Product> list = repository.findByName(name, pageable);
-        return list.map(ProductDto::new);
+        Page<Product> page = repository.findByName(name, pageable);
+        return page.map(ProductDto::new);
     }
 
+    // Método para buscar os produtos mais vendidos
     @Transactional(readOnly = true)
-    public List<Product> getBestSellers(int limit) {
-        List<Product> products = repository.findAll();
-        products.sort(Comparator.comparingInt(Product::getSalesCount).reversed());
-        return products.subList(0, limit);
+    public List<ProductDto> getBestSellers(int limit) {
+        List<Product> bestSellers = repository.findBestSellers(PageRequest.of(0, limit));
+        return bestSellers.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
     @Transactional

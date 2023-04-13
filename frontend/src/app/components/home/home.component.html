@@ -40,6 +40,21 @@ url(assets/images/banner_front.jpg);">
   <span>Mais Vendidos</span>
 </div>
 
+<!--BEST SELLERS-->
+<p-carousel [value]="bestSellers" [numVisible]="3" [circular]="true"
+             [autoplayInterval]="5000" [responsiveOptions]="responsiveOptions">
+  <ng-template let-product pTemplate="item">
+    <div class="product-card">
+      <img src="{{product.imageUrl}}" alt="{{product.name}}">
+      <div class="product-details">
+        <h2>{{product.name}}</h2>
+        <p class="price">Preço: {{product.price | currency:'BRL':'symbol'}}</p>
+        <p class="sales-count">Vendas: {{product.salesCount}}</p>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>
+
 <div class="surface-section px-4 py-8 md:px-6 lg:px-8">
   <div class="grid grid-nogutter -ml-3 -mr-3">
       <div class="col-12 lg:col-6 p-3">
