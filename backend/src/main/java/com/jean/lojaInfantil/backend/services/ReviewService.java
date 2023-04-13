@@ -28,7 +28,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewDto insert(ReviewDto dto) {
         Review entity = new Review();
-        User user = new User();
+        User user;
         user = authService.authenticated();
         copyEntityToDTO(user, entity, dto);
         entity = repository.save(entity);

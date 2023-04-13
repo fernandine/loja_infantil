@@ -50,10 +50,13 @@ public class Product extends RepresentationModel<Product> implements Serializabl
     private Date lastUpdated;
     @Column(name = "sales_count")
     private int salesCount;
+    @Enumerated(EnumType.STRING)
     @Column(name = "color")
     private Colors color;
+    @Enumerated(EnumType.STRING)
     @Column(name = "brand")
     private Brands brand;
+    @Enumerated(EnumType.STRING)
     @Column(name = "size ")
     private Sizes size;
 

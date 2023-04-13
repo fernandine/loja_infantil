@@ -67,14 +67,16 @@ public class ProductController {
         List<ProductDto> mostRecentProducts = service.findColors(limit);
         return ResponseEntity.ok(mostRecentProducts);
     }
-    @GetMapping("/brand")
-    public ResponseEntity<List<ProductDto>> getBrands(@RequestParam("limit") String limit) {
-        List<ProductDto> mostRecentProducts = service.findBrands(limit);
-        return ResponseEntity.ok(mostRecentProducts);
-    }
+
     @GetMapping("/size")
     public ResponseEntity<List<ProductDto>> getSizes(@RequestParam("limit") String limit) {
         List<ProductDto> mostRecentProducts = service.findSizes(limit);
+        return ResponseEntity.ok(mostRecentProducts);
+    }
+
+    @GetMapping("/brand")
+    public ResponseEntity<List<ProductDto>> getBrand(@RequestParam("limit") String limit) {
+        List<ProductDto> mostRecentProducts = service.findBrands(limit);
         return ResponseEntity.ok(mostRecentProducts);
     }
 

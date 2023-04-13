@@ -7,11 +7,9 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="state")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class State implements Serializable {
 
     @Id
