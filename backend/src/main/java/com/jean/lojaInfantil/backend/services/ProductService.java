@@ -3,7 +3,9 @@ package com.jean.lojaInfantil.backend.services;
 import com.jean.lojaInfantil.backend.dtos.ProductDto;
 import com.jean.lojaInfantil.backend.entities.Category;
 import com.jean.lojaInfantil.backend.entities.Product;
-import com.jean.lojaInfantil.backend.entities.enums.EnumUtils;
+import com.jean.lojaInfantil.backend.entities.enums.Brands;
+import com.jean.lojaInfantil.backend.entities.enums.Colors;
+import com.jean.lojaInfantil.backend.entities.enums.Sizes;
 import com.jean.lojaInfantil.backend.repositories.CategoryRepository;
 import com.jean.lojaInfantil.backend.repositories.ProductRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
@@ -12,17 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -82,16 +79,22 @@ public class ProductService {
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
+    //BUSCA OS PRODUTOS POR TAMANHO
+    @Transactional(readOnly = true)
     public List<ProductDto> findSizes(int limit) {
         List<Product> list = repository.findSizeProducts(PageRequest.of(0, limit));
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
+    //BUSCA OS PRODUTOS POR MARCA
+    @Transactional(readOnly = true)
     public List<ProductDto> findBrands(int limit) {
         List<Product> list = repository.findBrandProduct(PageRequest.of(0, limit));
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
+    //BUSCA OS PRODUTOS CORES
+    @Transactional(readOnly = true)
     public List<ProductDto> findColors(int limit) {
         List<Product> list = repository.findColorProduct(PageRequest.of(0, limit));
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
@@ -141,11 +144,6 @@ public class ProductService {
         entity.setUnitsInStock(dto.getUnitsInStock());
         entity.setUnitPrice(dto.getUnitPrice());
         entity.setLastUpdated(dto.getLastUpdated());
-        entity.setBrand(EnumUtils.parseBrand(dto.getBrand()));
-        entity.setColor(EnumUtils.parseColor(dto.getColor()));
-        entity.setSize(EnumUtils.parseSize(dto.getSize()));
+
     }
-
-
-
 }
