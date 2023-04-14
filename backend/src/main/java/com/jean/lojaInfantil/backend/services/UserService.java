@@ -65,7 +65,7 @@ public class UserService implements UserDetailsService {
         User user = authService.authenticated();
 
         return new UserDto(user);
-    }
+   }
 
     @Transactional(readOnly = true)
     public UserDto findById(Long id) {

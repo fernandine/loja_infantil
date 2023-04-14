@@ -24,11 +24,8 @@ public class UserDto implements Serializable {
     private Long id;
     @NotBlank
     private String firstName;
-
     private String lastName;
-
     private String cpf;
-
     private String phone;
 
     @JsonFormat(pattern="dd/MM/yyyy")
@@ -53,6 +50,4 @@ public class UserDto implements Serializable {
         //entity.getAddressList().forEach(address -> this.addressList.add(new AddressDto(address)));
     }
 
-    public UserDto(UserDto user) {
-    }
 }

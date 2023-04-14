@@ -79,26 +79,17 @@ public class ProductService {
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
-    //BUSCA OS PRODUTOS POR TAMANHO
     @Transactional(readOnly = true)
-    public List<ProductDto> findSizes(int limit) {
-        List<Product> list = repository.findSizeProducts(PageRequest.of(0, limit));
+    public List<ProductDto> filterProducts(Brands productBrand, Colors productColor, Sizes productSize) {
+        List<Product> list;
+        if (productBrand == null && productColor == null && productSize == null) {
+            list = repository.findAll();
+        } else {
+            list = repository.findByBrandsAndColorsAndSizes(productBrand, productColor, productSize);
+        }
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
-    //BUSCA OS PRODUTOS POR MARCA
-    @Transactional(readOnly = true)
-    public List<ProductDto> findBrands(int limit) {
-        List<Product> list = repository.findBrandProduct(PageRequest.of(0, limit));
-        return list.stream().map(ProductDto::new).collect(Collectors.toList());
-    }
-
-    //BUSCA OS PRODUTOS CORES
-    @Transactional(readOnly = true)
-    public List<ProductDto> findColors(int limit) {
-        List<Product> list = repository.findColorProduct(PageRequest.of(0, limit));
-        return list.stream().map(ProductDto::new).collect(Collectors.toList());
-    }
 
     @Transactional
     public ProductDto insert(ProductDto dto) {

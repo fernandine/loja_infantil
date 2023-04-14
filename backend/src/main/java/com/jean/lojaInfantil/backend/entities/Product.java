@@ -51,14 +51,14 @@ public class Product extends RepresentationModel<Product> implements Serializabl
     @Column(name = "sales_count")
     private int salesCount;
     @Enumerated(EnumType.STRING)
-    @Column(name = "color")
-    private Colors color;
+    @Column(name = "product_color")
+    private Colors productColor;
     @Enumerated(EnumType.STRING)
-    @Column(name = "brand")
-    private Brands brand;
+    @Column(name = "product_brand")
+    private Brands productBrand;
     @Enumerated(EnumType.STRING)
-    @Column(name = "size ")
-    private Sizes size;
+    @Column(name = "product_size ")
+    private Sizes productSize;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)

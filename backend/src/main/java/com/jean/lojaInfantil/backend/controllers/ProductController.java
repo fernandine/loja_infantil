@@ -1,6 +1,9 @@
 package com.jean.lojaInfantil.backend.controllers;
 
 import com.jean.lojaInfantil.backend.dtos.ProductDto;
+import com.jean.lojaInfantil.backend.entities.enums.Brands;
+import com.jean.lojaInfantil.backend.entities.enums.Colors;
+import com.jean.lojaInfantil.backend.entities.enums.Sizes;
 import com.jean.lojaInfantil.backend.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -62,23 +65,17 @@ public class ProductController {
         List<ProductDto> mostRecentProducts = service.findMostRecentProductsByCreationDate(limit);
         return ResponseEntity.ok(mostRecentProducts);
     }
-    @GetMapping("/color")
-    public ResponseEntity<List<ProductDto>> getColors(@RequestParam("limit") int limit) {
-        List<ProductDto> mostRecentProducts = service.findColors(limit);
-        return ResponseEntity.ok(mostRecentProducts);
-    }
 
-    @GetMapping("/size")
-    public ResponseEntity<List<ProductDto>> getSizes(@RequestParam("limit") int limit) {
-        List<ProductDto> mostRecentProducts = service.findSizes(limit);
-        return ResponseEntity.ok(mostRecentProducts);
-    }
+@GetMapping("/filter")
+public ResponseEntity<List<ProductDto>> filterProducts(
+        @RequestParam(name = "brand", required = false) Brands productBrand,
+        @RequestParam(name = "color", required = false) Colors productColor,
+        @RequestParam(name = "size", required = false) Sizes productSize
+) {
+    List<ProductDto> filteredProducts = service.filterProducts(productBrand, productColor, productSize);
+    return ResponseEntity.ok(filteredProducts);
+}
 
-    @GetMapping("/brand")
-    public ResponseEntity<List<ProductDto>> getBrand(@RequestParam("limit") int limit) {
-        List<ProductDto> mostRecentProducts = service.findBrands(limit);
-        return ResponseEntity.ok(mostRecentProducts);
-    }
 
     @PostMapping
     public ResponseEntity<ProductDto> insert(@Valid @RequestBody ProductDto dto) {

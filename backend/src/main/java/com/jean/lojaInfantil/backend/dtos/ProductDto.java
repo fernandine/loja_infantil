@@ -1,6 +1,9 @@
 package com.jean.lojaInfantil.backend.dtos;
 
 import com.jean.lojaInfantil.backend.entities.Product;
+import com.jean.lojaInfantil.backend.entities.enums.Brands;
+import com.jean.lojaInfantil.backend.entities.enums.Colors;
+import com.jean.lojaInfantil.backend.entities.enums.Sizes;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,9 +29,9 @@ public class ProductDto implements Serializable {
     private Date dateCreated;
     private Date lastUpdated;
     private int salesCount;
-    private String color;
-    private String brand;
-    private String size;
+    private Colors productColor;
+    private Brands productBrand;
+    private Sizes productSize;
 
     private CategoryDto category;
     public ProductDto(Product entity) {
@@ -43,9 +46,9 @@ public class ProductDto implements Serializable {
         dateCreated = entity.getDateCreated();
         lastUpdated = entity.getLastUpdated();
         salesCount = entity.getSalesCount();
-        color = entity.getColor().toString();
-        brand = entity.getBrand().toString();
-        size = entity.getSize().toString();
+        productColor = entity.getProductColor();
+        productBrand = entity.getProductBrand();
+        productSize = entity.getProductSize();
         category = new CategoryDto(entity.getCategory());
     }
 }

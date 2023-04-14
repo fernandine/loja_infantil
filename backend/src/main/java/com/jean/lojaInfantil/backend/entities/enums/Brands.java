@@ -11,5 +11,4 @@ public enum Brands {
     TROLLE,
     UP_BABY,
     MILON
-
 }
