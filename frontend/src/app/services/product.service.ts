@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { map, Observable } from 'rxjs';
 import { Product } from '../common/Product';
+import { Brands } from '../common/enums/Brands.enum';
+import { Sizes } from '../common/enums/Sizes.enum';
+import { Colors } from '../common/enums/Colors.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +13,7 @@ export class ProductService {
 
   private baseUrl =  'http://localhost:8080/products';
   private searchUrl = 'http://localhost:8080/products/search'
+
   private likedProducts: Product[] = [];
 
   constructor(private http: HttpClient) { }
@@ -35,6 +39,20 @@ export class ProductService {
       })
     );
   }
+
+  getProductsByFilters(
+    brandFilters: string[],
+    colorFilters: string[],
+    sizeFilters: string[]
+  ): Observable<Product[]> {
+    const brandParams = brandFilters.map(brand => `brand=${encodeURIComponent(brand)}`).join('&');
+    const colorParams = colorFilters.map(color => `color=${encodeURIComponent(color)}`).join('&');
+    const sizeParams = sizeFilters.map(size => `size=${encodeURIComponent(size)}`).join('&');
+    const filterUrl = `${this.baseUrl}/filter?${brandParams}${colorParams}${sizeParams}`;
+    return this.http.get<Product[]>(filterUrl)
+      .pipe(map(response => response));
+  }
+
 
   toggleFavorite(product: Product): Observable<Product> {
     product.favorite = !product.favorite;

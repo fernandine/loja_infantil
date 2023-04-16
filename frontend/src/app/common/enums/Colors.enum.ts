@@ -1,0 +1,17 @@
+export enum Colors {
+  AZUL = 'AZUL',
+  ROSA_BEBE = 'ROSA_BEBE',
+  LILAS = 'LILAS',
+  VERMELHO = 'VERMELHO',
+  AMARELO = 'AMARELO',
+  VERDE = 'VERDE',
+  PRETO = 'PRETO',
+  BRANCO = 'BRANCO',
+  CINZA = 'CINZA',
+  MARROM = 'MARROM',
+  ROXO = 'ROXO',
+  BEGE = 'BEGE',
+  LARANJA = 'LARANJA',
+  ROSA = 'ROSA',
+  TURQUESA = 'TURQUESA'
+}

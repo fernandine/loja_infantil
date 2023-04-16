@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SelectItem } from 'primeng/api';
 import { CartItem } from 'src/app/common/cart-item';
 import { Category } from 'src/app/common/category';
+import { Colors } from 'src/app/common/enums/Colors.enum';
+import { Sizes } from 'src/app/common/enums/Sizes.enum';
 import { Product } from 'src/app/common/Product';
 import { CartService } from 'src/app/services/cart.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
+import { Brands } from '../../common/enums/Brands.enum';
 
 @Component({
   selector: 'app-product-list',
@@ -14,10 +17,12 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./product-list.component.scss']
 })
 export class ProductListComponent {
-  products: Product[] = [];
+
+  @Input() products: Product[] = [];
+
   sortOptions: SelectItem[] = [];
   categories!: Category[];
-  nameCategory!: Category;
+
   currentCategoryId: number = 1;
   previousCategoryId: number = 1;
   searchMode: boolean = false;

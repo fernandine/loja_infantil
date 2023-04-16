@@ -1,5 +1,12 @@
-import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { Component, Input} from '@angular/core';
+import { ProductService } from '../../services/product.service';
+import { Brands } from '../../common/enums/Brands.enum';
+import { Sizes } from '../../common/enums/Sizes.enum';
+import { Colors } from 'src/app/common/enums/Colors.enum';
+import { Product } from 'src/app/common/Product';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Category } from '../../common/category';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-category-filter',
@@ -7,151 +14,70 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./category-filter.component.scss']
 })
 export class CategoryFilterComponent {
-  brands: any[] = [
-    {name: 'Alfred'},
-    {name: 'Hyper'},
-    {name: 'Peak'},
-    {name: 'Bastion'},
-];
 
-colors: any[] = [
-    {name: 'Black', class:'bg-gray-500'},
-    {name: 'Orange', class:'bg-orange-500'},
-    {name: 'Indigo', class:'bg-indigo-500'},
-    {name: 'Pink', class:'bg-pink-500'},
-];
+  filteredProducts: Product[] = [];
+  selectedCategory!: Category;
 
-prices: any[] = [
-    {range: '$10 - $100'},
-    {range: '$101 - $200'},
-    {range: '$201 - $300'},
-    {range: '$301 - $400'},
-];
+  brands: { key: string, value: string, selected: boolean }[] = [];
+  colors: { key: string, value: string, selected: boolean }[] = [];
+  sizes: { key: string, value: string, selected: boolean }[] = [];
 
-selectedBrands: any[] = ['Alfred', 'Hyper'];
+  selectedBrandsObj: {[key in string]?: boolean} = {};
+  selectedColorsObj: {[key in string]?: boolean} = {};
+  selectedSizesObj: {[key in string]?: boolean} = {};
 
-selectedBrands2: any[] = [
-  {name: 'Alfred'},
-  {name: 'Hyper'}
-];
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private categoryService: CategoryService
+  ) { }
 
+  ngOnInit(): void {
 
-selectedBrand_1!: any[];
-items: MenuItem[] = [
-    {label: 'Color'},
-    {label: 'Size'},
-    {label: 'Price'}
-];
+    this.brands = Object.keys(Brands).map(value => ({ key: value, value, selected: false }));
+    this.colors = Object.keys(Colors).map(value => ({ key: value, value, selected: false }));
+    this.sizes = Object.keys(Sizes).map(value => ({ key: value, value, selected: false }));
 
-selectedPrice1: any;
+    console.log('selectedBrands:', this.brands);
+    console.log('selectedColors:', this.colors);
+    console.log('selectedSizes:', this.colors);
 
-selectedPrice2: any;
+    this.route.queryParams.subscribe(params => {
+      const brandFilters = params['brand'] || [];
+      const colorFilters = params['color'] || [];
+      const sizeFilters = params['size'] || [];
+      this.filterProducts(brandFilters, colorFilters, sizeFilters);
+    });
 
-selectedColors: any = [];
+    this.categoryService.getSelectedCategory().subscribe((category: Category) => {
+      this.selectedCategory = category;
+      const categoryId = category.id;
+      this.router.navigate([`/categories/${categoryId}`], { relativeTo: this.route });
+    });
 
-selectedColors2: any = ['Black'];
+  }
 
-selectedFilters: any[] = ['Alfred', 'Hyper', 'Black'];
-
-sizes: any[] = [
-    {page: [
-      {value: '28x28'},
-      {value: '28x30'},
-      {value: '28x32'},
-      {value: '28x34'},
-      {value: '29x28'},
-      {value: '29x30'},
-      {value: '29x32'},
-      {value: '29x34'},
-      {value: '30x28'},
-      {value: '30x30'},
-      {value: '30x32'},
-      {value: '30x34'},
-      {value: '31x28'},
-      {value: '31x30'},
-      {value: '31x32'},
-      {value: '31x34'},
-    ]},
-    {page: [
-      {value: '32x28'},
-      {value: '32x30'},
-      {value: '32x32'},
-      {value: '32x34'},
-      {value: '33x28'},
-      {value: '33x30'},
-      {value: '33x32'},
-      {value: '33x34'},
-      {value: '34x28'},
-      {value: '34x30'},
-      {value: '34x32'},
-      {value: '35x34'},
-      {value: '35x28'},
-      {value: '35x30'},
-      {value: '35x32'},
-      {value: '35x34'},
-    ]},
-    {page: [
-      {value: '28x28'},
-      {value: '28x30'},
-      {value: '28x32'},
-      {value: '28x34'},
-      {value: '29x28'},
-      {value: '29x30'},
-      {value: '29x32'},
-      {value: '29x34'},
-      {value: '30x28'},
-      {value: '30x30'},
-      {value: '30x32'},
-      {value: '30x34'},
-      {value: '31x28'},
-      {value: '31x30'},
-      {value: '31x32'},
-      {value: '31x34'},
-    ]},
-];
-
-selectedSizes1: any[] = [];
-
-selectedSizes2: any[] = [];
-
-responsiveOptions: any[] = [
-    {
-        breakpoint: '1024px',
-        numVisible: 3,
-        numScroll: 3
-    },
-    {
-        breakpoint: '768px',
-        numVisible: 2,
-        numScroll: 2
-    },
-    {
-        breakpoint: '560px',
-        numVisible: 1,
-        numScroll: 1
+  filterProducts(brandFilters: string[], colorFilters: string[], sizeFilters: string[]): void {
+    this.productService.getProductsByFilters(brandFilters, colorFilters, sizeFilters)
+      .subscribe(products => {
+        this.filteredProducts = products;
+      });
+  }
+  applyFilters(): void {
+    const brandFilters: string[] = this.brands.filter(brand => brand.selected).map(brand => brand.value);
+    const colorFilters: string[] = this.colors.filter(color => color.selected).map(color => color.value);
+    const sizeFilters: string[] = this.sizes.filter(size => size.selected).map(size => size.value);
+    // Verifique se algum filtro foi selecionado
+    const filtersSelected = brandFilters.length > 0 || colorFilters.length > 0 || sizeFilters.length > 0;
+    // Chame a função de filtro de produtos com os filtros selecionados
+    this.filterProducts(brandFilters, colorFilters, sizeFilters);
+    if (!filtersSelected) {
+      // Nenhum filtro selecionado, redirecionar para a URL atual
+      const currentUrl = this.router.url;
+      this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
+      });
     }
-];
-
-rangeValues: number[] = [20,80];
-
-checked1: boolean = true;
-
-checked2: boolean = false;
-
-openDropdown: boolean = true;
-
-removeChip( filter: any) {
-    this.selectedFilters = this.selectedFilters.filter(i => i !== filter);
-    this.selectedBrands = this.selectedBrands.filter(i => i !== filter);
-    this.selectedSizes2 = this.selectedSizes2.filter(i => i !== filter);
-}
-
-clearAll() {
-    this.selectedFilters = [];
-    this.selectedColors2 = [];
-    this.selectedSizes2 = [];
-    this.selectedBrands = [];
-    this.selectedBrands2 = [];
-}
-
+  }
 }

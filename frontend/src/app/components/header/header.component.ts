@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Category } from 'src/app/common/category';
@@ -35,6 +35,7 @@ export class HeaderComponent {
   }
 
   handleCategoryClick(category: Category) {
+    this.categoryService.setSelectedCategory(category);
     const categoryId = category.id;
     this.router.navigateByUrl(`/categories/${categoryId}`);
   }

@@ -79,16 +79,28 @@ public class ProductService {
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
+//    @Transactional(readOnly = true)
+//    public List<ProductDto> filterProducts(Brands productBrands, Colors productColors, Sizes productSizes) {
+//        List<Product> list;
+//        if (productBrands == null && productColors == null && productSizes == null) {
+//            list = repository.findAll();
+//        } else {
+//            list = repository.findByBrandsAndColorsAndSizes(productBrands, productColors, productSizes);
+//        }
+//        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+//    }
+
     @Transactional(readOnly = true)
-    public List<ProductDto> filterProducts(Brands productBrand, Colors productColor, Sizes productSize) {
+    public List<ProductDto> filterProducts(List<Brands> productBrands, List<Colors> productColors, List<Sizes> productSizes) {
         List<Product> list;
-        if (productBrand == null && productColor == null && productSize == null) {
+        if (productBrands == null && productColors == null && productSizes == null) {
             list = repository.findAll();
         } else {
-            list = repository.findByBrandsAndColorsAndSizes(productBrand, productColor, productSize);
+            list = repository.findByBrandsAndColorsAndSizes(productBrands, productColors, productSizes);
         }
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
+
 
 
     @Transactional

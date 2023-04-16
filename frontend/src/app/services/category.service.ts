@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import { Category } from '../common/category';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
+
+  private selectedCategory = new Subject<Category>();
 
   private baseUrl = 'http://localhost:8080/categories';
 
@@ -15,7 +17,6 @@ export class CategoryService {
   getCategory(): Observable<Category[]> {
     return this.http.get<ResponseProductCategory>(this.baseUrl)
       .pipe(map(response => response.content));
-
   }
 
   createCategory(user: Category): Observable<any> {
@@ -29,8 +30,16 @@ export class CategoryService {
   deleteCategory(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
+
+  setSelectedCategory(category: Category) {
+  this.selectedCategory.next(category);
+}
+  getSelectedCategory(): Observable<Category> {
+  return this.selectedCategory.asObservable();
+ }
 }
 
 interface ResponseProductCategory {
   content: Category[]
 }
+
