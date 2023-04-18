@@ -33,6 +33,9 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @Transactional(readOnly = true)
     public List<ProductDto> findAll() {
         List<Product> list = repository.findAll();
@@ -53,16 +56,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ProductDto> findByCategoryId(Long id, Pageable pageable) {
-        Category category = (id == 0) ? null : categoryRepository.getReferenceById(id);
-        Page<Product> page = repository.findByCategoryId(category, pageable);
-        return page.map(ProductDto::new);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<ProductDto> findByName(String name, Pageable pageable) {
-        Page<Product> page = repository.findByName(name, pageable);
-        return page.map(ProductDto::new);
+    public List<ProductDto> findByName(String name) {
+        List<Product> list = repository.findByNameCategory(name);
+        return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
     // BUSCA OS PRODUTOS MAIS VENDIDOS
@@ -79,28 +75,16 @@ public class ProductService {
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
 
-//    @Transactional(readOnly = true)
-//    public List<ProductDto> filterProducts(Brands productBrands, Colors productColors, Sizes productSizes) {
-//        List<Product> list;
-//        if (productBrands == null && productColors == null && productSizes == null) {
-//            list = repository.findAll();
-//        } else {
-//            list = repository.findByBrandsAndColorsAndSizes(productBrands, productColors, productSizes);
-//        }
-//        return list.stream().map(ProductDto::new).collect(Collectors.toList());
-//    }
-
     @Transactional(readOnly = true)
-    public List<ProductDto> filterProducts(List<Brands> productBrands, List<Colors> productColors, List<Sizes> productSizes) {
+    public List<ProductDto> filterProducts(List<Brands> productBrands, List<Colors> productColors, List<Sizes> productSizes, Long categoryId) {
         List<Product> list;
-        if (productBrands == null && productColors == null && productSizes == null) {
+        if (productBrands == null && productColors == null && productSizes == null && categoryId == null) {
             list = repository.findAll();
         } else {
-            list = repository.findByBrandsAndColorsAndSizes(productBrands, productColors, productSizes);
+            list = repository.findByBrandsAndColorsAndSizesAndCategoryId(productBrands, productColors, productSizes, categoryId);
         }
         return list.stream().map(ProductDto::new).collect(Collectors.toList());
     }
-
 
 
     @Transactional

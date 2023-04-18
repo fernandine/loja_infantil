@@ -8,12 +8,13 @@ import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundExcepti
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -22,9 +23,16 @@ public class CategoryService {
     CategoryRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<CategoryDto> findAllPaged(Pageable pageable) {
-        Page<Category> page = repository.findAll(pageable);
-        return page.map(x -> new CategoryDto(x));
+    public List<CategoryDto> findAll() {
+        List<Category> list = repository.findAll();
+        return list.stream().map(CategoryDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public CategoryDto findById(Long id) {
+        Optional<Category> obj = repository.findById(id);
+        Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
+        return new CategoryDto(entity);
     }
 
     @Transactional

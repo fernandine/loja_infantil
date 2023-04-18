@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
 import { Category } from 'src/app/common/category';
-import { CartService } from 'src/app/services/cart.service';
+import { Product } from 'src/app/common/Product';
 import { CategoryService } from '../../services/category.service';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,6 @@ export class HeaderComponent {
   categories: Category[] = [];
 
   constructor(
-    private cartService: CartService,
     private route: ActivatedRoute,
     private categoryService: CategoryService,
     private router: Router) { }
@@ -36,7 +35,7 @@ export class HeaderComponent {
 
   handleCategoryClick(category: Category) {
     this.categoryService.setSelectedCategory(category);
-    const categoryId = category.id;
-    this.router.navigateByUrl(`/categories/${categoryId}`);
+    const categoryName = category.name;
+    this.router.navigateByUrl(`products/categories/${categoryName}`);
   }
 }

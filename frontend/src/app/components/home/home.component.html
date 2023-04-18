@@ -1,10 +1,10 @@
-<div class="surface-section h-30rem bg-no-repeat bg-cover bg-center flex align-items-center" style="background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-url(assets/images/banner_front.jpg);">
-  <div class="px-4 mx-4 lg:px-6 lg:mx-6">
+<div class="surface-section h-30rem bg-no-repeat bg-cover bg-center flex align-items-center" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
+url(../../../assets/images/banner2.jpg);">
+  <!--div class="px-4 mx-4 lg:px-6 lg:mx-6">
       <span class="block text-3xl text-white mb-4">Nova Marca</span>
       <span class="block text-5xl font-medium text-white mb-4">COLEÇÃO ESPECIAL</span>
       <a tabindex="0" pRipple class="py-2 w-13rem text-center block mb-4 text-xl text-white font-medium border-2 cursor-pointer surface-border-0 border-round bg-white-alpha-30">Explore esta moda</a>
-  </div>
+  </div-->
 </div>
 
 <div class="surface-section px-4 py-3 md:px-6 lg:px-8">
@@ -46,7 +46,7 @@ url(assets/images/banner_front.jpg);">
       <ng-template let-product pTemplate="item">
           <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
               <div class="mb-3">
-                  <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" [alt]="product.name" class="w-6 shadow-2" />
+                <img [src]="product.image" alt="product_image" class="w-full" [routerLink]="['/products', product.id]"/>
               </div>
               <div>
                   <h4 class="mb-1">{{ product.name }}</h4>
@@ -65,7 +65,7 @@ url(assets/images/banner_front.jpg);">
 <div class="surface-section px-4 py-8 md:px-6 lg:px-8">
   <div class="grid grid-nogutter -ml-3 -mr-3">
       <div class="col-12 lg:col-6 p-3">
-          <div class="flex flex-column justify-content-between h-full w-full border-round bg-no-repeat bg-cover bg-center" style="background: linear-gradient(0deg, rgba(0, 0, 0, 0.123), rgba(0, 0, 0, 0.151)), url(assets/images/storefront/storefront-1-28.jpg); min-height:40rem;">
+          <div class="flex flex-column justify-content-between h-full w-full border-round bg-no-repeat bg-cover bg-center" style="background: linear-gradient(0deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), url(assets/images/storefront/storefront-1-28.jpg); min-height:40rem;">
               <div class="p-4 align-self-start">
                   <div class="text-white text-2xl font-bold mb-2">Liquidação!</div>
                   <span class="text-white text-lg line-height-3">Deixe seu pequeno príncipe ou princesa mais elegante.</span>
@@ -114,7 +114,7 @@ url(assets/images/banner_front.jpg);">
         <ng-template let-product pTemplate="item">
             <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
                 <div class="mb-3">
-                    <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" [alt]="product.name" class="w-6 shadow-2" />
+                  <img [src]="product.image" alt="product_image" class="w-full" [routerLink]="['/products', product.id]"/>
                 </div>
                 <div>
                     <h4 class="mb-1">{{ product.name }}</h4>

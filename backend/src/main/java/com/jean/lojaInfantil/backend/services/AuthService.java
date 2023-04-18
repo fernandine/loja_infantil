@@ -25,7 +25,7 @@ public class AuthService {
         }
     }
 
-    public void validadeMenber(Long userId) {
+    public void validadeMember(Long userId) {
         User user = authenticated();
         if (!user.hasHole("ROLE_USER")) {
             throw new ResourceNotFoundException("Invalid user");

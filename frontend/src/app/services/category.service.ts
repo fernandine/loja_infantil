@@ -1,22 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { Category } from '../common/category';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoryService {
-
-  private selectedCategory = new Subject<Category>();
+  private selectedCategory: BehaviorSubject<Category | null> =
+    new BehaviorSubject<Category | null>(null);
 
   private baseUrl = 'http://localhost:8080/categories';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getCategory(): Observable<Category[]> {
-    return this.http.get<ResponseProductCategory>(this.baseUrl)
-      .pipe(map(response => response.content));
+    return this.http
+      .get<Category[]>(this.baseUrl)
+      .pipe(map((response) => response));
+  }
+
+  getCategoryById(id: number): Observable<Category> {
+    return this.http
+      .get<Category>(`${this.baseUrl}/${id}`)
+      .pipe(map((response) => response));
   }
 
   createCategory(user: Category): Observable<any> {
@@ -32,14 +39,9 @@ export class CategoryService {
   }
 
   setSelectedCategory(category: Category) {
-  this.selectedCategory.next(category);
+    this.selectedCategory.next(category);
+  }
+  getSelectedCategory(): Observable<Category | null> {
+    return this.selectedCategory.asObservable();
+  }
 }
-  getSelectedCategory(): Observable<Category> {
-  return this.selectedCategory.asObservable();
- }
-}
-
-interface ResponseProductCategory {
-  content: Category[]
-}
-

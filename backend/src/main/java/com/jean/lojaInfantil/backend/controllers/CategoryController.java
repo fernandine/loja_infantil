@@ -1,6 +1,11 @@
 package com.jean.lojaInfantil.backend.controllers;
 
 import com.jean.lojaInfantil.backend.dtos.CategoryDto;
+import com.jean.lojaInfantil.backend.dtos.OrderDto;
+import com.jean.lojaInfantil.backend.dtos.ProductDto;
+import com.jean.lojaInfantil.backend.entities.enums.Brands;
+import com.jean.lojaInfantil.backend.entities.enums.Colors;
+import com.jean.lojaInfantil.backend.entities.enums.Sizes;
 import com.jean.lojaInfantil.backend.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/categories")
@@ -20,9 +26,15 @@ public class CategoryController {
     private CategoryService service;
 
     @GetMapping
-    public ResponseEntity<Page<CategoryDto>> findAllPaged(Pageable pageable) {
-        Page<CategoryDto> page = service.findAllPaged(pageable);
-        return ResponseEntity.ok().body(page);
+    public ResponseEntity<List<CategoryDto>> findAll() {
+        List<CategoryDto> list = service.findAll();
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDto> findById(@PathVariable Long id) {
+        CategoryDto dto = service.findById(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping

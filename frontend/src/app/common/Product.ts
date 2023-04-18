@@ -8,7 +8,7 @@ export class Product {
   name!: string;
   description!: string;
   unitPrice!: number;
-  imageUrl!: string;
+  image!: string;
   favorite!: boolean;
   unitsInStock!: number;
   dateCreated!: Date;

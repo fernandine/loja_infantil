@@ -6,8 +6,6 @@ import com.jean.lojaInfantil.backend.entities.enums.Colors;
 import com.jean.lojaInfantil.backend.entities.enums.Sizes;
 import com.jean.lojaInfantil.backend.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,20 +35,10 @@ public class ProductController {
         return ResponseEntity.ok().body(list);
     }
 
-    // URL = /products/search?name=?
-    @GetMapping("/search")
-    public ResponseEntity<Page<ProductDto>> findByName(
-            @RequestParam("name") String name,
-            Pageable pageable )
-    {
-        Page<ProductDto> list = service.findByName(name.trim(), pageable);
-        return ResponseEntity.ok().body(list);
-    }
-
-    // URL = /products/search/categories?id=?
-    @GetMapping("/search/categories")
-    public ResponseEntity<Page<ProductDto>> findByCategoryId(@RequestParam("id") Long id, Pageable pageable){
-        return ResponseEntity.ok().body(service.findByCategoryId(id, pageable));
+    // URL = /products/categories?name=?
+    @GetMapping("/categories")
+    public ResponseEntity<List<ProductDto>> findByNameCategory(@RequestParam("name") String name){
+        return ResponseEntity.ok().body(service.findByName(name));
     }
 
     // URL = /products/search/?
@@ -73,42 +61,24 @@ public class ProductController {
         return ResponseEntity.ok(mostRecentProducts);
     }
 
-//    @GetMapping("/filter")
-//    public ResponseEntity<List<ProductDto>> filterProducts(
-//            @RequestParam(name = "brand", required = false) Brands productBrand,
-//            @RequestParam(name = "color", required = false) Colors productColor,
-//            @RequestParam(name = "size", required = false) Sizes productSize
-//    ) {
-//        if (productBrand == null && productColor == null && productSize == null) {
-//            // Se todos os parâmetros forem nulos, busca todos os produtos
-//            List<ProductDto> allProducts = service.findAll();
-//            return ResponseEntity.ok(allProducts);
-//        } else {
-//            // Caso contrário, faz a filtragem com base nos parâmetros fornecidos
-//            List<ProductDto> filteredProducts = service.filterProducts(productBrand, productColor, productSize);
-//            return ResponseEntity.ok(filteredProducts);
-//        }
-//    }
-
-    // URL = /products/filter?brand=PUC&color=VERDE&size=P
+    // URL = /products/filter?brand=PUC&color=VERDE&size=P&category=5
     @GetMapping("/filter")
     public ResponseEntity<List<ProductDto>> filterProducts(
+            @RequestParam(name = "category", required = false) Long categoryId,
             @RequestParam(name = "brand", required = false) List<Brands> productBrand,
             @RequestParam(name = "color", required = false) List<Colors> productColor,
             @RequestParam(name = "size", required = false) List<Sizes> productSizes
     ) {
-        if (productBrand == null && productColor == null && productSizes == null) {
+        if (productBrand == null && productColor == null && productSizes == null && categoryId == null) {
             // Se todos os parâmetros forem nulos, busca todos os produtos
             List<ProductDto> allProducts = service.findAll();
             return ResponseEntity.ok(allProducts);
         } else {
-            // Caso contrário, faz a filtragem com base nos parâmetros fornecidos
-            List<ProductDto> filteredProducts = service.filterProducts(productBrand, productColor, productSizes);
+            // Caso contrário, faz a filtragem com base nos parâmetros fornecidos, incluindo a categoria
+            List<ProductDto> filteredProducts = service.filterProducts(productBrand, productColor, productSizes, categoryId);
             return ResponseEntity.ok(filteredProducts);
         }
     }
-
-
 
     @PostMapping
     public ResponseEntity<ProductDto> insert(@Valid @RequestBody ProductDto dto) {

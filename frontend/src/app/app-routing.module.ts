@@ -53,7 +53,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'products/:id', component: ProductDetailComponent },
   { path: 'search/:keyword', component: ProductListComponent },
-  { path: 'categories/:id', component: CategoryFilterComponent },
+  { path: 'products/categories/:name', component: CategoryFilterComponent },
   { path: 'categories', component: ProductListComponent },
   { path: 'filter', component: CategoryFilterComponent },
   { path: 'products', component: ProductListComponent },

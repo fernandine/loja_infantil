@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { Product } from '../common/Product';
-import { Brands } from '../common/enums/Brands.enum';
-import { Sizes } from '../common/enums/Sizes.enum';
-import { Colors } from '../common/enums/Colors.enum';
+import { Category } from '../common/category';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +10,6 @@ import { Colors } from '../common/enums/Colors.enum';
 export class ProductService {
 
   private baseUrl =  'http://localhost:8080/products';
-  private searchUrl = 'http://localhost:8080/products/search'
 
   private likedProducts: Product[] = [];
 
@@ -43,21 +40,21 @@ export class ProductService {
   getProductsByFilters(
     brandFilters: string[],
     colorFilters: string[],
-    sizeFilters: string[]
+    sizeFilters: string[],
+    category: Category[]
   ): Observable<Product[]> {
     const brandParams = brandFilters.map(brand => `brand=${encodeURIComponent(brand)}`).join('&');
     const colorParams = colorFilters.map(color => `color=${encodeURIComponent(color)}`).join('&');
     const sizeParams = sizeFilters.map(size => `size=${encodeURIComponent(size)}`).join('&');
-    const filterUrl = `${this.baseUrl}/filter?${brandParams}${colorParams}${sizeParams}`;
+    const categoryParams = category.map(cat => `category=${encodeURIComponent(cat.id)}`).join('&');
+    const filterUrl = `${this.baseUrl}/filter?${brandParams}${colorParams}`;
     return this.http.get<Product[]>(filterUrl)
       .pipe(map(response => response));
   }
 
-
   toggleFavorite(product: Product): Observable<Product> {
     product.favorite = !product.favorite;
     const url = `${this.baseUrl}/${product.id}`;
-
     return this.http.put<Product>(url, product).pipe(
       map(updatedProduct => {
         if (updatedProduct.favorite) {
@@ -71,61 +68,46 @@ export class ProductService {
     );
   }
 
-  getProductList(theCategoryId: number): Observable<Product[]> {
-    const searchUrl = `${this.baseUrl}/search/categories?id=${theCategoryId}`;
-    return this.getProductSearch(searchUrl)
-  }
-
-  getProductSearch(searchUrl: string): Observable<Product[]> {
-    return this.http.get<ApiResponseProduct>(searchUrl)
-      .pipe(map(response => response.content));
-  }
-
-  getProduct(theProductId: number): Observable<Product> {
-    const productUrl = `${this.baseUrl}/${theProductId}`;
-    return this.http.get<Product>(productUrl);
-  }
-
-  getProductListPaginate(
-    thePage: number,
-    thePageSize: number,
-    theCategoryId: number): Observable<ApiResponseProduct> {
-
-    const searchUrl = `${this.baseUrl}/search/categories?id=${theCategoryId}`
-      + `&page=${thePage}&size=${thePageSize}`;
-
-    return this.http.get<ApiResponseProduct>(searchUrl)
-      .pipe(map(response => response))
-  }
-
-  searchProducts(theKeyword: string | null): Observable<Product[]> {
-    const searchUrl = `${this.searchUrl}?name=${theKeyword}`;
-    console.log(searchUrl)
-    return this.getProductSearch(searchUrl)
-  }
-
-  searchProductsPaginate(
-    thePage: number,
-    thePageSize: number,
-    theKeyword: string): Observable<ApiResponseProduct> {
-
-    const searchUrl = `${this.searchUrl}?name=${theKeyword}`
-      + `&page=${thePage}&size=${thePageSize}`;
-
-    return this.http.get<ApiResponseProduct>(searchUrl)
-      .pipe(map(response => response))
-  }
-
-
-  getOneProductById(id: number): Observable<Product> {
-    const url = `${this.searchUrl}/${id}`;
-    return this.http.get<Product>(url)
-      .pipe(map(product => product))
-  }
-
-  getAllProducts(): Observable<Product[]> {
+  getProduct(): Observable<Product[]> {
     const url = `${this.baseUrl}`;
     return this.http.get<Product[]>(url);
+  }
+
+  getProductById(id: number): Observable<Product> {
+    const url = `${this.baseUrl}/${id}`;
+    return this.http.get<Product>(url);
+  }
+
+  getProductList(currentCategoryName: string): Observable<Product[]> {
+    const searchUrl = `${this.baseUrl}/categories?name=${currentCategoryName}`;
+    return this.getProductSearch(searchUrl).pipe(
+      tap(data => console.log('Produtos retornados do servidor:', data)),
+      catchError(error => {
+        console.error('Ocorreu um erro ao obter produtos por categoria:', error);
+        return throwError(error);
+      })
+      );
+  }
+/*
+  getProductList(currentCategoryName: number): Observable<Product[]> {
+    const searchUrl = `${this.baseUrl}/categories?name=${currentCategoryName}`;
+    return this.getProductSearch(searchUrl)
+  }*/
+
+  getProductSearch(searchUrl: string): Observable<Product[]> {
+    return this.http.get<Product[]>(searchUrl)
+      .pipe(map(response => response));
+  }
+
+  getProductByCategoryName(categoryName: string): Observable<Product[]> {
+    const url = `${this.baseUrl}/categories?name=${categoryName}`;
+    return this.http.get<Product[]>(url).pipe(
+      tap(data => console.log('Produtos retornados do servidor:', data)),
+      catchError(error => {
+        console.error('Ocorreu um erro ao obter produtos por categoria:', error);
+        return throwError(error);
+      })
+    );
   }
 
   createProduct(product: Product): Observable<any> {
@@ -139,20 +121,5 @@ export class ProductService {
   deleteProduct(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
-}
-
-interface ApiResponseProduct {
-  content: Product[]
-  totalPages: number
-  size: number
-  totalElements: number,
-  number: number,
-  first: boolean,
-  last: boolean,
-  empty: boolean
-
-}
-interface ResponseProduct {
-  content: Product[]
 }
 
