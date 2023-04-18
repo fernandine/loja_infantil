@@ -1,5 +1,7 @@
 package com.jean.lojaInfantil.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jean.lojaInfantil.backend.entities.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class User implements UserDetails, Serializable {
 
     @Id
@@ -32,6 +35,8 @@ public class User implements UserDetails, Serializable {
     @Column(unique = true)
     private String email;
     private String password;
+
+    private Gender gender;
 
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();

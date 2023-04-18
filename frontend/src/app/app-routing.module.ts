@@ -49,7 +49,7 @@ const routes: Routes = [
 
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'auth-login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'products/:id', component: ProductDetailComponent },
   { path: 'search/:keyword', component: ProductListComponent },

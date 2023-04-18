@@ -2,6 +2,7 @@ package com.jean.lojaInfantil.backend.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jean.lojaInfantil.backend.entities.User;
+import com.jean.lojaInfantil.backend.entities.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,8 @@ public class UserDto implements Serializable {
     @Email
     private String email;
 
+    private Gender gender;
+
     Set<RoleDto> roles = new HashSet<>();
 
 //    Set<AddressDto> addressList = new HashSet<>();
@@ -46,6 +49,7 @@ public class UserDto implements Serializable {
         cpf = entity.getCpf();
         birthDay = entity.getBirthDay();
         phone = entity.getPhone();
+        gender = entity.getGender();
         entity.getRoles().forEach(role -> this.roles.add(new RoleDto(role)));
         //entity.getAddressList().forEach(address -> this.addressList.add(new AddressDto(address)));
     }

@@ -6,6 +6,7 @@ import com.jean.lojaInfantil.backend.dtos.UserInsertDto;
 import com.jean.lojaInfantil.backend.dtos.UserUpdateDto;
 import com.jean.lojaInfantil.backend.entities.Role;
 import com.jean.lojaInfantil.backend.entities.User;
+import com.jean.lojaInfantil.backend.entities.enums.Gender;
 import com.jean.lojaInfantil.backend.repositories.AddressRepository;
 import com.jean.lojaInfantil.backend.repositories.RoleRepository;
 import com.jean.lojaInfantil.backend.repositories.UserRepository;
@@ -117,6 +118,7 @@ public class UserService implements UserDetailsService {
         entity.setPhone(dto.getPhone());
         entity.setCpf(dto.getCpf());
         entity.setBirthDay(dto.getBirthDay());
+        entity.setGender(dto.getGender());
 
 
         entity.getRoles().clear();

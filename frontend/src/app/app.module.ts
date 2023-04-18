@@ -30,10 +30,14 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { SearchComponent } from './components/search/search.component';
 import { UserComponent } from './components/user/user.component';
-import { HttpRequestInterceptor } from './http.interceptor';
 import { PrimeNgModule } from './primeng.module';
 import { CartService } from './services/cart.service';
 import { CategoryFilterComponent } from './components/category-filter/category-filter.component';
+import { NotificationService } from './services/notification.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpRequestInterceptor } from './http-request.interceptor';
+import { MessageService } from 'primeng/api';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -68,11 +72,15 @@ import { CategoryFilterComponent } from './components/category-filter/category-f
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
-    PrimeNgModule
+    PrimeNgModule,
+    ReactiveFormsModule
   ],
   providers: [
     CartService,
+    NotificationService,
+    MessageService,
     { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

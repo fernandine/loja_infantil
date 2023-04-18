@@ -37,6 +37,7 @@ public class JwtTokenEnhancer implements TokenEnhancer {
 		map.put("username", user.getUsername());
 		map.put("cpf", user.getCpf());
 		map.put("birthDay", user.getBirthDay());
+		map.put("gender", user.getGender());
 		map.put("phone", user.getPhone());
 		map.put("roles", user.getRoles());
 
