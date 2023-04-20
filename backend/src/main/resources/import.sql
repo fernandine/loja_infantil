@@ -265,5 +265,18 @@ INSERT INTO state(name, country_id) VALUES ('Sinop',5),('Sivas',5),('Şanlıurfa
 -- Reviews
 -- -----------------------------------------------------
 INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Adorei o conjuntinho de bebê.', 3, 1, 1);
-INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Gostei e recomendo!', 4, 1, 1);
-INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Que linda roupa!!!', 2, 2, 1);
+INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Gostei e recomendo!', 4, 1, 2);
+INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Que linda roupa!!!', 5, 3, 1);
+INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Adorei o conjuntinho de bebê.', 5, 4, 2);
+INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Gostei e recomendo!', 4, 5, 1);
+INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Que linda roupa!!!', 3, 6, 2);
+INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Adorei o conjuntinho de bebê.', 3, 7, 1);
+INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Gostei e recomendo!', 4, 8, 2);
+INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Que linda roupa!!!', 5, 9, 1);
+
+-- -----------------------------------------------------
+-- Discounts
+-- -----------------------------------------------------
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO20', 0.2, '2023-06-01', 1);
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO30', 0.3, '2023-07-01', 2);
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO40', 0.4, '2023-08-01', 3);

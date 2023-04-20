@@ -56,15 +56,19 @@
           <li>
             <div class="px-3 sm:px-6 py-3 flex align-items-stretch justify-content-center sm:justify-content-end">
 
-            <a pRipple routerLink="/auth-login" class="text-900 font-bold inline-flex align-items-center cursor-pointer px-3 hover:text-orange-500">
+            <a pRipple *ngIf="!(isLoggedIn)" routerLink="/auth-login" class="text-900 font-bold inline-flex align-items-center cursor-pointer px-3 hover:text-orange-500">
               <i class="pi pi-sign-in mr-2 sm:mr-3 text-sm"></i>
               <span>Login</span>
           </a>
+          <a  pRipple *ngIf="(isLoggedIn)" icon="pi pi-user" routerLink="/account/profile" class="text-900 font-bold inline-flex align-items-center cursor-pointer px-3 hover:text-orange-500">Olá, {{ getUsername() }}</a>
+
           <div class="text-900 mx-1 sm:mx-2">|</div>
-          <a pRipple routerLink="/register" class="text-900 font-bold inline-flex align-items-center cursor-pointer px-3 hover:text-orange-500">
+          <a pRipple *ngIf="!(isLoggedIn)" routerLink="/register" class="text-900 font-bold inline-flex align-items-center cursor-pointer px-3 hover:text-orange-500">
               <i class="pi pi-user mr-2 sm:mr-3 text-sm"></i>
               <span>Criar Conta</span>
           </a>
+          <a  pRipple *ngIf="(isLoggedIn)" (click)="logout()" class="text-900 font-bold inline-flex align-items-center cursor-pointer px-3 hover:text-orange-500">Sair</a>
+
             </div>
           </li>
           <li class="px-5">

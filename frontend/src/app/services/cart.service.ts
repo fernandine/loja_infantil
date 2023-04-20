@@ -6,20 +6,19 @@ import { CartItem } from '../common/cart-item';
   providedIn: 'root'
 })
 export class CartService {
-
   cartItems: CartItem[] = [];
-  totalPrice: Subject<number> = new BehaviorSubject<number>(0);
-  totalQuantity: Subject<number> = new BehaviorSubject<number>(0);
+  totalPrice: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  totalQuantity: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  discountValue: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  cartItemsChanged: Subject<void> = new Subject<void>(); // nova propriedade
 
   storage: Storage = sessionStorage;
 
   constructor() {
     let data = JSON.parse(this.storage.getItem('cartItems')!);
-
     if (data != null) {
       this.cartItems = data;
-
-      this.computeCartTotals();
+      this.computeCartTotals(0);
     }
   }
 
@@ -30,8 +29,6 @@ export class CartService {
     if (this.cartItems.length > 0) {
 
       existingCartItem = this.cartItems.find(tempCartItem => tempCartItem.id === theCartItem.id)
-
-
       alreadyExistsInCart = (existingCartItem != undefined);
     }
 
@@ -40,10 +37,11 @@ export class CartService {
     } else {
       this.cartItems.push(theCartItem)
     }
-    this.computeCartTotals();
+    this.computeCartTotals(0);
+    this.cartItemsChanged.next(); // notifica o observador de mudanças nos itens do carrinho
   }
 
-  computeCartTotals() {
+  computeCartTotals(discountValue: number) {
     let totalPriceValue: number = 0;
     let totalQuantityValue: number = 0;
 
@@ -52,9 +50,10 @@ export class CartService {
       totalQuantityValue += currentCartItem.quantity;
     }
 
+    totalPriceValue -= discountValue;
     this.totalPrice.next(totalPriceValue);
     this.totalQuantity.next(totalQuantityValue);
-
+    this.discountValue.next(discountValue);
     this.persistCartItems();
   }
 
@@ -69,24 +68,14 @@ export class CartService {
     }
   }
 
-  decrementQuantity(theCartItem: CartItem) {
-
-    theCartItem.quantity--;
-
-    if (theCartItem.quantity === 0) {
-      this.remove(theCartItem);
-    }
-    else {
-      this.computeCartTotals();
-    }
-  }
 
   remove(cartItem: CartItem) {
     const itemIndex = this.cartItems.findIndex(tempCartItem => tempCartItem.id === cartItem.id);
 
     if (itemIndex > -1) {
       this.cartItems.splice(itemIndex, 1);
-      this.computeCartTotals();
+      this.computeCartTotals(0);
+      this.cartItemsChanged.next(); // notifica o observador de mudanças nos itens do carrinho
     }
   }
 }

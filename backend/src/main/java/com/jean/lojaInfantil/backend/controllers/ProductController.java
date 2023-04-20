@@ -42,7 +42,7 @@ public class ProductController {
     }
 
     // URL = /products/search/?
-    @GetMapping(value = "/search/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<ProductDto> searchById(@PathVariable Long id) {
         return ResponseEntity.ok().body(service.navigateByUrl(id));
     }

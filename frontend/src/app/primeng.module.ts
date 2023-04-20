@@ -77,12 +77,14 @@ import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ImageModule } from 'primeng/image';
+import { SplitterModule } from 'primeng/splitter';
 
 @NgModule({
   imports: [CommonModule],
   exports: [
     BrowserAnimationsModule,
+    ImageModule,
     HttpClientModule,
     FormsModule,
     TreeSelectModule,
@@ -90,6 +92,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CalendarModule,
     ChipsModule,
     InputTextModule,
+    SplitterModule,
     DividerModule,
     ListboxModule,
     MultiSelectModule,

@@ -2,7 +2,7 @@ package com.jean.lojaInfantil.backend.controllers;
 
 import com.jean.lojaInfantil.backend.dtos.AddressDto;
 import com.jean.lojaInfantil.backend.services.AddressService;
-import com.jean.lojaInfantil.backend.services.ViaCepService;
+import com.jean.lojaInfantil.backend.services.apis.ViaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

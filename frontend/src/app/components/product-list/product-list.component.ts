@@ -55,10 +55,10 @@ export class ProductListComponent {
       );
     });
   }
-
+/* RETIRADO O BOTÃO COMPRAR DA LISTA DE PRODUTOS
   addToCart(theProduct: Product) {
     const theCartItem = new CartItem(theProduct);
     this.cartService.addToCart(theCartItem);
-  }
+  }*/
 
 }

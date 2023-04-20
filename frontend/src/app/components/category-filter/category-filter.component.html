@@ -20,7 +20,7 @@
       <div class="flex w-full justify-content-between" *ngFor="let brand of brands">
         <div class="field-checkbox">
           <input type="checkbox" [id]="'brandFilter' + brand.value" [(ngModel)]="brand.selected" #myCheckbox (change)="applyFilters()">
-          <label [for]="'brandFilter' + brand.value">{{ brand.value }}</label>
+          <label [for]="'brandFilter' + brand.value">{{ brand.value | statusBrand }}</label>
         </div><!--
         <p-badge value="{{getBadgeValue(brand)}}" styleClass="mr-2 bg-gray-200 text-gray-900 p-0 border-circle"></p-badge>
         --></div>
@@ -41,7 +41,7 @@
       <div class="flex w-full justify-content-between" *ngFor="let color of colors">
         <div class="field-checkbox">
           <input type="checkbox" [id]="'colorFilter' + color.key" [(ngModel)]="color.selected" (change)="applyFilters()" />
-          <label [for]="'colorFilter' + color.value">{{ color.value }}</label>
+          <label [for]="'colorFilter' + color.value">{{ color.value | statusColor }}</label>
         </div>
 <!--
         <p-badge value="{{getBadgeValue(brand)}}" styleClass="mr-2 bg-gray-200 text-gray-900 p-0 border-circle"></p-badge>
@@ -63,7 +63,7 @@
       <div class="flex w-full justify-content-between" *ngFor="let size of sizes">
         <div class="field-checkbox">
           <input type="checkbox" [id]="'sizeFilter' + size.key" [(ngModel)]="size.selected" (change)="applyFilters()" />
-          <label [for]="'sizeFilter' + size.value">{{ size.value }}</label>
+          <label [for]="'sizeFilter' + size.value">{{ size.value | statusSize}}</label>
         </div>
 <!--
         <p-badge value="{{getBadgeValue(brand)}}" styleClass="mr-2 bg-gray-200 text-gray-900 p-0 border-circle"></p-badge>

@@ -35,12 +35,7 @@
 
                   <!--INPUT GENDER-->
                   <label for="gender" class="block text-900 text-xl mb-2">Gênero</label>
-                <select formControlName="gender" class="w-full border-blue-200 border-round h-3rem md:w-20rem mb-5">
-                <option value="">Selecione</option>
-                <option value="MASCULINO">Masculino</option>
-                 <option value="FEMININO">Feminino</option>
-                <option value="PREFIRO_NAO_DIZER">Prefiro não dizer</option>
-                </select>
+                <p-dropdown formControlName="selectedGender" [options]="genders" optionLabel="label" optionValue="value" placeholder="Selecione" styleClass="w-8"></p-dropdown>
 
                   <!--INPUT CPF-->
                   <label for="cpf" class="block text-900 text-xl mb-2 mt-5">CPF</label>

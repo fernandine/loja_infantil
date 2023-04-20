@@ -35,7 +35,7 @@ const routes: Routes = [
     { path: 'favorites', component: FavoritesComponent },
   ]},
 
-  { path: 'checkout', component: CheckoutComponent, children: [
+  { path: 'checkout', component: CartDetailComponent, children: [
     { path: 'cart-details', component: CartDetailComponent },
     { path: 'profile-form', component: ProfileFormComponent },
     { path: 'delivery', component: DeliveryComponent },
@@ -64,6 +64,8 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+   declarations: [
+   ]
 })
 export class AppRoutingModule { }

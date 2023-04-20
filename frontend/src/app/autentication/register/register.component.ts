@@ -13,6 +13,13 @@ export class RegisterComponent {
 
   userForm!: FormGroup;
 
+  selectedGender!: Gender;
+  genders = [
+    { label: Gender.MASCULINO, value: Gender.MASCULINO },
+    { label: Gender.FEMININO, value: Gender.FEMININO },
+    { label: Gender.PREFIRO_NAO_DIZER, value: Gender.PREFIRO_NAO_DIZER },
+  ];
+
   constructor(private formBuilder: FormBuilder,
               private userService: UserService,
               private router: Router) {}
@@ -23,7 +30,7 @@ export class RegisterComponent {
                   lastName: ['', Validators.required],
                   email: ['', [Validators.required, Validators.email]],
                   password: ['', [Validators.required, Validators.minLength(8)]],
-                  gender: [''],
+                  selectedGender: [null, Validators.required],
                   cpf: ['', [Validators.required]],
                   birthDay: ['', [Validators.required]],
                   roles: [[]]

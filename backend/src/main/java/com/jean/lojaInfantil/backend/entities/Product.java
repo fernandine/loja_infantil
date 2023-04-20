@@ -1,5 +1,6 @@
 package com.jean.lojaInfantil.backend.entities;
 
+import com.jean.lojaInfantil.backend.dtos.DiscountDto;
 import com.jean.lojaInfantil.backend.entities.enums.Brands;
 import com.jean.lojaInfantil.backend.entities.enums.Colors;
 import com.jean.lojaInfantil.backend.entities.enums.Sizes;
@@ -66,4 +67,7 @@ public class Product extends RepresentationModel<Product> implements Serializabl
 
     @OneToMany(mappedBy = "product")
     private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product")
+    private List<Discount> discounts = new ArrayList<>();
 }

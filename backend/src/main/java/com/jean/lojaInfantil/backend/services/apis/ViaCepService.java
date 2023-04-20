@@ -1,4 +1,4 @@
-package com.jean.lojaInfantil.backend.services;
+package com.jean.lojaInfantil.backend.services.apis;
 
 
 import com.jean.lojaInfantil.backend.dtos.AddressDto;
