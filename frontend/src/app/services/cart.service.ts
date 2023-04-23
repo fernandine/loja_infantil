@@ -1,81 +1,50 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { CartItem } from '../common/cart-item';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  cartItems: CartItem[] = [];
-  totalPrice: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  totalQuantity: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  discountValue: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  cartItemsChanged: Subject<void> = new Subject<void>(); // nova propriedade
 
-  storage: Storage = sessionStorage;
+  private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
+  public cartItems$ = this.cartItemsSubject.asObservable();
+  public totalQuantity = new BehaviorSubject<number>(0);
 
-  constructor() {
-    let data = JSON.parse(this.storage.getItem('cartItems')!);
-    if (data != null) {
-      this.cartItems = data;
-      this.computeCartTotals(0);
-    }
-  }
+  constructor() {}
 
-  addToCart(theCartItem: CartItem) {
-    let alreadyExistsInCart: boolean = false;
-    let existingCartItem: CartItem | undefined;
+  public addCartItem(cartItem: CartItem) {
+    const currentCartItems = this.cartItemsSubject.getValue();
+    const existingCartItemIndex = currentCartItems.findIndex(item => item.id === cartItem.id && item.color === cartItem.color && item.size === cartItem.size);
 
-    if (this.cartItems.length > 0) {
-
-      existingCartItem = this.cartItems.find(tempCartItem => tempCartItem.id === theCartItem.id)
-      alreadyExistsInCart = (existingCartItem != undefined);
-    }
-
-    if (alreadyExistsInCart) {
-      existingCartItem!.quantity++;
+    if (existingCartItemIndex > -1) {
+      currentCartItems[existingCartItemIndex].quantity += cartItem.quantity;
     } else {
-      this.cartItems.push(theCartItem)
-    }
-    this.computeCartTotals(0);
-    this.cartItemsChanged.next(); // notifica o observador de mudanças nos itens do carrinho
-  }
-
-  computeCartTotals(discountValue: number) {
-    let totalPriceValue: number = 0;
-    let totalQuantityValue: number = 0;
-
-    for (let currentCartItem of this.cartItems) {
-      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
-      totalQuantityValue += currentCartItem.quantity;
+      currentCartItems.push(cartItem);
     }
 
-    totalPriceValue -= discountValue;
-    this.totalPrice.next(totalPriceValue);
-    this.totalQuantity.next(totalQuantityValue);
-    this.discountValue.next(discountValue);
-    this.persistCartItems();
+    this.cartItemsSubject.next(currentCartItems);
+    this.totalQuantity.next(currentCartItems.reduce((acc, item) => acc + item.quantity, 0));
   }
 
-  persistCartItems() {
-    this.storage.setItem('cartItems', JSON.stringify(this.cartItems));
-  }
+  public removeCartItem(cartItem: CartItem) {
+    const currentCartItems = this.cartItemsSubject.getValue();
+    const cartItemIndex = currentCartItems.findIndex(item => item.id === cartItem.id && item.color === cartItem.color && item.size === cartItem.size);
 
-  logCartData(totalPriceValue: number, totalQuantityValue: number) {
-
-    for (let cartItem of this.cartItems) {
-      const subTotalPrice = cartItem.unitPrice * cartItem.quantity;
+    if (cartItemIndex > -1) {
+      currentCartItems.splice(cartItemIndex, 1);
+      this.cartItemsSubject.next(currentCartItems);
+      this.totalQuantity.next(currentCartItems.reduce((acc, item) => acc + item.quantity, 0));
     }
   }
 
+  public clearCart() {
+    this.cartItemsSubject.next([]);
+    this.totalQuantity.next(0);
+  }
 
-  remove(cartItem: CartItem) {
-    const itemIndex = this.cartItems.findIndex(tempCartItem => tempCartItem.id === cartItem.id);
-
-    if (itemIndex > -1) {
-      this.cartItems.splice(itemIndex, 1);
-      this.computeCartTotals(0);
-      this.cartItemsChanged.next(); // notifica o observador de mudanças nos itens do carrinho
-    }
+  // Adicione essa função
+  public addToCart(cartItem: CartItem) {
+    this.addCartItem(cartItem);
   }
 }

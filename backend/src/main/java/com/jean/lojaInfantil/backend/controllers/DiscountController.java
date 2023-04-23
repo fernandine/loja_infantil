@@ -28,11 +28,12 @@ public class DiscountController {
     }
 
     @GetMapping("/apply")
-    public ResponseEntity<List<DiscountDto>> applyDiscount(
+    public ResponseEntity<DiscountDto> applyDiscount(
             @RequestParam(name = "code") String code,
-            @RequestParam(name = "totalPrice") BigDecimal totalPrice) {
-        List<DiscountDto> list = discountService.applyDiscount(code, totalPrice);
-        return ResponseEntity.ok().body(list);
+            @RequestParam(name = "totalPrice") BigDecimal totalPrice,
+            @RequestParam(name = "discountValue", required = false) BigDecimal discountValue){
+        DiscountDto dto = discountService.applyDiscount(code, totalPrice, discountValue);
+        return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping("/expiring")

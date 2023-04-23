@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import Decimal from 'decimal.js';
 import { SelectItem } from 'primeng/api';
 import { map, Observable } from 'rxjs';
 
@@ -24,7 +25,6 @@ export class ProductListComponent {
   currentCategoryName: string = '';
 
   constructor(
-    private cartService: CartService,
     private productService: ProductService,
     private categoryService: CategoryService,
     private route: ActivatedRoute
@@ -50,7 +50,12 @@ export class ProductListComponent {
       this.currentCategoryName = categoryName;
       this.productService.getProductByCategoryName(categoryName).subscribe(
         data => {
-          this.products = data;
+          this.products = data.map(product => {
+            return {
+              ...product,
+              unitPrice: new Decimal(product.unitPrice)
+            };
+          });
         }
       );
     });

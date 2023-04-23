@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartItem } from 'src/app/common/cart-item';
 import { Sizes } from 'src/app/common/enums/Sizes.enum';
 import { Product } from 'src/app/common/Product';
@@ -7,6 +7,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 import { ReviewService } from '../../services/review.service';
 import { Review } from '../../common/review';
+import Decimal from 'decimal.js';
 
 @Component({
   selector: 'app-product-detail',
@@ -42,7 +43,8 @@ export class ProductDetailComponent {
     private cartService: CartService,
     private activatedRoute: ActivatedRoute,
     private productService: ProductService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -57,14 +59,18 @@ export class ProductDetailComponent {
     const theProductId: number = +this.activatedRoute.snapshot.paramMap.get('id')!;
     this.productService.getProductById(theProductId).subscribe(
       (data: any) => {
-        this.product = data
-      })
+        this.product = {
+          ...data,
+          unitPrice: new Decimal(data.unitPrice)
+        };
+      });
   }
 
   addToCart() {
     const theCartItem = new CartItem(this.product);
     this.cartService.addToCart(theCartItem);
     this.quantity = 1;
+    this.router.navigate(["/cart-details"])
   }
 
   toggleFavorite(): void {
@@ -84,6 +90,7 @@ export class ProductDetailComponent {
       }
     );
    }
+
    getStars(rating: number): boolean[] {
     const stars = Array(5).fill(false);
     for (let i = 0; i < Math.round(rating); i++) {
@@ -91,6 +98,5 @@ export class ProductDetailComponent {
     }
     return stars;
   }
-
-  }
+}
 

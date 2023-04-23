@@ -22,7 +22,7 @@
       </div>
       <div class="mt-2"><span class="text-500" >sku:{{product.sku}}</span></div>
       <div class="flex align-items-center justify-content-between mt-5 mb-3">
-        <span class="text-900 font-medium text-4xl block text-red-500">{{ product.unitPrice | currency }}</span>
+        <span class="text-900 font-medium text-4xl block text-red-500">{{ product.unitPrice | currencyFormat }}</span>
       </div>
       <div class="font-bold text-500 mb-3">Cor: {{product.productColor}}</div>
 
@@ -37,7 +37,7 @@
                 </div>
 
         <div class="flex align-items-center flex-1 mt-3 sm:mt-0 ml-0 sm:ml-5">
-          <button pButton pRipple (click)="addToCart()" routerLink="/account/cart-details" icon="pi pi-shopping-cart" label="Comprar" class="w-20rem"></button>
+          <button pButton pRipple (click)="addToCart()" icon="pi pi-shopping-cart" label="Comprar" class="w-20rem"></button>
         </div>
 
       <div class="font-bold text-500 my-5">

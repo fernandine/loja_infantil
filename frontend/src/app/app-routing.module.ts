@@ -21,6 +21,7 @@ import { ProductDetailComponent } from './components/product-detail/product-deta
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HomeComponent } from './components/home/home.component';
 import { CategoryFilterComponent } from './components/category-filter/category-filter.component';
+import { DiscountComponent } from './components/discount/discount.component';
 
 const routes: Routes = [
 {
@@ -36,7 +37,6 @@ const routes: Routes = [
   ]},
 
   { path: 'checkout', component: CartDetailComponent, children: [
-    { path: 'cart-details', component: CartDetailComponent },
     { path: 'profile-form', component: ProfileFormComponent },
     { path: 'delivery', component: DeliveryComponent },
     { path: 'payment', component: PaymentComponent },
@@ -46,9 +46,10 @@ const routes: Routes = [
     { path: 'ad?categories', component: CategoriesComponent },
     { path: 'product-edit', component: ProductEditComponent },
   ]},
-
+  { path: 'cart-details', component: CartDetailComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'discounts', component: DiscountComponent },
   { path: 'auth-login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'products/:id', component: ProductDetailComponent },

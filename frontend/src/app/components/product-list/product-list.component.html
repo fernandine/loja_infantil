@@ -13,9 +13,8 @@
             <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false" styleClass="mr-1"></p-rating>
             <!--span class="text-500">{{ reviews }}</span-->
           </div>
-            <div class="mb-4">
-              <span class="line-through text-600">{{ (product.unitPrice ? product.unitPrice + 20 : product.unitPrice) | currency: "BRL" }}</span>
-              <span class="font-bold text-900 ml-2">{{ product.unitPrice | currency: "BRL" }}</span>
+          <div class="mb-4">
+            <span class="font-bold text-900 ml-2">{{ product.unitPrice | currencyFormat }}</span>
           </div>
           <!--
           <p-button

@@ -1,6 +1,6 @@
 <div class="grid mx-4 flex flex-grow-1">
   <div class="col-6">
-    <ul class="  list-none" *ngFor="let cart of cartItems">
+    <ul class="  list-none" *ngFor="let cart of (cartItems$ | async)">
       <li class="flex flex-column md:flex-row py-3  md:align-items-center">
         <p-image [src]="cart.imageCart" alt="Imagem do produto {{ cart.name }}" width="100px" class="flex-shrink-0"/>
         <div class="flex-auto py-5 md:pl-5">
@@ -25,13 +25,13 @@
                   <div class="sm:w-6 flex align-items-start justify-content-between mt-2 sm:mt-0" >
                       <div>
                         <td>
-                          <p-dropdown [(ngModel)]="cart.quantity" [options]="quantity"></p-dropdown>
+                          <p-dropdown [(ngModel)]="cart.quantity" [options]="quantityOptions"></p-dropdown>
                         </td>
                       </div>
                       <div class="flex flex-column sm:align-items-end px-4">
-                        <span class="text-900 text-2xl font-medium mb-2 sm:mb-3">{{ cart.unitPrice | currency: "BRL"}}</span>
+                        <span class="text-900 text-2xl font-medium mb-2 sm:mb-3">{{ cart.price | currencyFormat}}</span>
 
-                        <a class="cursor-pointer text-pink-500 font-medium hover:text-pink-600 transition-colors transition-duration-300" tabindex="0" (click)="remove(cart)"  >Remove</a>
+                        <a class="cursor-pointer text-pink-500 font-medium hover:text-pink-600 transition-colors transition-duration-300" tabindex="0"   >Remove</a>
                         </div>
                   </div>
               </div>
@@ -43,38 +43,38 @@
   <div class="col-6 flex-auto px-8 py-4">
 
     <ul class="list-none py-0 pr-0 pl-0 md:pl-5 mt-6 mx-0 mb-0">
-    <li class="flex justify-content-around mb-4">
+      <li class="flex justify-content-around mb-4">
         <span class="text-xl text-900">Subtotal</span>
-        <span class="text-xl text-900">{{ getSubtotal() | currency: "BRL" }}</span>
-    </li>
-    <li class="flex justify-content-around mb-4">
+        <span class="text-xl text-900">{{ getSubtotal() | currencyFormat }}</span>
+      </li>
+      <li class="flex justify-content-around mb-4">
         <span class="text-xl text-900">Frete</span>
         <strong>Grátis</strong>
-    </li>
-
-    <li class="flex justify-content-around mb-4">
-      <span class="text-xl text-900">Desconto</span>
-      <strong>{{discountValue}}</strong>
-  </li>
-  <div class="flex flex-column ml-3">
-  <li class="flex items-center gap-2 border-top-1 surface-border mb-4 pt-4">
-    <span class="text-900 font-medium text-sm flex-1">Calcule o Frete:</span>
-    <input pInputText class="flex justify-content-around"/>
-    <p-button label="Calcular" class="flex-1"></p-button>
-  </li>
-  <li class="flex items-center gap-2 mb-4 pt-4">
-    <span class="text-900 font-medium text-sm flex-1">Cupom:</span>
-    <input pInputText class="flex justify-content-around"/>
-    <p-button label="Calcular" class="flex-1"></p-button>
-  </li>
-</div>
-
-    <li class="flex justify-content-around border-top-1 surface-border mb-4 pt-4">
+      </li>
+      <li class="flex justify-content-around mb-4">
+        <span class="text-xl text-900">Desconto</span>
+        <strong>{{ getDiscountPercentage(discountValue)}}</strong>
+      </li>
+      <div class="flex flex-column ml-3">
+        <li class="flex items-center gap-2 border-top-1 surface-border mb-4 pt-4">
+          <span class="text-900 font-medium text-sm flex-1">Calcule o Frete:</span>
+          <input pInputText class="flex justify-content-around" />
+          <p-button label="Calcular" class="flex-1"></p-button>
+        </li>
+        <li class="flex items-center gap-2 mb-4 pt-4">
+          <span class="text-900 font-medium text-sm flex-1">Cupom:</span>
+          <input pInputText [(ngModel)]="code" class="flex justify-content-around" />
+          <p-button label="Calcular" class="flex-1" (click)="onCalculateButtonClick()"></p-button>
+        </li>
+      </div>
+      <li class="flex justify-content-around border-top-1 surface-border mb-4 pt-4">
         <span class="text-xl text-900 font-bold text-3xl">Total</span>
-        <span class="text-xl text-900 font-bold text-3xl text-red-600">{{ getTotal() | currency: "BRL"}}</span>
-    </li>
-      <button pButton label="Finalizar Compra" routerLink="/checkout/profile-form" class="w-full p-3"></button>
-</ul>
-</div>
-</div>
+        <span class="text-xl text-900 font-bold text-3xl text-red-600">{{ getTotal().toFixed(2) | currencyFormat }}</span>
+      </li>
+      <button pButton label="Finalizar Compra" (click)="goToCheckout()" class="w-full p-3"></button>
+    </ul>
 
+
+
+</div>
+</div>

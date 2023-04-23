@@ -29,13 +29,7 @@ public class DiscountDto implements Serializable {
         code = entity.getCode();
         expirationDate = entity.getExpirationDate();
         productId = entity.getProduct().getId();
-        discountedPrice = BigDecimal.ZERO; // inicialmente, o preço com desconto é zero
+        discountedPrice = entity.getDiscountedPrice();
     }
-
-    public DiscountDto(Discount entity, BigDecimal totalPrice) {
-        this(entity);
-        discountedPrice = totalPrice.subtract(totalPrice.multiply(entity.getDiscountValue())); // calcula o preço com desconto
-    }
-
-    }
+}
 

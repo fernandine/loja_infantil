@@ -1,71 +1,92 @@
 import { Component } from '@angular/core';
-import { SelectItem } from 'primeng/api';
+import { Router } from '@angular/router';
+import Decimal from 'decimal.js';
+import { Observable } from 'rxjs';
 import { CartItem } from 'src/app/common/cart-item';
 import { CartService } from 'src/app/services/cart.service';
+import { DiscountService } from 'src/app/services/discount.service';
 
 @Component({
   selector: 'app-cart-detail',
   templateUrl: './cart-detail.component.html',
-  styleUrls: ['./cart-detail.component.scss']
+  styleUrls: ['./cart-detail.component.scss'],
 })
 export class CartDetailComponent {
+  public cartItems$!: Observable<CartItem[]>;
+  public quantityOptions = [1, 2, 3, 4, 5];
+  public code: string = '';
+  public discount!: number;
+  public discountValue: Decimal = new Decimal(0);
 
-  cartItems: CartItem[] = [];
-  totalPrice: number = 0;
-  totalQuantity: number = 0;
-  discountValue: number = 0;
+  constructor(
+    private cartService: CartService,
+    private router: Router,
+    private discountService: DiscountService
+  ) {}
 
-  quantity: SelectItem[] = [
-    {label: '1', value: 1},
-    {label: '2', value: 2},
-    {label: '3', value: 3},
-    {label: '4', value: 4},
-    {label: '5', value: 5},
-    {label: '6', value: 6},
-    {label: '7', value: 7}
-  ];
+  ngOnInit() {
+    this.cartItems$ = this.cartService.cartItems$;
+  }
 
+  checkDiscountCode(code: string): void {
+    const subtotal = this.getSubtotal();
 
-  constructor(private cartService: CartService) {
-    this.cartService.cartItemsChanged.subscribe(
-      () => {
-        this.listCartDetails();
+    this.discountService.getDiscountByCode(code, this.getTotal()).subscribe(
+      (discount) => {
+        if (discount) {
+          this.discountValue = new Decimal(discount.discountValue);
+          const discountAmount = subtotal.times(this.discountValue);
+
+          alert(
+            `Cupom aplicável! Desconto de ${this.getDiscountPercentage(this.discountValue)} será aplicado.`
+          );
+        } else {
+          this.discountValue = new Decimal(0);
+          alert('Cupom inválido ou expirado.');
+        }
+      },
+      (error) => {
+        console.log(error);
+        alert('Ocorreu um erro ao verificar o cupom.');
       }
     );
-   }
-
-  ngOnInit(): void {
-    this.listCartDetails();
   }
 
-  listCartDetails() {
-    this.cartItems = this.cartService.cartItems;
-    this.cartService.totalPrice.subscribe(
-      data => this.totalPrice = data
-    );
-    this.cartService.totalQuantity.subscribe(
-      data => this.totalQuantity = data
-    );
-    this.cartService.discountValue.subscribe(
-      data => this.discountValue = data // armazena o valor do desconto na propriedade local
-    );
-    this.cartService.computeCartTotals(this.discountValue);
-  }
+getSubtotal(): Decimal {
+  let subtotal = new Decimal(0);
 
-  incrementQuantity(theCartItem: CartItem) {
-    this.cartService.addToCart(theCartItem);
-  }
+  this.cartItems$.subscribe((cartItems) => {
+    cartItems.forEach((item) => {
+      subtotal = subtotal.plus(new Decimal(item.price).times(item.quantity));
+    });
+  });
 
-  remove(theCartItem: CartItem) {
-    this.cartService.remove(theCartItem);
-  }
-
-  getSubtotal(): number {
-    return this.cartItems.map(t => t.unitPrice * t.quantity).reduce((acc, value) => acc + value, 0);
-  }
-
-  getTotal(): number {
-    return this.cartItems.map(t => t.unitPrice * t.quantity - this.discountValue).reduce((acc, value) => acc + value, 0);
-  }
+  return subtotal || new Decimal(0);
 }
 
+
+  public getTotal(): Decimal {
+    const subtotal = this.getSubtotal();
+    const discountAmount = subtotal.times(this.discountValue);
+
+    return subtotal.minus(discountAmount);
+  }
+
+  public goToCheckout() {
+    this.router.navigate(['/checkout/profile-form']);
+  }
+
+  getDiscountPercentage(discountValue: Decimal): string {
+    console.log('DiscountValue:', discountValue);
+
+    return `${new Decimal(discountValue).times(100)}%`;
+  }
+
+  onCalculateButtonClick() {
+    this.checkDiscountCode(this.code);
+  }
+  /*
+  public removeCartItem(cartItem: CartItem) {
+    this.cartService.removeCartItem(cartItem).pipe(take(1)).subscribe();
+  }*/
+}

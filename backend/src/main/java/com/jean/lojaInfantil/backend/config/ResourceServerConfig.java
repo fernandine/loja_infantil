@@ -44,7 +44,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 			"/adresses/**",
 			"/orders/**",
 			"/checkout/**",
-			"/reviews/**"
+			"/reviews/**",
+			"/discounts/**"
 	};
 	
 	//private static final String[] OPERATOR = { };

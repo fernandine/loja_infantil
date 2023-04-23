@@ -37,7 +37,7 @@ public class DiscountService {
         return discounts.stream().map(DiscountDto::new).collect(Collectors.toList());
     }
 
-    public List<DiscountDto> applyDiscount(String code, BigDecimal totalPrice) {
+    public DiscountDto applyDiscount(String code, BigDecimal totalPrice, BigDecimal discountValue) {
         Optional<Discount> optionalDiscount = discountRepository.findByCode(code);
 
         if (optionalDiscount.isPresent()) {
@@ -50,18 +50,16 @@ public class DiscountService {
                 BigDecimal discountedPrice = totalPrice.subtract(discountAmount);
 
                 // Cria e retorna um DTO com as informações do desconto aplicado
-                DiscountDto discountDto = new DiscountDto(discount);
-                discountDto.setDiscountValue(discountPercentage);
-                discountDto.setDiscountedPrice(discountedPrice);
-                return Collections.singletonList(discountDto);
+                DiscountDto dto = new DiscountDto(discount);
+                dto.setDiscountValue(discountPercentage);
+                dto.setDiscountedPrice(discountedPrice);
+                return dto;
             }
         }
 
-        // Se o cupom não for válido ou não existir, retorna uma lista vazia
-        return Collections.emptyList();
+        // Se o cupom não for válido ou não existir, retorna nulo
+        return null;
     }
-
-
 
     @Transactional
     public DiscountDto insert(DiscountDto dto) {
@@ -76,5 +74,4 @@ public class DiscountService {
         entity = discountRepository.save(entity);
         return new DiscountDto(entity);
     }
-
 }

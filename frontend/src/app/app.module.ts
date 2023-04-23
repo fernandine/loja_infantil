@@ -27,6 +27,7 @@ import { ProfileFormComponent } from './checkout/profile-form/profile-form.compo
 import { AboutComponent } from './components/about/about.component';
 import { CategoryFilterComponent } from './components/category-filter/category-filter.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { DiscountComponent } from './components/discount/discount.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
@@ -42,6 +43,7 @@ import { StatusSizePipe } from './pipes/statusSize.pipe';
 import { PrimeNgModule } from './primeng.module';
 import { CartService } from './services/cart.service';
 import { NotificationService } from './services/notification.service';
+import { CurrencyFormatPipe } from './pipes/currencyFormat.pipe';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,7 @@ import { NotificationService } from './services/notification.service';
     AddressFormComponent,
     AddressListComponent,
     FavoritesComponent,
+    DiscountComponent,
     OrdersComponent,
     ProfilesComponent,
     LoginComponent,
@@ -77,6 +80,7 @@ import { NotificationService } from './services/notification.service';
     StatusBrandPipe,
     StatusColorPipe,
     StatusRolePipe,
+    CurrencyFormatPipe
   ],
   imports: [
     BrowserModule,
