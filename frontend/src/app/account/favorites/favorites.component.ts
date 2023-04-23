@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Product } from 'src/app/common/Product';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-favorites',
@@ -6,5 +8,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./favorites.component.scss']
 })
 export class FavoritesComponent {
+  likedProducts: Product[] = [];
 
+  constructor(private productService: ProductService) { }
+
+  ngOnInit(): void {
+    this.getProductList();
+  }
+
+  getProductList(): void {
+    this.productService.findByFavorite(true).subscribe(
+      likedProducts => this.likedProducts = likedProducts
+    );
+  }
+
+  onFavoriteProductsChanged(product: Product): void {
+    this.productService.toggleFavorite(product).subscribe(
+      () => this.getProductList()
+    );
+  }
 }

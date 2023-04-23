@@ -8,7 +8,6 @@ import { MessageService } from 'primeng/api';
 import { AccountComponent } from './account/account/account.component';
 import { AddressFormComponent } from './account/address-form/address-form.component';
 import { AddressListComponent } from './account/address-list/address-list.component';
-import { FavoritesComponent } from './account/favorites/favorites.component';
 import { OrdersComponent } from './account/orders/orders.component';
 import { ProfilesComponent } from './account/profiles/profiles.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -44,15 +43,17 @@ import { PrimeNgModule } from './primeng.module';
 import { CartService } from './services/cart.service';
 import { NotificationService } from './services/notification.service';
 import { CurrencyFormatPipe } from './pipes/currencyFormat.pipe';
+import { FavoritesComponent } from './account/favorites/favorites.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
+    FavoritesComponent,
     HomeComponent,
     AccountComponent,
     AddressFormComponent,
     AddressListComponent,
-    FavoritesComponent,
     DiscountComponent,
     OrdersComponent,
     ProfilesComponent,
