@@ -5,13 +5,13 @@ import com.jean.lojaInfantil.backend.entities.Discount;
 import com.jean.lojaInfantil.backend.entities.Product;
 import com.jean.lojaInfantil.backend.repositories.DiscountRepository;
 import com.jean.lojaInfantil.backend.repositories.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,16 +25,23 @@ public class DiscountService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Transactional(readOnly = true)
     public List<DiscountDto> findAll() {
         List<Discount> list = discountRepository.findAll();
-        return list.stream().map(x -> new DiscountDto(x)).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, DiscountDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<DiscountDto> findExpiringDiscounts(LocalDate date) {
-        List<Discount> discounts = discountRepository.getExpiringDiscounts(date);
-        return discounts.stream().map(DiscountDto::new).collect(Collectors.toList());
+        List<Discount> list = discountRepository.getExpiringDiscounts(date);
+        return list.stream()
+                .map(order -> modelMapper.map(order, DiscountDto.class))
+                .collect(Collectors.toList());
     }
 
     public DiscountDto applyDiscount(String code, BigDecimal totalPrice, BigDecimal discountValue) {
@@ -72,6 +79,6 @@ public class DiscountService {
         entity.setProduct(product);
 
         entity = discountRepository.save(entity);
-        return new DiscountDto(entity);
+        return modelMapper.map(entity, DiscountDto.class);
     }
 }

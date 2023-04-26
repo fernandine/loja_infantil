@@ -23,19 +23,4 @@ public class ReviewDto implements Serializable {
     private UserDto user;
     private Long productId;
 
-    public ReviewDto(Review entity, User user) {
-        id = entity.getId();
-        comment = entity.getComment();
-        rating = entity.getRating();
-        this.user = new UserDto(user);
-        productId = entity.getProduct().getId();
-    }
-
-    public ReviewDto(Review review) {
-        this.id = review.getId();
-        this.comment = review.getComment();
-        this.rating = review.getRating();
-        this.user = new UserDto(review.getUser());
-        this.productId = review.getProduct().getId();
-    }
 }

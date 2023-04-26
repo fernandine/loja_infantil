@@ -14,14 +14,14 @@ INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 2);
 -- -----------------------------------------------------
 -- Categorias
 -- -----------------------------------------------------
-INSERT INTO tb_category(name) VALUES ('bebes');
-INSERT INTO tb_category(name) VALUES ('meninas');
-INSERT INTO tb_category(name) VALUES ('meninos');
-INSERT INTO tb_category(name) VALUES ('roupas-de-banho');
-INSERT INTO tb_category(name) VALUES ('calcados');
-INSERT INTO tb_category(name) VALUES ('acessorios');
-INSERT INTO tb_category(name) VALUES ('roupas-de-dormir');
-INSERT INTO tb_category(name) VALUES ('roupas-de-inverno');
+INSERT INTO tb_category(name) VALUES ('Bebês');
+INSERT INTO tb_category(name) VALUES ('Meninas');
+INSERT INTO tb_category(name) VALUES ('Meninos');
+INSERT INTO tb_category(name) VALUES ('Roupas De Banho');
+INSERT INTO tb_category(name) VALUES ('Calçados');
+INSERT INTO tb_category(name) VALUES ('Acessórios');
+INSERT INTO tb_category(name) VALUES ('Roupas De Dormir');
+INSERT INTO tb_category(name) VALUES ('Roupas De Inverno');
 
 -- -----------------------------------------------------
 -- Bebês (0-12 meses)
@@ -213,14 +213,14 @@ INSERT INTO product (sku, name, description, image, favorite, units_in_stock, un
 -- Endereços
 -- -----------------------------------------------------
 INSERT INTO tb_address(cep, logradouro,complemento, bairro, localidade, uf, user_id) VALUES ('34001090','Rua Levy Firmino Alves', 'casa A', 'Parque Santo Antônio', 'Nova Lima', 'MG', 2);
-INSERT INTO tb_address(cep, logradouro,complemento, bairro, localidade, uf, user_id) VALUES ('34012-856','Rua Seis', 'casa B', 'Santa Rita', 'Nova Lima', 'MG', 1);
+INSERT INTO tb_address(cep, logradouro,complemento, bairro, localidade, uf, user_id) VALUES ('34012856','Rua Seis', 'casa B', 'Santa Rita', 'Nova Lima', 'MG', 1);
 
 -- -----------------------------------------------------
 -- Pedidos
 -- -----------------------------------------------------
-INSERT INTO tb_order (moment, status, client_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-07-25T13:00:00Z', 1, 1);
-INSERT INTO tb_order (moment, status, client_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-07-29T15:50:00Z', 3, 2);
-INSERT INTO tb_order (moment, status, client_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-08-03T14:20:00Z', 0, 1);
+INSERT INTO tb_order (moment, status, user_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-07-25T13:00:00Z', 1, 1);
+INSERT INTO tb_order (moment, status, user_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-07-29T15:50:00Z', 3, 2);
+INSERT INTO tb_order (moment, status, user_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-08-03T14:20:00Z', 0, 1);
 
 -- -----------------------------------------------------
 -- Itens de pedidos
@@ -240,7 +240,6 @@ INSERT INTO tb_payment (order_id, moment) VALUES (2, TIMESTAMP WITH TIME ZONE '2
 -- Countries
 -- -----------------------------------------------------
 INSERT INTO country(code, name) VALUES ('BR','Brazil');
-
 INSERT INTO country(code, name) VALUES ('CA','Canada');
 INSERT INTO country(code, name) VALUES ('DE','Germany');
 INSERT INTO country(code, name) VALUES ('IN','India');
@@ -251,7 +250,6 @@ INSERT INTO country(code, name) VALUES ('US','United States');
 -- States
 -- -----------------------------------------------------
 INSERT INTO state(name, country_id) VALUES ('Acre',1),('Alagoas',1),('Amapá',1),('Amazonas',1),('Bahia',1),('Ceará',1),('Distrito Federal',1),('Espírito Santo',1),('Goiás',1),('Maranhão',1),('Mato Grosso do Sul',1),('Mato Grosso',1),('Minas Gerais',1),('Paraná',1),('Paraíba',1),('Pará',1),('Pernambuco',1),('Piaui',1),('Rio de Janeiro',1),('Rio Grande do Norte',1),('Rio Grande do Sul',1),('Rondônia',1),('Roraima',1),('Santa Catarina',1),('Sergipe',1),('São Paulo',1),('Tocantins',1),('Alberta',2),('British Columbia',2),('Manitoba',2),('New Brunswick',2),('Newfoundland and Labrador',2);
-
 INSERT INTO state(name, country_id) VALUES ('Northwest Territories',2),('Nova Scotia',2),('Nunavut',2),('Ontario',2),('Prince Edward Island',2),('Quebec',2),('Saskatchewan',2),('Yukon',2),('Baden-Württemberg',3),('Bavaria',3),('Berlin',3),('Brandenburg',3),('Bremen',3),('Hamburg',3),('Hesse',3),('Lower Saxony',3),('Mecklenburg-Vorpommern',3),('North Rhine-Westphalia',3);
 INSERT INTO state(name, country_id) VALUES ('Rhineland-Palatinate',3),('Saarland',3),('Saxony',3),('Saxony-Anhalt',3),('Schleswig-Holstein',3),('Thuringia',3),('Andhra Pradesh',4),('Arunachal Pradesh',4),('Assam',4),('Bihar',4),('Chhattisgarh',4),('Goa',4),('Gujarat',4),('Haryana',4),('Himachal Pradesh',4),('Jammu & Kashmir',4),('Jharkhand',4),('Karnataka',4);
 INSERT INTO state(name, country_id) VALUES ('Kerala',4),('Madhya Pradesh',4),('Maharashtra',4),('Manipur',4),('Meghalaya',4),('Mizoram',4),('Nagaland',4),('Odisha',4),('Punjab',4),('Rajasthan',4),('Sikkim',4),('Tamil Nadu',4),('Telangana',4),('Tripura',4),('Uttar Pradesh',4),('Uttarakhand',4),('West Bengal',4),('Andaman and Nicobar Islands',4),('Chandigarh',4);
@@ -277,6 +275,7 @@ INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Que linda 
 -- -----------------------------------------------------
 -- Discounts
 -- -----------------------------------------------------
-INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO20', 0.2, '2023-06-01', 1);
-INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO30', 0.3, '2023-07-01', 2);
-INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO40', 0.4, '2023-08-01', 3);
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO20', 0.2, '2024-06-01', 1);
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO30', 0.3, '2024-07-01', 2);
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO40', 0.4, '2024-08-01', 3);
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('BABY10', 0.1, '2024-06-01', 1);

@@ -23,14 +23,4 @@ public class AddressDto implements Serializable {
     private String uf;
     private Long userId;
 
-    public AddressDto(Address entity) {
-        id = entity.getId();
-        cep = entity.getCep();
-        logradouro = entity.getLogradouro();
-        complemento = entity.getComplemento();
-        bairro = entity.getBairro();
-        localidade = entity.getLocalidade();
-        uf = entity.getUf();
-        userId = entity.getUser().getId();
-    }
 }

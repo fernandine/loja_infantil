@@ -7,6 +7,7 @@ import com.jean.lojaInfantil.backend.repositories.AddressRepository;
 import com.jean.lojaInfantil.backend.repositories.UserRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
 import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -27,25 +28,31 @@ public class AddressService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Transactional(readOnly = true)
     public List<AddressDto> findAll() {
         List<Address> list = repository.findAll();
-        return list.stream().map(x -> new AddressDto(x)).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, AddressDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<AddressDto> getByUserId(Long userId) {
         User user = userRepository.getReferenceById(userId);
         List<Address> list = repository.findbyUserId(user);
-        return list.stream().map(x -> new AddressDto(x)).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, AddressDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public AddressDto findById(Long id) {
         Optional<Address> obj = repository.findById(id);
         Address entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new AddressDto(entity);
+        return modelMapper.map(entity, AddressDto.class);
     }
 
     @Transactional
@@ -63,7 +70,7 @@ public class AddressService {
         entity.setUser(user);
 
         entity = repository.save(entity);
-        return new AddressDto(entity);
+        return modelMapper.map(entity, AddressDto.class);
     }
 
     @Transactional
@@ -76,7 +83,7 @@ public class AddressService {
             entity.setLogradouro(dto.getLogradouro());
             entity.setLocalidade(dto.getLocalidade());
             entity = repository.save(entity);
-            return new AddressDto(entity);
+            return modelMapper.map(entity, AddressDto.class);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
         }

@@ -1,9 +1,6 @@
 package com.jean.lojaInfantil.backend.services;
 
-import com.jean.lojaInfantil.backend.dtos.RoleDto;
-import com.jean.lojaInfantil.backend.dtos.UserDto;
-import com.jean.lojaInfantil.backend.dtos.UserInsertDto;
-import com.jean.lojaInfantil.backend.dtos.UserUpdateDto;
+import com.jean.lojaInfantil.backend.dtos.*;
 import com.jean.lojaInfantil.backend.entities.Role;
 import com.jean.lojaInfantil.backend.entities.User;
 import com.jean.lojaInfantil.backend.entities.enums.Gender;
@@ -12,6 +9,7 @@ import com.jean.lojaInfantil.backend.repositories.RoleRepository;
 import com.jean.lojaInfantil.backend.repositories.UserRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
 import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,23 +54,28 @@ public class UserService implements UserDetailsService {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Transactional(readOnly = true)
     public List<UserDto> findAll() {
         List<User> list = repository.findAll();
-        return list.stream().map(UserDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, UserDto.class))
+                .collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
     public UserDto getAuthUser() {
         User user = authService.authenticated();
 
-        return new UserDto(user);
+        return modelMapper.map(user, UserDto.class);
    }
 
     @Transactional(readOnly = true)
     public UserDto findById(Long id) {
         Optional<User> obj = repository.findById(id);
         User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new UserDto(entity);
+        return modelMapper.map(entity, UserDto.class);
     }
 
     @Transactional
@@ -81,7 +84,7 @@ public class UserService implements UserDetailsService {
         copyDtoToEntity(dto, entity);
         entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = repository.save(entity);
-        return new UserDto(entity);
+        return modelMapper.map(entity, UserDto.class);
     }
 
     @Transactional
@@ -91,7 +94,7 @@ public class UserService implements UserDetailsService {
 
             copyDtoToEntity(dto, entity);
             entity = repository.save(entity);
-            return new UserDto(entity);
+            return modelMapper.map(entity, UserDto.class);
         }
         catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);

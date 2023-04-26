@@ -1,6 +1,6 @@
 package com.jean.lojaInfantil.backend.entities;
 
-import com.jean.lojaInfantil.backend.dtos.DiscountDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jean.lojaInfantil.backend.entities.enums.Brands;
 import com.jean.lojaInfantil.backend.entities.enums.Colors;
 import com.jean.lojaInfantil.backend.entities.enums.Sizes;
@@ -12,9 +12,7 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name="product")
@@ -70,4 +68,8 @@ public class Product extends RepresentationModel<Product> implements Serializabl
 
     @OneToMany(mappedBy = "product")
     private List<Discount> discounts = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
 }

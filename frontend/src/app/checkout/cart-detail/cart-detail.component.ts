@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { CartItem } from 'src/app/common/cart-item';
 import { CartService } from 'src/app/services/cart.service';
 import { DiscountService } from 'src/app/services/discount.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-cart-detail',
@@ -12,16 +13,22 @@ import { DiscountService } from 'src/app/services/discount.service';
   styleUrls: ['./cart-detail.component.scss'],
 })
 export class CartDetailComponent {
+
   public cartItems$!: Observable<CartItem[]>;
   public quantityOptions = [1, 2, 3, 4, 5];
   public code: string = '';
   public discount!: number;
   public discountValue: Decimal = new Decimal(0);
 
+  subtotal: Decimal = new Decimal(0);
+  total: Decimal = new Decimal(0);
+
+
   constructor(
     private cartService: CartService,
     private router: Router,
-    private discountService: DiscountService
+    private discountService: DiscountService,
+    private storageService: StorageService
   ) {}
 
   ngOnInit() {
@@ -40,10 +47,13 @@ export class CartDetailComponent {
           alert(
             `Cupom aplicável! Desconto de ${this.getDiscountPercentage(this.discountValue)} será aplicado.`
           );
-        } else {
-          this.discountValue = new Decimal(0);
-          alert('Cupom inválido ou expirado.');
-        }
+
+            // Atualize o valor do desconto no estado do carrinho
+        this.cartService.setDiscountValue(this.discountValue);
+      } else {
+        this.discountValue = new Decimal(0);
+        alert('Cupom inválido ou expirado.');
+      }
       },
       (error) => {
         console.log(error);
@@ -52,33 +62,39 @@ export class CartDetailComponent {
     );
   }
 
-getSubtotal(): Decimal {
-  let subtotal = new Decimal(0);
+  getSubtotal(): Decimal {
+    let subtotal = new Decimal(0);
 
-  this.cartItems$.subscribe((cartItems) => {
-    cartItems.forEach((item) => {
-      subtotal = subtotal.plus(new Decimal(item.price).times(item.quantity));
+    this.cartItems$.subscribe((cartItems) => {
+      cartItems.forEach((item) => {
+        subtotal = subtotal.plus(new Decimal(item.price).times(item.quantity));
+      });
+      // Armazena o valor subtotal no estado do componente
+      this.subtotal = subtotal;
     });
-  });
 
-  return subtotal || new Decimal(0);
-}
+    return subtotal || new Decimal(0);
+  }
+
 
 
   public getTotal(): Decimal {
     const subtotal = this.getSubtotal();
     const discountAmount = subtotal.times(this.discountValue);
+    const total = subtotal.minus(discountAmount);
 
-    return subtotal.minus(discountAmount);
+    // Armazena o valor total no estado do componente
+    this.total = total;
+
+    return total;
   }
 
+
   public goToCheckout() {
-    this.router.navigate(['/checkout/profile-form']);
+    this.router.navigate(['/checkout/orders']);
   }
 
   getDiscountPercentage(discountValue: Decimal): string {
-    console.log('DiscountValue:', discountValue);
-
     return `${new Decimal(discountValue).times(100)}%`;
   }
 

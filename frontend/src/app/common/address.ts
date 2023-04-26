@@ -1,5 +1,5 @@
 export interface Address {
-  id: any;
+  id: number;
   cep: string;
   logradouro: string;
   complemento: string;

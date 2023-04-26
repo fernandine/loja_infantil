@@ -1,5 +1,6 @@
 package com.jean.lojaInfantil.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Review implements Serializable {
     private Long id;
     private String comment;
     private int rating;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

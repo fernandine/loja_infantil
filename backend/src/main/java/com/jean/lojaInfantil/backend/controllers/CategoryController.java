@@ -1,15 +1,8 @@
 package com.jean.lojaInfantil.backend.controllers;
 
 import com.jean.lojaInfantil.backend.dtos.CategoryDto;
-import com.jean.lojaInfantil.backend.dtos.OrderDto;
-import com.jean.lojaInfantil.backend.dtos.ProductDto;
-import com.jean.lojaInfantil.backend.entities.enums.Brands;
-import com.jean.lojaInfantil.backend.entities.enums.Colors;
-import com.jean.lojaInfantil.backend.entities.enums.Sizes;
 import com.jean.lojaInfantil.backend.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;

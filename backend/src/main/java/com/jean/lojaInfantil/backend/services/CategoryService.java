@@ -1,10 +1,12 @@
 package com.jean.lojaInfantil.backend.services;
 
 import com.jean.lojaInfantil.backend.dtos.CategoryDto;
+import com.jean.lojaInfantil.backend.dtos.ReviewDto;
 import com.jean.lojaInfantil.backend.entities.Category;
 import com.jean.lojaInfantil.backend.repositories.CategoryRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
 import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,17 +24,22 @@ public class CategoryService {
     @Autowired
     CategoryRepository repository;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Transactional(readOnly = true)
     public List<CategoryDto> findAll() {
         List<Category> list = repository.findAll();
-        return list.stream().map(CategoryDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, CategoryDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public CategoryDto findById(Long id) {
         Optional<Category> obj = repository.findById(id);
         Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new CategoryDto(entity);
+        return modelMapper.map(entity, CategoryDto.class);
     }
 
     @Transactional
@@ -43,7 +50,7 @@ public class CategoryService {
         entity.setName(dto.getName());
 
         entity = repository.save(entity);
-        return new CategoryDto(entity);
+        return modelMapper.map(entity, CategoryDto.class);
     }
 
     @Transactional
@@ -55,7 +62,7 @@ public class CategoryService {
             entity.setName(dto.getName());
 
             entity = repository.save(entity);
-            return new CategoryDto(entity);
+            return modelMapper.map(entity, CategoryDto.class);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
         }

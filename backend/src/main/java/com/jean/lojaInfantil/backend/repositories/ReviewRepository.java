@@ -10,6 +10,4 @@ import java.util.List;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    @Query("SELECT obj FROM Review obj WHERE movie_id = :movieId")
-    List<Review> findReviews(Long movieId);
 }

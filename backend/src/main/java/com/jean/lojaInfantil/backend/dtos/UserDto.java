@@ -39,19 +39,6 @@ public class UserDto implements Serializable {
 
     Set<RoleDto> roles = new HashSet<>();
 
-//    Set<AddressDto> addressList = new HashSet<>();
-
-    public UserDto(User entity) {
-        id = entity.getId();
-        firstName = entity.getFirstName();
-        lastName = entity.getLastName();
-        email = entity.getEmail();
-        cpf = entity.getCpf();
-        birthDay = entity.getBirthDay();
-        phone = entity.getPhone();
-        gender = entity.getGender();
-        entity.getRoles().forEach(role -> this.roles.add(new RoleDto(role)));
-        //entity.getAddressList().forEach(address -> this.addressList.add(new AddressDto(address)));
-    }
+    Set<AddressDto> addressList = new HashSet<>();
 
 }

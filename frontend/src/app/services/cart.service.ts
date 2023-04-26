@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import Decimal from 'decimal.js';
 import { BehaviorSubject } from 'rxjs';
 import { CartItem } from '../common/cart-item';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,41 +12,41 @@ export class CartService {
   private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
   public cartItems$ = this.cartItemsSubject.asObservable();
   public totalQuantity = new BehaviorSubject<number>(0);
+  private storage = new StorageService();
+  private discountValue: Decimal = new Decimal(0);
 
   constructor() {}
 
-  public addCartItem(cartItem: CartItem) {
+  addCartItem(cartItem: CartItem) {
     const currentCartItems = this.cartItemsSubject.getValue();
-    const existingCartItemIndex = currentCartItems.findIndex(item => item.id === cartItem.id && item.color === cartItem.color && item.size === cartItem.size);
+    const existingCartItemIndex = currentCartItems.findIndex(item => item.id === cartItem.id);
 
     if (existingCartItemIndex > -1) {
       currentCartItems[existingCartItemIndex].quantity += cartItem.quantity;
     } else {
       currentCartItems.push(cartItem);
     }
-
-    this.cartItemsSubject.next(currentCartItems);
-    this.totalQuantity.next(currentCartItems.reduce((acc, item) => acc + item.quantity, 0));
   }
 
-  public removeCartItem(cartItem: CartItem) {
-    const currentCartItems = this.cartItemsSubject.getValue();
-    const cartItemIndex = currentCartItems.findIndex(item => item.id === cartItem.id && item.color === cartItem.color && item.size === cartItem.size);
-
-    if (cartItemIndex > -1) {
-      currentCartItems.splice(cartItemIndex, 1);
-      this.cartItemsSubject.next(currentCartItems);
-      this.totalQuantity.next(currentCartItems.reduce((acc, item) => acc + item.quantity, 0));
-    }
+  setDiscountValue(discountValue: Decimal): void {
+    this.discountValue = discountValue;
   }
 
-  public clearCart() {
-    this.cartItemsSubject.next([]);
-    this.totalQuantity.next(0);
+  getDiscountValue(): Decimal {
+    return this.discountValue;
   }
 
-  // Adicione essa função
+  getStoredCartItems(): CartItem[] {
+    return this.storage.getItem('cartItems') || [];
+  }
+
+  updateStoredCartItems(cartItems: CartItem[]): void {
+    this.storage.setItem('cartItems', cartItems);
+  }
+
   public addToCart(cartItem: CartItem) {
     this.addCartItem(cartItem);
   }
+
 }
+

@@ -1,6 +1,8 @@
 package com.jean.lojaInfantil.backend.services;
 
+import com.jean.lojaInfantil.backend.dtos.DiscountDto;
 import com.jean.lojaInfantil.backend.dtos.ProductDto;
+import com.jean.lojaInfantil.backend.dtos.ReviewDto;
 import com.jean.lojaInfantil.backend.entities.Category;
 import com.jean.lojaInfantil.backend.entities.Product;
 import com.jean.lojaInfantil.backend.entities.enums.Brands;
@@ -10,12 +12,11 @@ import com.jean.lojaInfantil.backend.repositories.CategoryRepository;
 import com.jean.lojaInfantil.backend.repositories.ProductRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
 import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,43 +37,56 @@ public class ProductService {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Transactional(readOnly = true)
     public List<ProductDto> findAll() {
         List<Product> list = repository.findAll();
-        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, ProductDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<ProductDto> findByFavorite(boolean notFavorite) {
         List<Product> list = repository.find(notFavorite);
-        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, ProductDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public ProductDto navigateByUrl(Long id) {
         Optional<Product> obj = repository.findById(id);
         Product product = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return new ProductDto(product);
+        return modelMapper.map(product, ProductDto.class);
     }
 
     @Transactional(readOnly = true)
     public List<ProductDto> findByName(String name) {
         List<Product> list = repository.findByNameCategory(name);
-        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, ProductDto.class))
+                .collect(Collectors.toList());
     }
 
     // BUSCA OS PRODUTOS MAIS VENDIDOS
     @Transactional(readOnly = true)
     public List<ProductDto> getBestSellers(int limit) {
         List<Product> list = repository.findBestSellers(PageRequest.of(0, limit));
-        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, ProductDto.class))
+                .collect(Collectors.toList());
     }
 
     //BUSCA OS PRODUTOS RECENTES
     @Transactional(readOnly = true)
     public List<ProductDto> findMostRecentProductsByCreationDate(int limit) {
         List<Product> list = repository.findMostRecentProductsByCreationDate(PageRequest.of(0, limit));
-        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, ProductDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -83,7 +97,9 @@ public class ProductService {
         } else {
             list = repository.findByBrandsAndColorsAndSizesAndCategoryId(productBrands, productColors, productSizes, categoryId);
         }
-        return list.stream().map(ProductDto::new).collect(Collectors.toList());
+        return list.stream()
+                .map(order -> modelMapper.map(order, ProductDto.class))
+                .collect(Collectors.toList());
     }
 
 
@@ -92,7 +108,7 @@ public class ProductService {
         Product entity = new Product();
         copyDtoToEntity(dto, entity);
         entity = repository.save(entity);
-        return new ProductDto(entity);
+        return modelMapper.map(entity, ProductDto.class);
     }
 
     @Transactional
@@ -101,7 +117,7 @@ public class ProductService {
             Product entity = repository.getReferenceById(id);
             copyDtoToEntity(dto, entity);
             entity = repository.save(entity);
-            return new ProductDto(entity);
+            return modelMapper.map(entity, ProductDto.class);
         }
         catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);

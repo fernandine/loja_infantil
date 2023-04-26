@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { AccountComponent } from './account/account/account.component';
 import { AddressFormComponent } from './account/address-form/address-form.component';
 import { AddressListComponent } from './account/address-list/address-list.component';
+import { FavoritesComponent } from './account/favorites/favorites.component';
 import { OrdersComponent } from './account/orders/orders.component';
 import { ProfilesComponent } from './account/profiles/profiles.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,11 +31,13 @@ import { DiscountComponent } from './components/discount/discount.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
+import { OrderComponent } from './checkout/order/order.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { SearchComponent } from './components/search/search.component';
 import { UserComponent } from './components/user/user.component';
 import { HttpRequestInterceptor } from './http-request.interceptor';
+import { CurrencyFormatPipe } from './pipes/currencyFormat.pipe';
 import { StatusBrandPipe } from './pipes/statusBrand.pipe';
 import { StatusColorPipe } from './pipes/statusColor.pipe';
 import { StatusRolePipe } from './pipes/statusRole.pipe';
@@ -42,13 +45,15 @@ import { StatusSizePipe } from './pipes/statusSize.pipe';
 import { PrimeNgModule } from './primeng.module';
 import { CartService } from './services/cart.service';
 import { NotificationService } from './services/notification.service';
-import { CurrencyFormatPipe } from './pipes/currencyFormat.pipe';
-import { FavoritesComponent } from './account/favorites/favorites.component';
-
+import { OrderHistoryComponent } from './account/order-history/order-history.component';
+import { OrderDetailComponent } from './checkout/order-detail/order-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    OrderComponent,
+    OrderHistoryComponent,
+    OrderDetailComponent,
     FavoritesComponent,
     HomeComponent,
     AccountComponent,

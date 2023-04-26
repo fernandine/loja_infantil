@@ -70,7 +70,7 @@ export class ProductDetailComponent {
     const theCartItem = new CartItem(this.product);
     this.cartService.addToCart(theCartItem);
     this.quantity = 1;
-    this.router.navigate(["/cart-details"])
+    this.router.navigate(["/checkout/cart-details"])
   }
 
   toggleFavorite(): void {

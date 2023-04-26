@@ -1,0 +1,177 @@
+<div class="surface-ground px-4 py-8 md:px-6 lg:px-8">
+  <div class="grid -mr-3 -ml-3 bg-green-100">
+      <div class="col-12 lg:col-8 p-4">
+          <div class="surface-card grid formgrid p-fluid border-round shadow-2 p-4">
+              <div class="col-12 mb-4 flex flex-column lg:flex-row align-items-center justify-content-between">
+                  <div class="text-900 font-medium text-xl">Informações de Contato</div>
+                  <div class="mt-3 lg:mt-0">
+                    <i class="pi pi-lock" style="font-size: 1rem"></i>
+                      <span class="text-600 mr-2 px-2 font-bold">SITE 100% SEGURO</span>
+                  </div>
+              </div>
+
+                <p-form [formGroup]="userForm" class="grid">
+              <div class="col-12 field">
+                  <label for="email" class="text-900 font-medium mb-3">Email</label>
+                  <input id="email" formControlName="email" type="text" class="p-inputtext w-full mb-3">
+                  <p-checkbox name="checkbox-newsletter"  [binary]="true" label="Quero receber notícias e ofertas neste email." class="text-900" inputId="id"></p-checkbox>
+              </div>
+
+              <p-divider class="w-full px-2 mb-3"></p-divider>
+
+              <div class="col-12 mt-4 lg:mt-0 mb-4">
+                <div class="text-900 font-medium text-xl">Entrega</div>
+            </div>
+            <div class="col-12 lg:col-6 field mb-0">
+                <label for="firstName" class="text-900 font-medium mb-3">Nome</label>
+                <input id="firstName" formControlName="firstName" type="text" class="p-inputtext w-full mb-3">
+            </div>
+            <div class="col-12 lg:col-6 field mb-0">
+                <label for="lastName" class="text-900 font-medium mb-3">Sobrenome</label>
+                <input id="lastName" formControlName="lastName" type="text" class="p-inputtext w-full mb-3">
+            </div>
+            <div class="col-12 field mb-0">
+              <label for="phone" class="text-900 font-medium mb-3">Telefone</label>
+              <input id="phone" type="text" class="p-inputtext w-full mb-3">
+          </div>
+        </p-form>
+
+        <p-form [formGroup]="addressForm" class="grid">
+            <div class="col-12 lg:col-6 field mb-0">
+                <label for="cep" class="text-900 font-medium mb-3">CEP</label>
+                <input (blur)="onCepBlur()" id="cep" formControlName="cep" type="text" class="p-inputtext w-full mb-3">
+            </div>
+            <div class="col-12 lg:col-6 field mb-0">
+                <label for="localidade" class="text-900 font-medium mb-3">Cidade</label>
+                <input id="localidade" formControlName="localidade" type="text" class="p-inputtext w-full mb-3">
+            </div>
+
+            <div class="col-8 field mb-0">
+              <label for="logradouro" class="text-900 font-medium mb-3">Rua</label>
+              <input id="logradouro" formControlName="logradouro" type="text" class="p-inputtext w-full mb-3">
+          </div>
+            <div class="col-4 field mb-0">
+              <label for="numero" class="text-900 font-medium mb-3">Número</label>
+              <input id="numero" formControlName="numero" type="text" class="p-inputtext w-full mb-3">
+          </div>
+          <div class="col-9 field mb-0">
+            <label for="complemento" lass="text-900 font-medium mb-3">Complemento</label>
+            <input id="complemento" formControlName="complemento" type="text" class="p-inputtext w-full mb-3">
+        </div>
+        <div class="col-3 field mb-0">
+          <label for="uf" lass="text-900 font-medium mb-3">Estado</label>
+          <input id="uf" formControlName="uf" type="text" class="p-inputtext w-full mb-3">
+      </div>
+    </p-form>
+
+              <p-divider class="w-full px-2 mb-3"></p-divider>
+
+              <div class="text-900 font-medium text-xl mt-4 lg:mt-0 mb-4 px-2">Método de Entrega</div>
+              <div class="col-12 flex flex-column lg:flex-row field">
+                  <div class="flex justify-content-between p-3 border-round border-1 surface-border w-full mr-3 hover:border-primary cursor-pointer" (click)="selectedValue = 'UPS'" [ngClass]="{'border-primary surface-50': selectedValue === 'UPS'}">
+                      <div class="mr-3 lg:mr-0">
+                          <div class="text-900 font-bold mb-2">Correios</div>
+                          <span class="text-600">Entrega: 4 dias</span>
+                      </div>
+                      <div class="flex justify-content-between align-items-center">
+                          <span class="text-primary mr-2 font-medium">Frete Grátis!</span>
+                          <p-radioButton name="ups" value="UPS" [(ngModel)]="selectedValue"></p-radioButton>
+                      </div>
+                  </div>
+                  <div class="flex justify-content-between p-3 mt-3 lg:mt-0 border-round border-1 surface-border w-full hover:border-primary cursor-pointer" (click)="selectedValue = 'FedEx'" [ngClass]="{'border-primary surface-50': selectedValue === 'FedEx'}">
+                      <div class="mr-3 lg:mr-0">
+                          <div class="text-900 font-bold mb-2">Transportadora</div>
+                          <span class="text-600">Entrega: 12 dias</span>
+                      </div>
+                      <div class="flex justify-content-between align-items-center">
+                          <span class="text-primary mr-2 font-medium">R$22,00</span>
+                          <p-radioButton name="fedex" value="FedEx" [(ngModel)]="selectedValue"></p-radioButton>
+                      </div>
+                  </div>
+              </div>
+              <p-divider class="w-full px-2 mb-3"></p-divider>
+              <div class="text-900 font-medium text-xl mt-4 lg:mt-0 mb-4 px-2">Pagamento</div>
+              <div class="col-12 mb-4">
+                  <div class="p-3 border-1 border-round-top surface-border" (click)="selectedValue2 = 'paypal'" [ngClass]="{'border-primary surface-50': selectedValue2 === 'paypal'}">
+                      <p-radioButton name="paypal" value="paypal" [(ngModel)]="selectedValue2" inputId="paypal"></p-radioButton>
+                      <label for="paypal" class="text-900 ml-3">Pix</label>
+                  </div>
+                  <div class="p-3 border-x-1 surface-border" (click)="selectedValue2 = 'creditcard'" [ngClass]="{'border-primary surface-50': selectedValue2 === 'creditcard'}">
+                      <p-radioButton name="creditCard" value="creditcard" [(ngModel)]="selectedValue2" inputId="creditCard"></p-radioButton>
+                      <label for="creditCard" class="text-900 ml-3">Cartão de Crédito</label>
+                  </div>
+                  <div class="p-3 border-1 border-round-bottom surface-border" (click)="selectedValue2 = 'bank'" [ngClass]="{'border-primary surface-50': selectedValue2 === 'bank'}">
+                      <p-radioButton name="bank" value="bank" [(ngModel)]="selectedValue2" inputId="bank"></p-radioButton>
+                      <label for="bank" class="text-900 ml-3">Boleto de Pagamento</label>
+                  </div>
+              </div>
+              <div class="col-12 field mb-4">
+                  <form #form1="ngForm" class="relative">
+                      <label for="cc" class="text-900 font-medium mb-3 block">Número do Cartão</label>
+                      <input id="cc" type="text" name="cc" [(ngModel)]="cc" pInputText [pKeyFilter]="ccRegex" [pValidateOnly]="true" placeholder="1234-1234-1234-1234" style="margin-right: .5em">
+                  </form>
+              </div>
+              <div class="col-12 lg:col-6 field mb-4">
+                  <form #form2="ngForm" class="relative">
+                      <label for="exp" class="text-900 font-medium mb-3 block">Data da Expiração</label>
+                      <input id="exp" type="text" name="exp"  pInputText [pKeyFilter]="expRegex" [pValidateOnly]="true" placeholder="MM/YY" style="margin-right: .5em">
+                  </form>
+              </div>
+              <div class="col-12 lg:col-6 field mb-4">
+                  <form #form3="ngForm" class="relative">
+                      <label for="cvc" class="text-900 font-medium mb-3 block">CVC</label>
+                      <input id="cvc" type="text" name="cvc" [(ngModel)]="cvc" pInputText [pKeyFilter]="cvcRegex" [pValidateOnly]="true" placeholder="123" style="margin-right: .5em">
+                  </form>
+              </div>
+              <div class="col-12 field mb-0">
+                  <label for="holderName" class="text-900 font-medium mb-3">Nome</label>
+                  <input id="holderName" type="text" class="p-inputtext w-full mb-3">
+              </div>
+          </div>
+      </div>
+      <div class="col-12 lg:col-4 p-4">
+          <div class="surface-card border-round shadow-2 p-5">
+              <div class="flex justify-content-between align-items-center border-bottom-1 pb-3 surface-border">
+                  <span class="text-900 font-medium text-lg lg:text-xl"><i class="pi pi-shopping-cart text-xl mr-2"></i>Meus Pedidos ({{ (cartItems$ | async)?.length }})</span>
+                  <a routerLink="/checkout/cart-details" tabindex="0" class="text-600 font-medium cursor-pointer hover:text-primary">Voltar para o carrinho</a>
+              </div>
+              <div *ngFor="let cart of (cartItems$ | async)" class="flex flex-column lg:flex-row flex-wrap lg:align-items-center py-3 my-3 border-bottom-1 surface-border">
+                  <p-image [src]="cart.imageCart" alt="Imagem do produto {{ cart.name }}" width="60px" class="flex-shrink-0 mb-3" />
+                  <div class="flex-auto lg:ml-3">
+                      <div class="flex align-items-center justify-content-between mb-3">
+                          <span class="text-900 font-medium">{{cart.name}}</span>
+                          <span class="text-900 font-bold">{{cart.price}}</span>
+                      </div>
+                      <div class="text-600 text-sm mb-3">Categoria: Large</div>
+
+                      <div class="flex flex-auto justify-content-between align-items-center">
+                        <p-inputNumber [(ngModel)]="cart.quantity"  [showButtons]="true" buttonLayout="horizontal" spinnerMode="horizontal" [min]="1" inputStyleClass="w-2rem text-center py-2 px-1 border-transparent"
+                            class="border-1 surface-border border-round" decrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1" incrementButtonClass="p-button-text text-600 hover:text-primary py-1 px-1" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
+                        <button pButton pRipple icon="pi pi-trash" class="text-600 p-button-text p-button-rounded"></button>
+                    </div>
+                  </div>
+              </div>
+              <div class="py-2 mt-3 border-bottom-1 surface-border">
+                  <div class="flex justify-content-between align-items-center mb-3">
+                      <span class="text-900">Subtotal</span>
+                      <span class="text-900">{{ getSubtotal() | currencyFormat }}</span>
+                  </div>
+                  <div class="flex justify-content-between align-items-center mb-3">
+                      <span class="text-900">Frete</span>
+                      <span class="text-900">Grátis</span>
+                  </div>
+                  <div class="flex justify-content-between align-items-center mb-3">
+                    <span class="text-900">Desconto</span>
+                    <span class="text-900">{{ getDiscountPercentage(discountValue)}}</span>
+                </div>
+                  <div class="flex justify-content-between align-items-center mb-3">
+                      <span class="text-900">Total</span>
+                      <span class="text-900 font-bold">{{ getTotal() | currencyFormat}}</span>
+                  </div>
+              </div>
+              <button pButton (click)="onSubmit()" class="p-button-primary" label="Concluir Pedido" class="w-full mt-3"></button>
+          </div>
+      </div>
+  </div>
+</div>
+

@@ -1,6 +1,7 @@
 package com.jean.lojaInfantil.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jean.lojaInfantil.backend.entities.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,17 +39,21 @@ public class User implements UserDetails, Serializable {
 
     private Gender gender;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy="user")
+    private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+    public List<Address> addressList = new ArrayList<>();
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-
-    @OneToMany(mappedBy = "user")
-    public List<Address> addressList = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

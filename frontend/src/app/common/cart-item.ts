@@ -1,5 +1,4 @@
 import { Product } from './Product';
-import Decimal from 'decimal.js';
 
 export class CartItem {
 

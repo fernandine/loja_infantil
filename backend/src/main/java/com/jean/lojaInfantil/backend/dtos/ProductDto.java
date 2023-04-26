@@ -32,23 +32,6 @@ public class ProductDto implements Serializable {
     private Colors productColor;
     private Brands productBrand;
     private Sizes productSize;
-
     private CategoryDto category;
-    public ProductDto(Product entity) {
-        id = entity.getId();
-        sku = entity.getSku();
-        name = entity.getName();
-        description = entity.getDescription();
-        unitPrice = entity.getUnitPrice();
-        image = entity.getImage();
-        favorite = entity.isFavorite();
-        unitsInStock = entity.getUnitsInStock();
-        dateCreated = entity.getDateCreated();
-        lastUpdated = entity.getLastUpdated();
-        salesCount = entity.getSalesCount();
-        productColor = entity.getProductColor();
-        productBrand = entity.getProductBrand();
-        productSize = entity.getProductSize();
-        category = new CategoryDto(entity.getCategory());
-    }
+
 }

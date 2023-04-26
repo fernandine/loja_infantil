@@ -6,6 +6,7 @@ import com.jean.lojaInfantil.backend.entities.Review;
 import com.jean.lojaInfantil.backend.entities.User;
 import com.jean.lojaInfantil.backend.repositories.ProductRepository;
 import com.jean.lojaInfantil.backend.repositories.ReviewRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +29,15 @@ public class ReviewService {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Transactional(readOnly = true)
     public List<ReviewDto> findAll() {
-        List<Review> reviews = repository.findAll();
-        return reviews.stream().map(ReviewDto::new).collect(Collectors.toList());
+        List<Review> list = repository.findAll();
+        return list.stream()
+                .map(order -> modelMapper.map(order, ReviewDto.class))
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -40,7 +46,7 @@ public class ReviewService {
       User user = authService.authenticated();
         copyEntityToDTO(user, entity, dto);
         entity = repository.save(entity);
-        return new ReviewDto(entity, entity.getUser());
+        return modelMapper.map(entity, ReviewDto.class);
     }
 
     public void copyEntityToDTO(User user, Review entity, ReviewDto dto) {
@@ -56,6 +62,4 @@ public class ReviewService {
         user.setEmail(userService.getAuthUser().getEmail());
         entity.setUser(user);
     }
-
-
 }

@@ -22,23 +22,25 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { HomeComponent } from './components/home/home.component';
 import { CategoryFilterComponent } from './components/category-filter/category-filter.component';
 import { DiscountComponent } from './components/discount/discount.component';
+import { OrderHistoryComponent } from './account/order-history/order-history.component';
+import { OrderComponent } from './checkout/order/order.component';
+import { OrderDetailComponent } from './checkout/order-detail/order-detail.component';
 
 const routes: Routes = [
-{
-    path: 'orders',
-    component: OrdersComponent
-  },
 
   { path: 'account', component: AccountComponent, children: [
     { path: 'profile', component: ProfilesComponent },
-    { path: 'adresses', component: AddressListComponent },
-    { path: 'orders', component: RegisterComponent },
+    { path: 'address', component: AddressListComponent },
+    { path: 'order-history', component: OrderHistoryComponent },
     { path: 'favorites', component: FavoritesComponent },
   ]},
 
-  { path: 'checkout', component: CartDetailComponent, children: [
+  { path: 'checkout', component: CheckoutComponent, children: [
+    { path: 'cart-details', component: CartDetailComponent },
+    { path: 'orders', component: OrderComponent },
+    { path: 'orders/:id', component: OrderDetailComponent },
     { path: 'profile-form', component: ProfileFormComponent },
-    { path: 'delivery', component: DeliveryComponent },
+    { path: 'deliver', component: DeliveryComponent },
     { path: 'payment', component: PaymentComponent },
   ]},
 
@@ -46,7 +48,7 @@ const routes: Routes = [
     { path: 'ad?categories', component: CategoriesComponent },
     { path: 'product-edit', component: ProductEditComponent },
   ]},
-  { path: 'cart-details', component: CartDetailComponent },
+
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'discounts', component: DiscountComponent },
