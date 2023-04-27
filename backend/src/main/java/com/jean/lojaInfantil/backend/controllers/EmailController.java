@@ -2,6 +2,7 @@ package com.jean.lojaInfantil.backend.controllers;
 
 import com.jean.lojaInfantil.backend.dtos.EmailDto;
 import com.jean.lojaInfantil.backend.services.EmailService;
+import com.jean.lojaInfantil.backend.services.SendGridEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

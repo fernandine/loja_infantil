@@ -4,7 +4,6 @@ import com.jean.lojaInfantil.backend.dtos.OrderDto;
 import com.jean.lojaInfantil.backend.dtos.OrderItemDto;
 import com.jean.lojaInfantil.backend.entities.*;
 import com.jean.lojaInfantil.backend.entities.enums.StatusOrder;
-import com.jean.lojaInfantil.backend.entities.enums.StatusPayment;
 import com.jean.lojaInfantil.backend.repositories.OrderRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
 import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
@@ -37,6 +36,9 @@ public class OrderService {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private SendGridEmailService emailService;
 
     @Transactional(readOnly = true)
     public OrderDto findById(Long id) {
@@ -84,10 +86,10 @@ public class OrderService {
 
         orderRepository.save(order);
 
-        emailService.sendOrderConfirmationEmail(order);  // envia o email de confirmação do pedido
+        emailService.sendEmail(dto);
 
         return fromEntity(order);
-    }*/
+    }
 
 
     @Transactional
@@ -125,6 +127,6 @@ public class OrderService {
         user.setEmail(userService.getAuthUser().getEmail());
         entity.setUser(user);
     }
-
+*/
 }
 
