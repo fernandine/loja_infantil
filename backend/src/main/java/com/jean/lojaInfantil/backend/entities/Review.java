@@ -21,6 +21,7 @@ public class Review implements Serializable {
     private String comment;
     private int rating;
 
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

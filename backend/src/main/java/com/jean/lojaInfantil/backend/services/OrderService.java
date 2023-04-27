@@ -1,28 +1,24 @@
 package com.jean.lojaInfantil.backend.services;
 
-
-import com.jean.lojaInfantil.backend.dtos.ReviewDto;
-import com.jean.lojaInfantil.backend.entities.Order;
-import com.jean.lojaInfantil.backend.entities.Review;
-import com.jean.lojaInfantil.backend.entities.User;
+import com.jean.lojaInfantil.backend.dtos.OrderDto;
+import com.jean.lojaInfantil.backend.dtos.OrderItemDto;
+import com.jean.lojaInfantil.backend.entities.*;
+import com.jean.lojaInfantil.backend.entities.enums.StatusOrder;
+import com.jean.lojaInfantil.backend.entities.enums.StatusPayment;
 import com.jean.lojaInfantil.backend.repositories.OrderRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
 import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
-import org.hibernate.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
+import java.time.Instant;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -39,41 +35,8 @@ public class OrderService {
     @Autowired
     private ModelMapper modelMapper;
 
-//    @Transactional(readOnly = true)
-//    public List<Order> findAll() {
-//            List<Order> list = orderRepository.findAll();
-//            return list;
-//        }
-
-
-    @Transactional(readOnly = true)
-    public Order findById(Long id) {
-        Optional<Order> obj = orderRepository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(
-                "Objeto não encontrado! Id: " + id + ", Tipo: " + Order.class.getName()));
-    }
-
-
-/*
-
-
-
-    @Transactional(readOnly = true)
-
-
-
-    //BUSCA PAGINADA
-    @Transactional(readOnly = true)
-    public Page<Order> findAllPaged(Pageable pageable) {
-        User user = authService.authenticated();
-        user.setId(userService.getAuthUser().getId());
-        if (user == null) {
-			throw new AuthorizationException("Acesso negado");
-		}
-        Page<Order> page = orderRepository.findAll(pageable);
-        return orderRepository.findByCliente(cliente, pageRequest);
-    }
-
+    @Autowired
+    private ProductService productService;
 
     @Transactional(readOnly = true)
     public OrderDto findById(Long id) {
@@ -82,14 +45,50 @@ public class OrderService {
         return modelMapper.map(entity, OrderDto.class);
     }
 
+
+//    @Transactional
+//    public OrderDto insert(OrderDto dto) {
+//        Order entity = new Order();
+//        User user = authService.authenticated();
+//        copyEntityToDTO(user, entity, dto);
+//        entity = orderRepository.save(entity);
+//        return modelMapper.map(entity, OrderDto.class);
+//    }
+
+/*
     @Transactional
     public OrderDto insert(OrderDto dto) {
-        Order entity = new Order();
         User user = authService.authenticated();
-        copyEntityToDTO(user, entity, dto);
-        entity = orderRepository.save(entity);
-        return modelMapper.map(entity, OrderDto.class);
-    }
+
+        Order order = new Order();
+        order.setUser(user);
+        order.setMoment(Instant.now());
+        order.setStatus(StatusOrder.SHIPPED);
+
+        Payment payment = dto.getPayment().toEntity();
+        if (payment instanceof PaymentSlip) {  // verifica se o pagamento é feito com boleto
+            PaymentSlip slip = (PaymentSlip) payment;
+            slip.setDueDate(boletoService.calculateDueDate(order.getMoment()));  // define a data de vencimento com base no momento atual do pedido
+        }
+
+        payment.setOrder(order);
+        order.setPayment(payment);
+
+        Set<OrderItem> items = new HashSet<>();
+        for (OrderItemDto itemDto : dto.getItems()) {
+            Product product = productService.find(itemDto.getProductId());  // busca o produto correspondente ao item
+            OrderItem item = new OrderItem(order, product, itemDto.getQuantity(), product.getPrice());  // cria o objeto OrderItem e adiciona à lista
+            items.add(item);
+        }
+        order.setItems(items);
+
+        orderRepository.save(order);
+
+        emailService.sendOrderConfirmationEmail(order);  // envia o email de confirmação do pedido
+
+        return fromEntity(order);
+    }*/
+
 
     @Transactional
     public OrderDto update(Long id, OrderDto dto) {
@@ -117,7 +116,8 @@ public class OrderService {
 
         entity.setMoment(dto.getMoment());
         entity.setStatus(dto.getStatus());
-        //entity.setPayment(dto.getPayment());
+       // entity.setItems(dto.getItems());
+      //  entity.setPayment(dto.getPayment());
 
         user.setId(userService.getAuthUser().getId());
         user.setFirstName(userService.getAuthUser().getFirstName());
@@ -126,6 +126,5 @@ public class OrderService {
         entity.setUser(user);
     }
 
-*/
 }
 

@@ -1,24 +1,20 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDto implements Serializable {
+public class OrderItemDto {
 
-    private Long id;
-    private String comment;
-    private int rating;
-    private UserDto user;
+    private Long orderId;
     private Long productId;
-
+    private Integer quantity;
+    private BigDecimal price;
 }

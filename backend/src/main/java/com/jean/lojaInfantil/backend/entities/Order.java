@@ -25,6 +25,7 @@ public class Order implements Serializable {
     private Instant moment;
     private StatusOrder status;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

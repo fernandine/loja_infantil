@@ -65,9 +65,9 @@ public class AddressService {
         entity.setLogradouro(dto.getLogradouro());
         entity.setLocalidade(dto.getLocalidade());
 
-        User user = new User();
-        user.setId(dto.getUserId());
-        entity.setUser(user);
+//        User user = new User();
+//        user.setId(dto.getUserId());
+//        entity.setUser(user);
 
         entity = repository.save(entity);
         return modelMapper.map(entity, AddressDto.class);

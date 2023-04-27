@@ -21,6 +21,5 @@ public class AddressDto implements Serializable {
     private String bairro;
     private String localidade;
     private String uf;
-    private Long userId;
 
 }

@@ -1,6 +1,7 @@
 package com.jean.lojaInfantil.backend.services;
 
 import com.jean.lojaInfantil.backend.dtos.*;
+import com.jean.lojaInfantil.backend.entities.Address;
 import com.jean.lojaInfantil.backend.entities.Role;
 import com.jean.lojaInfantil.backend.entities.User;
 import com.jean.lojaInfantil.backend.entities.enums.Gender;
@@ -130,11 +131,11 @@ public class UserService implements UserDetailsService {
             entity.getRoles().add(role);
         }
 
-//        entity.getAddressList().clear();
-//        for (AddressDto p : dto.getAddressList()) {
-//            Address address = addressRepository.getReferenceById(p.getId());
-//            entity.getAddressList().add(address);
-//        }
+        entity.getAddressList().clear();
+        for (AddressDto p : dto.getAddressList()) {
+            Address address = addressRepository.getReferenceById(p.getId());
+            entity.getAddressList().add(address);
+        }
 
     }
 

@@ -22,7 +22,6 @@ public class Address implements Serializable {
     private String localidade;
     private String uf;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

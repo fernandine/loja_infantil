@@ -47,8 +47,10 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy="user")
     private List<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
+
+    @OneToMany(mappedBy = "user")
     public List<Address> addressList = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",
             joinColumns = @JoinColumn(name = "user_id"),

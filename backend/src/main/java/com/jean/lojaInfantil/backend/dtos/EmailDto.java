@@ -1,6 +1,5 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +12,14 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDto implements Serializable {
+public class EmailDto implements Serializable {
 
-    private Long id;
-    private String comment;
-    private int rating;
-    private UserDto user;
-    private Long productId;
+    private String fromEmail;
+    private String fromName;
+    private String replyTo;
+    private String to;
+    private String subject;
+    private String body;
+    private String contentType;
 
 }
