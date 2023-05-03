@@ -1,6 +1,5 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.jean.lojaInfantil.backend.entities.Product;
 import com.jean.lojaInfantil.backend.entities.enums.Brands;
 import com.jean.lojaInfantil.backend.entities.enums.Colors;
 import com.jean.lojaInfantil.backend.entities.enums.Sizes;
@@ -10,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -26,8 +26,7 @@ public class ProductDto implements Serializable {
     private String image;
     private boolean favorite;
     private int unitsInStock;
-    private Date dateCreated;
-    private Date lastUpdated;
+    private LocalDate dateCreated;
     private int salesCount;
     private Colors productColor;
     private Brands productBrand;

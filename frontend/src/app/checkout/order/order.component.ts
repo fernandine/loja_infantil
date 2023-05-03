@@ -164,23 +164,28 @@ export class OrderComponent {
     const orderItems: OrderItem[] = [];
 
     // Cria os objetos OrderItem a partir dos objetos CartItem
-    this.cartItems.forEach((cartItem) => {
-      const orderItem = new OrderItem(
-        cartItem.id,
-        cartItem.id,
-        cartItem.quantity,
-        cartItem.price
-      );
+ this.cartItems.forEach((cartItem) => {
+  const orderId = cartItem['order'].id;
+  const productId = cartItem['product'].id;
 
-      orderItems.push(orderItem);
-    });
+  const orderItem = new OrderItem(
+    orderId,
+    productId,
+    cartItem.quantity,
+    cartItem['subtotal'],
+    cartItem['totalValue']
+  );
+
+  orderItems.push(orderItem);
+});
+
 
     const order: Order = {
       moment: new Date(),
       statusOrder: StatusOrder.PENDING,
-      client: this.userForm.value,
+      user: this.userForm.value,
       items: orderItems,
-      payment: new Payment(1, new Date()),
+      payment: { id: 1, moment: new Date() } as Payment,
       id: 0
     };
 

@@ -20,22 +20,63 @@ export class OrderDetailComponent {
 
   orderId!: number;
   orderDetails: any;
+  productDetails: any;
+  paymentDetails: any; // Adicione esta propriedade
+subtotal: number = 0;
+  totalComDesconto: number = 0;
 
   constructor(
     private route: ActivatedRoute,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private productService: ProductService
     ) { }
 
     ngOnInit(): void {
-      this.orderId = Number(this.route.snapshot.paramMap.get("id"));
-      this.orderService.getOrderById(this.orderId).subscribe(
+       this.orderId = Number(this.route.snapshot.paramMap.get("id"));
+       this.orderService.getOrderById(this.orderId).subscribe(
         (data) => {
           console.log('dados' + JSON.stringify(data));
           this.orderDetails = data;
+
+          // Calcula o subtotal e o total com desconto
+        const item = this.orderDetails.items[0];
+        this.subtotal = item.subtotal;
+        this.totalComDesconto = item.totalValue;
+
+          // Busca os detalhes do produto
+          this.productService.getProductById(this.orderDetails.items[0].productId).subscribe(
+            (productData) => {
+              console.log('detalhes do produto' + JSON.stringify(productData));
+              this.productDetails = productData;
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+
+          // Acessa o endereço de entrega do usuário
+          const address = this.orderDetails.user.addressList[0];
+          console.log('endereço de entrega' + JSON.stringify(address));
         },
         (error) => {
           console.log(error);
         }
       );
-    }
+
+      this.orderService.getOrderById(this.orderId).subscribe(
+        (data) => {
+          console.log('dados' + JSON.stringify(data));
+          this.orderDetails = data;
+          this.paymentDetails = this.orderDetails.payment;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
+
+
+
+
+}
+

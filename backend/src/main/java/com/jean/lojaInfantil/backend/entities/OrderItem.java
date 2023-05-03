@@ -16,16 +16,19 @@ public class OrderItem implements Serializable {
     @EmbeddedId
     private OrderItemPK id = new OrderItemPK();
     private Integer quantity;
-    private BigDecimal price;
+    private BigDecimal subtotal;
+    @Column(name = "total_value")
+    private BigDecimal totalValue;
 
     public OrderItem() {
     }
 
-    public OrderItem(Order order, Product product, Integer quantity, BigDecimal price) {
+    public OrderItem(Order order, Product product, Integer quantity, BigDecimal totalValue, BigDecimal subtotal) {
         id.setOrder(order);
         id.setProduct(product);
         this.quantity = quantity;
-        this.price = price;
+        this.totalValue = totalValue;
+        this.subtotal = subtotal;
     }
 
     @JsonIgnore
@@ -41,10 +44,17 @@ public class OrderItem implements Serializable {
         return id.getProduct();
     }
 
+    public OrderItemPK getId() {
+        return id;
+    }
+
+    public void setId(OrderItemPK id) {
+        this.id = id;
+    }
+
     public void setProduct(Product product) {
         id.setProduct(product);
     }
-
     public Integer getQuantity() {
         return quantity;
     }
@@ -53,12 +63,19 @@ public class OrderItem implements Serializable {
         this.quantity = quantity;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getTotalValue() {
+        return totalValue;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setTotalValue(BigDecimal totalValue) {
+        this.totalValue = totalValue;
     }
 
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
 }

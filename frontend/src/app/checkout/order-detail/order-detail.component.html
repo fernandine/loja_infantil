@@ -13,62 +13,71 @@
         <span class="font-medium text-xl text-900 mr-2">Data:</span>
         <span class="font-medium text-xl text-blue-500">{{ orderDetails.moment }}</span>
     </div>
-    <div class="mb-3 sm:mb-0">
-      <span class="font-medium text-xl text-900 mr-2">cliente:</span>
-      <span class="font-medium text-xl text-blue-500">{{ orderDetails.client }}</span>
-  </div>
       <div>
-          <button pButton pRipple label="Detalhes" icon="pi pi-list" class="p-button-outlined p-button-secondary mr-2"></button>
+          <button pButton pRipple label="Detalhes" routerLink="/account/order-history" icon="pi pi-list" class="p-button-outlined p-button-secondary mr-2"></button>
           <button pButton pRipple label="Imprimir" icon="pi pi-print" class="p-button-outlined p-button-secondary"></button>
       </div>
   </div>
   <div class="border-round surface-border border-1">
-      <ul *ngIf="orderDetails" class="list-none p-0 m-0">
-          <li *ngFor="let item of orderDetails.items" class="p-3 border-bottom-1 surface-border flex align-items-start sm:align-items-center">
-              <img src="assets/images/blocks/ecommerce/ordersummary/order-summary-1-1.png" class="w-3rem sm:w-8rem flex-shrink-0 mr-3 shadow-2" />
-              <div class="flex flex-column">
-                  <span class="text-900 font-medium text-xl mb-2">id: {{item.id.productId}}</span>
-                  <span class="text-600 mb-3">Categoria:  {{ item.category }}</span>
-                  <span class="text-900 font-medium">{{ item.description }}</span>
+      <ul *ngFor="let item of orderDetails.items" class="list-none p-0 m-0">
+          <li class="p-3 border-bottom-1 surface-border flex align-items-start sm:align-items-center">
+            <p-image [src]="productDetails.image" alt="Imagem do produto {{ productDetails.name }}" width="60px" class="flex-shrink-0 mr-3" />
+            <div class="flex flex-column">
+                  <span class="text-900 font-medium text-xl mb-2">{{ item.product.name }}</span>
+                  <span class="text-600 mb-3">Categoria:  {{ productDetails.category }}</span>
+                  <span class="text-900 font-medium">{{ productDetails.description }}</span>
               </div>
-              <span class="text-900 font-medium text-lg ml-auto">{{ item.price }}</span>
+              <span class="text-900 font-medium text-lg ml-auto">{{ productDetails.price }}</span>
           </li>
       </ul>
   </div>
   <div class="flex flex-wrap mt-5 pb-3">
-      <div class="w-full lg:w-6 pl-3">
-          <span class="font-medium text-900">Endereço de Entrega:</span>
-          <div class="flex flex-column text-900 mt-3 mb-5">
-              <span class="mb-1">Celeste Slater</span>
-              <span class="mb-1">606-3727 Ullamcorper. Roseville NH 11523</span>
-              <span>(786) 713-8616</span>
-          </div>
+      <div class="w-full lg:w-full pl-3">
+          <span class="font-bold text-900">Endereço de Entrega:</span>
+          <div *ngIf="orderDetails && orderDetails.user.addressList.length > 0" class="flex flex-column text-900 mt-3 mb-5">
+              <span class="mb-1">{{ orderDetails.user.addressList[0].logradouro }}, {{ orderDetails.user.addressList[0].numero }}</span>
+              <span class="mb-1">{{ orderDetails.user.addressList[0].complemento }}</span>
+              <span>{{ orderDetails.user.addressList[0].bairro }}, {{ orderDetails.user.addressList[0].localidade }} - {{ orderDetails.user.addressList[0].uf }}</span>
+              <span>{{ orderDetails.user.addressList[0].cep }}</span>
+            </div>
+            <div class="grid lg:flex lg:items-center">
 
-          <span class="font-medium text-900">Pagamento:</span>
-          <div class="flex align-items-center mt-3">
-              <img src="assets/images/blocks/ecommerce/ordersummary/visa.png" class="w-4rem mr-3" />
-              <div class="flex flex-column">
-                  <span class="text-900 mb-1">Visa Debit Card</span>
-                  <span class="text-900 font-medium">**** **** **** 1234</span>
+              <!-- Seção de pagamento -->
+              <div class="col-12 lg:col-4">
+                <span class="font-bold text-900">Pagamento:</span>
+                <ul class="flex align-items-center mt-3">
+                  <img src="{{paymentDetails.logo}}" class="w-4rem mr-3" />
+                  <li class="flex flex-column">
+                    <span class="text-900 font-bold mb-1">{{ paymentDetails.cardType }}</span>
+                    <span class="text-900 font-medium  mb-1">{{ paymentDetails.cardNumber }}</span>
+                    <span class="text-900 font-medium">Parcelado em: {{ paymentDetails.installments }}x</span>
+                  </li>
+                </ul>
               </div>
-          </div>
-      </div>
-      <div class="w-full lg:w-6 pl-3 lg:pl-0 lg:pr-3 flex align-items-end mt-5 lg:mt-0">
-          <ul class="list-none p-0 m-0 w-full">
-              <li class="mb-3"></li>
-              <li class="flex justify-content-between mb-3">
-                  <span class="text-900">Subtotal</span>
-                  <span class="text-900 font-medium text-lg">$36.00</span>
-              </li>
-              <li class="flex justify-content-between mb-3">
-                  <span class="text-900">Frete</span>
-                  <span class="text-900 font-medium text-lg">$5.00</span>
-              </li>
-              <li class="flex justify-content-between border-top-1 surface-border py-3">
-                  <span class="text-900 font-medium">Total</span>
-                  <span class="text-900 font-bold text-lg">$41.00</span>
-              </li>
-          </ul>
-      </div>
+
+              <!-- Seção de total -->
+              <div class="col-12 lg:col-4 border surface-border p-4">
+                <ul class="list-none p-0 m-0">
+                  <li class="flex justify-content-between mb-3">
+                    <span class="text-900">Subtotal</span>
+                    <span class="text-900 font-medium text-lg">{{ subtotal | currencyFormat }}</span>
+                  </li>
+                  <li class="flex justify-content-between mb-3">
+                    <span class="text-900">Frete</span>
+                    <span class="text-900 font-medium text-lg">Grátis</span>
+                  </li>
+                  <li class="flex justify-content-between mb-3">
+                    <span class="text-900">Desconto</span>
+                    <span class="text-900 font-medium text-lg">-</span>
+                  </li>
+                  <li class="flex justify-content-between border-top-1 py-3">
+                    <span class="text-900 font-medium">Total</span>
+                    <span class="text-900 font-bold text-red-500 text-lg">{{ totalComDesconto | currencyFormat }}</span>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
   </div>
+</div>
 </div>

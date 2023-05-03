@@ -1,23 +1,20 @@
 package com.jean.lojaInfantil.backend.services;
 
-import com.jean.lojaInfantil.backend.dtos.OrderDto;
-import com.jean.lojaInfantil.backend.dtos.OrderItemDto;
+import com.jean.lojaInfantil.backend.dtos.*;
 import com.jean.lojaInfantil.backend.entities.*;
 import com.jean.lojaInfantil.backend.entities.enums.StatusOrder;
+import com.jean.lojaInfantil.backend.entities.enums.StatusPayment;
 import com.jean.lojaInfantil.backend.repositories.OrderRepository;
-import com.jean.lojaInfantil.backend.services.exceptions.DatabaseException;
+import com.jean.lojaInfantil.backend.repositories.PaymentRepository;
 import com.jean.lojaInfantil.backend.services.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
+
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityNotFoundException;
-import java.time.Instant;
-import java.util.HashSet;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class OrderService {
@@ -35,98 +32,69 @@ public class OrderService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private ProductService productService;
+    private EmailService emailService;
 
     @Autowired
-    private SendGridEmailService emailService;
+    private PaymentRepository paymentRepository;
 
-    @Transactional(readOnly = true)
-    public OrderDto findById(Long id) {
+    public Order find(Long id) {
         Optional<Order> obj = orderRepository.findById(id);
-        Order entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
-        return modelMapper.map(entity, OrderDto.class);
+        return obj.orElseThrow(() -> new ResourceNotFoundException(
+                "Objeto não encontrado! Id: " + id + ", Tipo: " + Order.class.getName()));
     }
 
 
-//    @Transactional
-//    public OrderDto insert(OrderDto dto) {
-//        Order entity = new Order();
-//        User user = authService.authenticated();
-//        copyEntityToDTO(user, entity, dto);
-//        entity = orderRepository.save(entity);
-//        return modelMapper.map(entity, OrderDto.class);
-//    }
+    public Order insert(Order obj) {
+        obj.setId(null);
+        obj.setStatus(StatusOrder.PENDING);
+        obj.setMoment(LocalDate.of(2023,02,03));
+        obj.getPayment().setStatusPayment(StatusPayment.PENDING);
 
-/*
-    @Transactional
-    public OrderDto insert(OrderDto dto) {
-        User user = authService.authenticated();
+        UserDto userDto = userService.findById(obj.getUser().getId());
+        User user = modelMapper.map(userDto, User.class);
+        obj.setUser(user);
 
-        Order order = new Order();
-        order.setUser(user);
-        order.setMoment(Instant.now());
-        order.setStatus(StatusOrder.SHIPPED);
+        obj.getPayment().setOrder(obj);
 
-        Payment payment = dto.getPayment().toEntity();
-        if (payment instanceof PaymentSlip) {  // verifica se o pagamento é feito com boleto
-            PaymentSlip slip = (PaymentSlip) payment;
-            slip.setDueDate(boletoService.calculateDueDate(order.getMoment()));  // define a data de vencimento com base no momento atual do pedido
+        for (OrderItem item : obj.getItems()) {
+            item.getId().setOrder(obj);
+
+//            // Cálculo do subtotal
+//            BigDecimal unitPrice = item.getProduct().getUnitPrice();
+//            if (unitPrice != null) {
+//                BigDecimal subtotal = unitPrice.multiply(new BigDecimal(item.getQuantity()));
+//                item.setSubtotal(subtotal);
+//            } else {
+//                // Caso em que o preço unitário é nulo
+//                BigDecimal defaultPrice = BigDecimal.ZERO; // Defina um valor padrão para o preço unitário
+//                BigDecimal subtotal = defaultPrice.multiply(new BigDecimal(item.getQuantity()));
+//                item.setSubtotal(subtotal);
+//                // Ou, se preferir, você pode lançar uma exceção personalizada
+//                 throw new ResourceNotFoundException("O preço unitário do produto é nulo");
+//            }
+
+
+//            // Cálculo do totalValue
+//            BigDecimal totalValue = subtotal.subtract((BigDecimal) item.getProduct().getDiscounts());
+//            item.setTotalValue(totalValue);
         }
 
-        payment.setOrder(order);
-        order.setPayment(payment);
-
-        Set<OrderItem> items = new HashSet<>();
-        for (OrderItemDto itemDto : dto.getItems()) {
-            Product product = productService.find(itemDto.getProductId());  // busca o produto correspondente ao item
-            OrderItem item = new OrderItem(order, product, itemDto.getQuantity(), product.getPrice());  // cria o objeto OrderItem e adiciona à lista
-            items.add(item);
+        if (obj.getPayment() instanceof PaymentSlip) {
+            PaymentSlip slip = (PaymentSlip) obj.getPayment();
+            SlipService.expirationPayment(slip, obj.getMoment());
         }
-        order.setItems(items);
+        obj = orderRepository.save(obj);
+        paymentRepository.save(obj.getPayment());
 
-        orderRepository.save(order);
+        //Cria e envia o e-mail de confirmação do pedido
+        EmailDto emailDto = new EmailDto();
+        emailDto.setTo(obj.getUser().getEmail());
+        emailDto.setSubject("Pedido " + obj.getId() + " confirmado!");
+        emailDto.setBody("Seu pedido foi concluído com sucesso! Obrigado por comprar conosco.");
+        emailService.sendEmail(emailDto);
 
-        emailService.sendEmail(dto);
-
-        return fromEntity(order);
+        return obj;
     }
 
-
-    @Transactional
-    public OrderDto update(Long id, OrderDto dto) {
-        try {
-            Order entity = orderRepository.getReferenceById(id);
-            User user = authService.authenticated();
-            copyEntityToDTO(user, entity, dto);
-            return modelMapper.map(entity, OrderDto.class);
-        } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Id not found " + id);
-        }
-    }
-
-    public void delete(Long id) {
-        try {
-            orderRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new ResourceNotFoundException("Id not found " + id);
-        } catch (DataIntegrityViolationException e) {
-            throw new DatabaseException("Integrity violation");
-        }
-    }
-
-    public void copyEntityToDTO(User user, Order entity, OrderDto dto) {
-
-        entity.setMoment(dto.getMoment());
-        entity.setStatus(dto.getStatus());
-       // entity.setItems(dto.getItems());
-      //  entity.setPayment(dto.getPayment());
-
-        user.setId(userService.getAuthUser().getId());
-        user.setFirstName(userService.getAuthUser().getFirstName());
-        user.setLastName(userService.getAuthUser().getLastName());
-        user.setEmail(userService.getAuthUser().getEmail());
-        entity.setUser(user);
-    }
-*/
 }
 

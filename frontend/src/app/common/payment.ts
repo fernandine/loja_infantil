@@ -1,9 +1,14 @@
-export class Payment {
+export interface Payment {
   id: number;
+  statusPayment: string;
   moment: Date;
-
-  constructor(id: number, moment: Date) {
-    this.id = id;
-    this.moment = moment;
-  }
+  installments?: number;
+  cardHolderName?: string;
+  cardNumber?: string;
+  expiration?: Date;
+  keyType?: string;
+  name?: string;
+  paymentDate?: Date;
+  cardType: string;
+  logo: string;
 }

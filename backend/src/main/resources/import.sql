@@ -12,6 +12,12 @@ INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 1);
 INSERT INTO tb_user_role (user_id, role_id) VALUES (2, 2);
 
 -- -----------------------------------------------------
+-- Endereços
+-- -----------------------------------------------------
+INSERT INTO tb_address(cep, logradouro,complemento, bairro, localidade, uf, user_id) VALUES ('34001090','Rua Levy Firmino Alves', 'casa A', 'Parque Santo Antônio', 'Nova Lima', 'MG', 2);
+INSERT INTO tb_address(cep, logradouro,complemento, bairro, localidade, uf, user_id) VALUES ('34012856','Rua Seis', 'casa B', 'Santa Rita', 'Nova Lima', 'MG', 1);
+
+-- -----------------------------------------------------
 -- Categorias
 -- -----------------------------------------------------
 INSERT INTO tb_category(name) VALUES ('Bebês');
@@ -210,31 +216,26 @@ INSERT INTO product (sku, name, description, image, favorite, units_in_stock, un
 INSERT INTO product (sku, name, description, image, favorite, units_in_stock, unit_price, category_id, date_created, sales_count, product_color, product_brand, product_size) VALUES ('CPC020', 'Capa de Chuva Infantil', 'Capa impermeável para proteger da chuva', 'https://res.cloudinary.com/dsn6s7rnw/image/upload/v1681738897/img_demo_lrwwpx.jpg', false, 50, 79.99, 8, '2022-03-20', 0, 'LARANJA', 'LILICA_RIPILICA', 'GG' );
 
 -- -----------------------------------------------------
--- Endereços
--- -----------------------------------------------------
-INSERT INTO tb_address(cep, logradouro,complemento, bairro, localidade, uf, user_id) VALUES ('34001090','Rua Levy Firmino Alves', 'casa A', 'Parque Santo Antônio', 'Nova Lima', 'MG', 2);
-INSERT INTO tb_address(cep, logradouro,complemento, bairro, localidade, uf, user_id) VALUES ('34012856','Rua Seis', 'casa B', 'Santa Rita', 'Nova Lima', 'MG', 1);
-
--- -----------------------------------------------------
 -- Pedidos
 -- -----------------------------------------------------
-INSERT INTO tb_order (moment, status, user_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-07-25T13:00:00Z', 1, 1);
-INSERT INTO tb_order (moment, status, user_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-07-29T15:50:00Z', 3, 2);
-INSERT INTO tb_order (moment, status, user_id) VALUES (TIMESTAMP WITH TIME ZONE '2022-08-03T14:20:00Z', 0, 1);
+INSERT INTO tb_order (moment, status, user_id) VALUES ('2022-01-02', 1, 1);
+INSERT INTO tb_order (moment, status, user_id) VALUES ('2023-02-11', 3, 2);
+INSERT INTO tb_order (moment, status, user_id) VALUES ('2022-12-08', 0, 3);
+
+-- -----------------------------------------------------
+-- Pagamentos
+-- -----------------------------------------------------
+INSERT INTO tb_payment_credit_card (status_payment, moment, order_id, installments, card_holder_name, card_number, card_type, logo) VALUES (1, '2023-04-30', 1, 6,  'Fulano de Tal', '1234 5678 9012 3456', 'VISA', 'https://res.cloudinary.com/dsn6s7rnw/image/upload/v1683028505/storefront-1-25_zfchsg.svg');
+INSERT INTO tb_payment_pix (status_payment, moment, order_id, expiration, key_type, name) VALUES (0, '2023-04-30', 2, '2023-05-01', 'CPF', '123.456.789-00');
+INSERT INTO tb_payment_slip (status_payment, moment, order_id, expiration, payment_date) VALUES (2, '2023-04-30', 3, '2023-05-05', '2023-05-04');
 
 -- -----------------------------------------------------
 -- Itens de pedidos
 -- -----------------------------------------------------
-INSERT INTO tb_order_item (order_id, product_id, quantity, price) VALUES (1, 1, 2, 90.5);
-INSERT INTO tb_order_item (order_id, product_id, quantity, price) VALUES (1, 2, 1, 1250.0);
-INSERT INTO tb_order_item (order_id, product_id, quantity, price) VALUES (2, 3, 1, 1250.0);
-INSERT INTO tb_order_item (order_id, product_id, quantity, price) VALUES (3, 4, 1, 90.5);
-
--- -----------------------------------------------------
--- Instante do Pagamento
--- -----------------------------------------------------
-INSERT INTO tb_payment (order_id, moment) VALUES (1, TIMESTAMP WITH TIME ZONE '2022-07-25T15:00:00Z');
-INSERT INTO tb_payment (order_id, moment) VALUES (2, TIMESTAMP WITH TIME ZONE '2022-07-30T11:00:00Z');
+INSERT INTO tb_order_item (order_id, product_id, quantity, subtotal, total_value) VALUES (1, 1, 2, 39.2, 90.5);
+INSERT INTO tb_order_item (order_id, product_id, quantity, subtotal, total_value) VALUES (1, 2, 1, 23.5, 1250.0);
+INSERT INTO tb_order_item (order_id, product_id, quantity, subtotal, total_value) VALUES (2, 3, 1, 50.0, 1250.0);
+INSERT INTO tb_order_item (order_id, product_id, quantity, subtotal, total_value) VALUES (3, 4, 1, 45.0, 90.5);
 
 -- -----------------------------------------------------
 -- Countries

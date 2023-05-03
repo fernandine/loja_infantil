@@ -1,61 +1,47 @@
 package com.jean.lojaInfantil.backend.entities;
 
+import com.fasterxml.jackson.annotation.*;
+import com.jean.lojaInfantil.backend.entities.enums.PaymentType;
+import com.jean.lojaInfantil.backend.entities.enums.StatusOrder;
+import com.jean.lojaInfantil.backend.entities.enums.StatusPayment;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import java.time.Instant;
-import java.util.Objects;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_payment")
-public class Payment {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type", include = JsonTypeInfo.As.EXTERNAL_PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PaymentSlip.class, name = "paymentSlip"),
+        @JsonSubTypes.Type(value = PaymentCreditCard.class, name = "paymentCreditCard")
+})
+public abstract class Payment implements Serializable {
 
     @Id
     private Long id;
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant moment;
+    @Column(name = "status_payment")
+    private StatusPayment statusPayment;
 
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private LocalDate moment;
+
+    @JsonIgnore
     @OneToOne
     @MapsId
     @JoinColumn(name = "order_id")
     private Order order;
 
-    public Payment(){
-    }
-
-    public Payment(Long id, Instant moment, Order order) {
-        this.id = id;
-        this.moment = moment;
-        this.order = order;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Instant getMoment() {
-        return moment;
-    }
-
-    public void setMoment(Instant moment) {
-        this.moment = moment;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Payment payment)) return false;
-        return Objects.equals(id, payment.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public abstract void processPayment();
+    protected void updateOrderStatus(StatusOrder newStatus) {
+        this.order.setStatus(newStatus);
     }
 }

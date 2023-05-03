@@ -1,5 +1,6 @@
 package com.jean.lojaInfantil.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class Discount implements Serializable {
     @Column(name = "discount_value")
     private BigDecimal discountValue;
 
+    @JsonFormat(pattern="dd/MM/yyyy")
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
 

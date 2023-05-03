@@ -42,9 +42,9 @@ public class ProductController {
     }
 
     // URL = /products/search/?
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<ProductDto> searchById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(service.navigateByUrl(id));
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(service.findById(id));
     }
 
     // URL = /products/best-sellers?limit=?

@@ -7,7 +7,7 @@ export class Order {
   id!: number;
   moment!: Date;
   statusOrder!: StatusOrder;
-  client!: User;
+  user!: User;
   payment!: Payment;
   items!: OrderItem[];
 
@@ -15,14 +15,14 @@ export class Order {
     id: number,
     moment: Date,
     statusOrder: StatusOrder,
-    client: User,
+    user: User,
     payment: Payment,
     items: OrderItem[]
   ) {
     this.id = id;
     this.moment = moment;
     this.statusOrder = statusOrder;
-    this.client = client;
+    this.user = user;
     this.payment = payment;
     this.items = items;
   }

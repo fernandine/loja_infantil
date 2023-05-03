@@ -31,24 +31,21 @@ public class User implements UserDetails, Serializable {
     private String lastName;
     private String cpf;
     private String phone;
+    @JsonFormat(pattern="dd/MM/yyyy")
     @Column(name = "birth_day")
     private LocalDate birthDay;
     @Column(unique = true)
     private String email;
+    @JsonIgnore
     private String password;
-
     private Gender gender;
-
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Review> reviews = new ArrayList<>();
-
     @JsonIgnore
     @OneToMany(mappedBy="user")
     private List<Order> orders = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     public List<Address> addressList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -23,7 +23,6 @@ public class StateService {
     public Page<StateDto> findAllPaged(Pageable pageable) {
         Page<State> page = repository.findAll(pageable);
         return page.map(StateDto::new);
-
     }
 
     @Transactional(readOnly = true)

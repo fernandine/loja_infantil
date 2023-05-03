@@ -1,9 +1,6 @@
 package com.jean.lojaInfantil.backend.services;
 
-import com.jean.lojaInfantil.backend.dtos.DiscountDto;
 import com.jean.lojaInfantil.backend.dtos.ProductDto;
-import com.jean.lojaInfantil.backend.dtos.ReviewDto;
-import com.jean.lojaInfantil.backend.entities.Category;
 import com.jean.lojaInfantil.backend.entities.Product;
 import com.jean.lojaInfantil.backend.entities.enums.Brands;
 import com.jean.lojaInfantil.backend.entities.enums.Colors;
@@ -44,7 +41,7 @@ public class ProductService {
     public List<ProductDto> findAll() {
         List<Product> list = repository.findAll();
         return list.stream()
-                .map(order -> modelMapper.map(order, ProductDto.class))
+                .map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -52,12 +49,12 @@ public class ProductService {
     public List<ProductDto> findByFavorite(boolean notFavorite) {
         List<Product> list = repository.find(notFavorite);
         return list.stream()
-                .map(order -> modelMapper.map(order, ProductDto.class))
+                .map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public ProductDto navigateByUrl(Long id) {
+    public ProductDto findById(Long id) {
         Optional<Product> obj = repository.findById(id);
         Product product = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return modelMapper.map(product, ProductDto.class);
@@ -67,7 +64,7 @@ public class ProductService {
     public List<ProductDto> findByName(String name) {
         List<Product> list = repository.findByNameCategory(name);
         return list.stream()
-                .map(order -> modelMapper.map(order, ProductDto.class))
+                .map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -76,7 +73,7 @@ public class ProductService {
     public List<ProductDto> getBestSellers(int limit) {
         List<Product> list = repository.findBestSellers(PageRequest.of(0, limit));
         return list.stream()
-                .map(order -> modelMapper.map(order, ProductDto.class))
+                .map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -85,7 +82,7 @@ public class ProductService {
     public List<ProductDto> findMostRecentProductsByCreationDate(int limit) {
         List<Product> list = repository.findMostRecentProductsByCreationDate(PageRequest.of(0, limit));
         return list.stream()
-                .map(order -> modelMapper.map(order, ProductDto.class))
+                .map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -98,7 +95,7 @@ public class ProductService {
             list = repository.findByBrandsAndColorsAndSizesAndCategoryId(productBrands, productColors, productSizes, categoryId);
         }
         return list.stream()
-                .map(order -> modelMapper.map(order, ProductDto.class))
+                .map(product -> modelMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -146,7 +143,5 @@ public class ProductService {
         entity.setDateCreated(dto.getDateCreated());
         entity.setUnitsInStock(dto.getUnitsInStock());
         entity.setUnitPrice(dto.getUnitPrice());
-        entity.setLastUpdated(dto.getLastUpdated());
-
     }
 }

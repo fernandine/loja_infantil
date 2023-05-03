@@ -1,6 +1,7 @@
 import { Product } from './Product';
 
 export class CartItem {
+  [x: string]: any;
 
   id: number;
   name: string;

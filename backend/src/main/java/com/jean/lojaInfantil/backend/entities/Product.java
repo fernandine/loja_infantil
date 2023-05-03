@@ -1,5 +1,6 @@
 package com.jean.lojaInfantil.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jean.lojaInfantil.backend.entities.enums.Brands;
 import com.jean.lojaInfantil.backend.entities.enums.Colors;
@@ -12,6 +13,7 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -42,11 +44,9 @@ public class Product extends RepresentationModel<Product> implements Serializabl
     @Column(name = "units_in_stock")
     private int unitsInStock;
     @Column(name = "date_created")
-    @CreationTimestamp
-    private Date dateCreated;
-    @Column(name = "last_updated")
-    @UpdateTimestamp
-    private Date lastUpdated;
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private LocalDate dateCreated;
+
     @Column(name = "sales_count")
     private int salesCount;
     @Enumerated(EnumType.STRING)
@@ -59,17 +59,28 @@ public class Product extends RepresentationModel<Product> implements Serializabl
     @Column(name = "product_size ")
     private Sizes productSize;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<Review> reviews = new ArrayList<>();
-
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<Discount> discounts = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "id.product")
+    @OneToMany(mappedBy = "id.product", fetch = FetchType.EAGER)
     private Set<OrderItem> items = new HashSet<>();
+
+//    @JsonIgnore
+//    public List<Order> getOrders() {
+//        List<Order> list = new ArrayList<>();
+//        for(OrderItem orderItem : items) {
+//            list.add(orderItem.getOrder());
+//        }
+//        return list;
+//    }
+
 }
