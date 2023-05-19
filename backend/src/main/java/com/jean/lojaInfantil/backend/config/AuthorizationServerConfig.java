@@ -57,7 +57,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		.withClient("ecommerce")
 		.secret(passwordEncoder.encode("ecommerce123"))
 		.scopes("read", "write")
-		.authorizedGrantTypes("password")
+		.authorizedGrantTypes("password", "refresh_token")
 		.accessTokenValiditySeconds(jwtDuration);
 	}
 
@@ -72,4 +72,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		.accessTokenConverter(accessTokenConverter)
 		.tokenEnhancer(chain);
 	}
+
 }

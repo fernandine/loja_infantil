@@ -1,3 +1,4 @@
+import { Address } from "./address";
 import { Gender } from "./enums/gender";
 import { Role } from "./role";
 
@@ -12,4 +13,5 @@ export interface User {
   phone: string;
   birthDay: string;
   roles: Role[];
+  addressList: Address[];
 }

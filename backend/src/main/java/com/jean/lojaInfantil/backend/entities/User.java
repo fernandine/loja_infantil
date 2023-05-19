@@ -31,8 +31,8 @@ public class User implements UserDetails, Serializable {
     private String lastName;
     private String cpf;
     private String phone;
-    @JsonFormat(pattern="dd/MM/yyyy")
-    @Column(name = "birth_day")
+    @Column(name = "birth_day",
+            columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDate birthDay;
     @Column(unique = true)
     private String email;
@@ -46,7 +46,7 @@ public class User implements UserDetails, Serializable {
     @OneToMany(mappedBy="user")
     private List<Order> orders = new ArrayList<>();
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    public List<Address> addressList = new ArrayList<>();
+    private List<Address> addressList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_user_role",

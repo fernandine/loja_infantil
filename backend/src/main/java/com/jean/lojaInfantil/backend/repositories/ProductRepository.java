@@ -29,6 +29,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p ORDER BY p.dateCreated DESC")
     List<Product> findMostRecentProductsByCreationDate(Pageable pageable);
 
+    @Query("SELECT p FROM Product p JOIN p.category c WHERE c.name = :name")
+    List<Product> findByNameCategory(@Param("name") String name);
+
     //FILTRA OS PRODUTOS POR MARCA, COR E TAMANHO
     @Query("SELECT DISTINCT p FROM Product p " +
             "JOIN p.category c " +
@@ -42,7 +45,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("productSize") List<Sizes> productSizes,
             @Param("categoryId") Long categoryId
     );
-
-    @Query("SELECT p FROM Product p JOIN p.category c WHERE c.name = :name")
-    List<Product> findByNameCategory(@Param("name") String name);
 }

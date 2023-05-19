@@ -1,14 +1,24 @@
-export class OrderItem {
-  id: { orderId: number; productId: number };
-  quantity: number;
-  subtotal: number;
-  totalValue: number;
 
-  constructor(orderId: number, productId: number, quantity: number, subtotal: number, totalValue: number) {
-    this.id = { orderId, productId };
-    this.quantity = quantity;
-    this.subtotal = subtotal;
-    this.totalValue = totalValue;
-  }
+import { CartItem } from "./cart-item";
+
+export interface OrderItem {
+
+  productId: string;
+  orderId: string;
+  imageUrl: string;
+  price: number;
+  quantity: number;
+  totalValue: number;
+  subtotal: number;
+/*
+
+  constructor(cartItem: CartItem) {
+      this.imageUrl = cartItem.imageCart;
+      this.quantity = cartItem.quantity;
+      this.price = cartItem.price;
+      this.productId = cartItem.id;
+      this.orderId = cartItem.id;
+  }*/
 }
+
 

@@ -1,195 +1,115 @@
 import { Component } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { CartItem } from 'src/app/common/cart-item';
-import { AddressService } from 'src/app/services/address.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { Address } from '../../common/address';
-import { StorageService } from '../../services/storage.service';
-import { CartService } from '../../services/cart.service';
-import Decimal from 'decimal.js';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Order } from 'src/app/common/order';
+import Decimal from 'decimal.js';
 import { OrderService } from 'src/app/services/order.service';
-import { Payment } from 'src/app/common/payment';
+import { StorageService } from 'src/app/services/storage.service';
+import { CartItem } from 'src/app/common/cart-item';
+import { CartService } from 'src/app/services/cart.service';
 import { OrderItem } from 'src/app/common/order-item';
-import { StatusOrder } from 'src/app/common/enums/status-order.enum';
+import { AddressService } from '../../services/address.service';
+
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss']
+  styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent {
 
-  public cartItems!: CartItem[];
-  public cartItems$!: Observable<CartItem[]>;
-  cartItem!: CartItem;
-  public discountValue: Decimal = new Decimal(0);
+  cartItems: CartItem[] = [];
 
   subtotal: Decimal = new Decimal(0);
-  total: Decimal = new Decimal(0);
-
-  address!: Address;
+  total!: number;
   currentUser: any;
-  userForm!: FormGroup;
-  orderId!: number;
+  discountValue: Decimal = new Decimal(0);
+  selectedValue!: string;
 
-  addressForm = this.formBuilder.group({
-    id: [-1],
-    cep: ['', Validators.required],
-    logradouro: ['', Validators.required],
-    complemento: [''],
-    bairro: ['', Validators.required],
-    localidade: ['', Validators.required],
-    uf: ['', Validators.required],
-    userId: [-1]
-  });
+  orderForm!: FormGroup;
+  order!: Order;
 
   constructor(
+    private formBuilder: FormBuilder,
+    private storageService: StorageService,
+    private orderService: OrderService,
     private router: Router,
     private cartService: CartService,
-    private formBuilder: NonNullableFormBuilder,
-    private addressService: AddressService,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private notificationService: NotificationService,
-    private storageService: StorageService,
-    private orderService: OrderService
-    ) {}
 
-  ngOnInit(): void {
-    this.discountValue = this.cartService.getDiscountValue();
+  ) {}
 
-    this.cartItems = this.cartService.getStoredCartItems();
-
-    this.cartItems$ = this.cartService.cartItems$;
-
-    const addressId = this.route.snapshot.params['id'];
-    if (addressId) {
-      this.loadAddress(addressId);
-    }
+  ngOnInit() {
     this.currentUser = this.storageService.getItem('currentUser');
 
-    this.userForm = this.formBuilder.group({
-     email: ['', [Validators.required, Validators.email]],
-     firstName: ['', Validators.required],
-     lastName: ['', Validators.required],
-     phone: ['', Validators.required],
-   });
+    this.cartService.cartItems$.subscribe(cartItems => {
+      this.cartItems = cartItems;
+      this.subtotal = this.cartService.getSubtotal();
+      this.discountValue = this.cartService.getDiscountValue();
+      this.getTotal();
+    });
 
-   this.userForm.patchValue(this.currentUser);
+    this.orderForm = this.formBuilder.group({
+
+      user: this.formBuilder.group({
+        firstName: new FormControl('', [Validators.required]),
+        lastName: new FormControl('', [Validators.required]),
+        phone: new FormControl('', [Validators.required]),
+        email: new FormControl('', [Validators.required, Validators.email]),
+        addressList: this.formBuilder.group({
+          cep: new FormControl('', [Validators.required]),
+          logradouro: new FormControl('', [Validators.required]),
+          complemento: new FormControl(),
+          bairro: new FormControl('', [Validators.required]),
+          localidade: new FormControl('', [Validators.required]),
+          uf: new FormControl('', [Validators.required])
+        })
+      }),
+      payment: this.formBuilder.group({
+        installments: new FormControl(null, [Validators.required]),
+        cardHolderName: new FormControl('', [Validators.required]),
+        cardNumber: new FormControl(null, [Validators.required]),
+        cvc: new FormControl(null, [Validators.required]),
+        expiration: new FormControl(),
+        cardType: new FormControl('', [Validators.required])
+      }),
+
+    });
   }
 
-    loadAddress(addressId: number) {
-      this.addressService.getByUserId(addressId)
-        .subscribe(
-          (addresses: Address[]) => {
-            const address = addresses[0];
-            this.addressForm.setValue({
-              id: address?.id ?? null,
-              cep: address.cep,
-              logradouro: address.logradouro,
-              complemento: address?.complemento ?? '',
-              bairro: address.bairro,
-              localidade: address.localidade,
-              uf: address.uf,
-              userId: address?.userId ?? null
-            });
-          },
-          error => {
-            console.error('Erro ao buscar endereço pelo ID:', error);
-          }
-        );
-    }
 
-    onCepBlur() {
-      const cep = this.addressForm.get('cep')?.value;
-      if (cep && this.addressForm) {
-        this.addressService.getAddressByCEP(cep)
-          .subscribe(
-            (address: Address) => {
-              this.addressForm.patchValue({
-                logradouro: address.logradouro,
-                complemento: address.complemento,
-                bairro: address.bairro,
-                localidade: address.localidade,
-                uf: address.uf
-              });
-            },
-            error => {
-              console.error('Erro ao buscar endereço pelo CEP:', error);
-            }
-          );
-      }
-    }
-
-    getSubtotal(): Decimal {
-      let subtotal = new Decimal(0);
-
-      this.cartItems$.subscribe((cartItems) => {
-        cartItems.forEach((item) => {
-          subtotal = subtotal.plus(new Decimal(item.price).times(item.quantity));
-        });
-        // Armazena o valor subtotal no estado do componente
-        this.subtotal = subtotal;
-      });
-
-      return subtotal || new Decimal(0);
-    }
-
-    public getTotal(): Decimal {
-  const subtotal = this.getSubtotal();
-  const discountAmount = subtotal.times(this.discountValue);
-  const total = subtotal.minus(discountAmount);
-
-  // Armazena o valor total no estado do componente
-  this.total = total;
-
-  return total;
-}
-
-  public decreaseQuantity(item: CartItem): void {
-      if (item.quantity > 1) {
-          item.quantity--;
-      }
+  updateDiscountValue(discountValue: number) {
+    this.discountValue = new Decimal(discountValue);
+    this.getTotal();
   }
 
   getDiscountPercentage(discountValue: Decimal): string {
     return `${new Decimal(discountValue).times(100)}%`;
   }
 
+  getTotal() {
+    const subtotal = this.subtotal;
+    const discountValue = new Decimal(this.discountValue);
+    const discountAmount = subtotal.times(this.discountValue);
+    if (discountValue.toNumber() > 0) {
+      this.total = subtotal.minus(discountAmount).toNumber();
+    } else {
+      this.total = subtotal.toNumber();
+    }
+  }
+
+  getDiscountAmount(): number {
+    const discountAmount = new Decimal(this.subtotal).times(this.discountValue);
+    return discountAmount.toNumber();
+  }
+
   onSubmit() {
-    const orderItems: OrderItem[] = [];
-
-    // Cria os objetos OrderItem a partir dos objetos CartItem
- this.cartItems.forEach((cartItem) => {
-  const orderId = cartItem['order'].id;
-  const productId = cartItem['product'].id;
-
-  const orderItem = new OrderItem(
-    orderId,
-    productId,
-    cartItem.quantity,
-    cartItem['subtotal'],
-    cartItem['totalValue']
-  );
-
-  orderItems.push(orderItem);
-});
-
-
-    const order: Order = {
-      moment: new Date(),
-      statusOrder: StatusOrder.PENDING,
-      user: this.userForm.value,
-      items: orderItems,
-      payment: { id: 1, moment: new Date() } as Payment,
-      id: 0
-    };
-
-    this.orderService.createOrder(order).subscribe(
+    const orderData: Order = this.orderForm.value;
+    this.orderService.createOrder(this.order).subscribe(
       (response) => {
         // Lida com a resposta do backend e navega para a página de confirmação do pedido
         const orderId = response.id;
@@ -197,26 +117,37 @@ export class OrderComponent {
       },
       (error) => {
         console.error('Erro ao criar pedido:', error);
-        // Adicione um tratamento de erro adequado aqui
       }
     );
+  }
+  value1!: string;
+
+  checked1: boolean = true;
+  checked2: boolean = false;
+
+  //-------------
+
+  orderItem!: OrderItem;
+
+
+  installments = [1, 2, 3, 4, 5, 6];
+  selectedInstallments = new FormControl();
+
+  calculateInstallments(installments: number) {
+    const installmentsValues = [];
+    const installmentValue = this.orderItem.totalValue / installments;
+    for (let i = 0; i < installments; i++) {
+      if (i === installments - 1) {
+        // última parcela pode ter diferença de centavos
+        installmentsValues.push(
+          this.orderItem.totalValue - installmentValue * i
+        );
+      } else {
+        installmentsValues.push(installmentValue);
+      }
     }
 
-  selectedValue: string = '';
+    return installmentsValues;
+  }
 
-  selectedValue2: string = '';
-  ccRegex: RegExp = /[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/;
-  card1: string = '**** **** **** 1234';
-
-  card2: string = '**** **** **** 1235';
-
-  cc!: string;
-
-  cvc!: string;
-
-  cvcRegex: RegExp = /^[0-9]{3,4}$/;
-
-
-
-  expRegex: RegExp = /[0-9]{2}\/[0-9]{2}$/;
 }

@@ -1,12 +1,14 @@
 package com.jean.lojaInfantil.backend.entities;
 
 import com.fasterxml.jackson.annotation.*;
+import com.jean.lojaInfantil.backend.entities.enums.KeyTypePix;
 import com.jean.lojaInfantil.backend.entities.enums.PaymentType;
 import com.jean.lojaInfantil.backend.entities.enums.StatusOrder;
 import com.jean.lojaInfantil.backend.entities.enums.StatusPayment;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -18,10 +20,10 @@ import java.time.LocalDate;
 @JsonTypeName("paymentPix")
 public class PaymentPix extends Payment {
 
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private LocalDate expiration;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant expiration;
     @Column(name = "key_type")
-    private String keyType;
+    private KeyTypePix keyType;
     private String name;
 
     public void processPayment() {

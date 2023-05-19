@@ -1,13 +1,13 @@
 import { Product } from './Product';
 
 export class CartItem {
-  [x: string]: any;
 
-  id: number;
+  id: string;
   name: string;
   imageCart: string;
   price: number;
   quantity: number;
+
   color: string;
   size: string;
   brand: string;
@@ -22,4 +22,5 @@ export class CartItem {
       this.brand = product.productBrand;
       this.quantity = 1;
   }
+
 }

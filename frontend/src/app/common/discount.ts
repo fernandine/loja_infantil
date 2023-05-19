@@ -7,5 +7,5 @@ export interface Discount {
      discountValue: Decimal,
      expirationDate: Date,
      discountedPrice: Decimal,
-     productId: Product
+     productId: number
 }

@@ -6,6 +6,7 @@ import com.jean.lojaInfantil.backend.entities.enums.StatusOrder;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -16,10 +17,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @JsonTypeName("paymentSlip")
 public class PaymentSlip extends Payment {
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private LocalDate expiration;
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private LocalDate paymentDate;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant expiration;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant paymentDate;
 
     @Override
     public void processPayment() {

@@ -1,6 +1,8 @@
 package com.jean.lojaInfantil.backend.controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.jean.lojaInfantil.backend.dtos.OrderDto;
 import com.jean.lojaInfantil.backend.entities.Order;
 import com.jean.lojaInfantil.backend.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +20,17 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-@GetMapping("/{id}")
-    public ResponseEntity<Order> find(@PathVariable Long id) {
-    Order obj = orderService.find(id);
-        return ResponseEntity.ok().body(obj);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<OrderDto> findById(@PathVariable Long id) {
+        OrderDto dto = orderService.findById(id);
+        return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<Void> insert(@Valid @RequestBody Order obj) {
-        obj = orderService.insert(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+    public ResponseEntity<OrderDto> insert(@RequestBody @Valid OrderDto dto) {
+        dto = orderService.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
     }
 }

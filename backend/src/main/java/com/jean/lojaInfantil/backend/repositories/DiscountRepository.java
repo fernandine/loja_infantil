@@ -18,4 +18,5 @@ public interface DiscountRepository extends JpaRepository<Discount, Long> {
 
     @Query("SELECT d FROM Discount d WHERE expirationDate = :date")
     List<Discount> getExpiringDiscounts(@Param("date") LocalDate date);
+
 }

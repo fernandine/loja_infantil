@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -51,32 +52,30 @@ public class DiscountService {
             Discount discount = optionalDiscount.get();
 
             // Verifica se o cupom ainda é válido
-            if (discount.getExpirationDate().isAfter(LocalDate.now())) {
+            if (discount.getExpirationDate().isAfter(Instant.now())) {
                 BigDecimal discountPercentage = discount.getDiscountValue();
                 BigDecimal discountAmount = totalPrice.multiply(discountPercentage);
-                BigDecimal discountedPrice = totalPrice.subtract(discountAmount);
+
+                ModelMapper modelMapper = new ModelMapper();
+                DiscountDto dto = modelMapper.map(discount, DiscountDto.class);
 
                 // Cria e retorna um DTO com as informações do desconto aplicado
-                DiscountDto dto = new DiscountDto(discount);
                 dto.setDiscountValue(discountPercentage);
-                dto.setDiscountedPrice(discountedPrice);
                 return dto;
             }
         }
-
         // Se o cupom não for válido ou não existir, retorna nulo
         return null;
     }
 
+
     @Transactional
     public DiscountDto insert(DiscountDto dto) {
         Discount entity = new Discount();
+
         entity.setCode(dto.getCode());
         entity.setDiscountValue(dto.getDiscountValue());
         entity.setExpirationDate(dto.getExpirationDate());
-
-        Product product = productRepository.getReferenceById(dto.getProductId());
-        entity.setProduct(product);
 
         entity = discountRepository.save(entity);
         return modelMapper.map(entity, DiscountDto.class);

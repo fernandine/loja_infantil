@@ -14,7 +14,7 @@ public class SlipService {
         LocalDateTime instant = instantOrder.atStartOfDay();
         instant = instant.plusDays(3);
         Date expiration = Date.valueOf(instant.toLocalDate());
-        slip.setExpiration(expiration.toLocalDate());
+        slip.setExpiration(expiration.toInstant());
     }
 }
 

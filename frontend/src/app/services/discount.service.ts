@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Discount } from '../common/discount';
 import Decimal from 'decimal.js';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DiscountService {
 
-  private baseUrl = 'http://localhost:8080/discounts';
+  private baseUrl = environment.shopUrl + '/discounts';
 
   constructor(private http: HttpClient) {}
 

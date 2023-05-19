@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Category } from '../common/category';
 
 @Injectable({
@@ -10,7 +11,7 @@ export class CategoryService {
   private selectedCategory: BehaviorSubject<Category | null> =
     new BehaviorSubject<Category | null>(null);
 
-  private baseUrl = 'http://localhost:8080/categories';
+  private baseUrl = environment.shopUrl + '/categories';
 
   constructor(private http: HttpClient) {}
 

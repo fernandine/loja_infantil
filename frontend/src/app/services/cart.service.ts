@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Decimal from 'decimal.js';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { CartItem } from '../common/cart-item';
 import { StorageService } from './storage.service';
 
@@ -14,7 +14,7 @@ export class CartService {
   public totalQuantity = new BehaviorSubject<number>(0);
   private storage = new StorageService();
   private discountValue: Decimal = new Decimal(0);
-
+  public totalValue: Decimal = new Decimal(0);
   constructor() {}
 
   addCartItem(cartItem: CartItem) {
@@ -35,6 +35,12 @@ export class CartService {
   getDiscountValue(): Decimal {
     return this.discountValue;
   }
+  setTotalValue(value: number) {
+    this.totalValue = new Decimal(value);
+  }
+  getTotalValue() {
+    return this.totalValue.toNumber();
+  }
 
   getStoredCartItems(): CartItem[] {
     return this.storage.getItem('cartItems') || [];
@@ -46,6 +52,20 @@ export class CartService {
 
   public addToCart(cartItem: CartItem) {
     this.addCartItem(cartItem);
+  }
+
+  public removeCartItem(cartItem: CartItem) {
+    const currentCartItems = this.cartItemsSubject.getValue();
+    const updatedCartItems = currentCartItems.filter(item => item.id !== cartItem.id);
+    this.cartItemsSubject.next(updatedCartItems);
+  }
+
+  public getSubtotal(): Decimal {
+    let subtotal = new Decimal(0);
+    this.cartItemsSubject.getValue().forEach((item) => {
+      subtotal = subtotal.plus(new Decimal(item.price).times(item.quantity));
+    });
+    return subtotal;
   }
 
 }

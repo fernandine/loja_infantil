@@ -34,11 +34,8 @@ public class UserDto implements Serializable {
     @NotBlank
     @Email
     private String email;
-
     private Gender gender;
-
-    Set<RoleDto> roles = new HashSet<>();
-
-    Set<AddressDto> addressList = new HashSet<>();
+    private Set<RoleDto> roles;
+    private Set<AddressDto> addressList;
 
 }

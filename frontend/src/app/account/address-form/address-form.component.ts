@@ -12,17 +12,18 @@ import { NotificationService } from 'src/app/services/notification.service';
   styleUrls: ['./address-form.component.scss']
 })
 export class AddressFormComponent {
+
   address!: Address;
 
   addressForm = this.formBuilder.group({
-    id: [-1],
+    id: [''],
     cep: ['', Validators.required],
     logradouro: ['', Validators.required],
     complemento: [''],
     bairro: ['', Validators.required],
     localidade: ['', Validators.required],
     uf: ['', Validators.required],
-    userId: [-1]
+    userId: ['']
   });
 
   constructor(
@@ -41,20 +42,20 @@ export class AddressFormComponent {
     }
   }
 
-  loadAddress(addressId: number) {
+  loadAddress(addressId: string) {
     this.addressService.getByUserId(addressId)
       .subscribe(
         (addresses: Address[]) => {
           const address = addresses[0];
           this.addressForm.setValue({
-            id: address?.id ?? null,
+            id: address?.id ?? '',
             cep: address.cep,
             logradouro: address.logradouro,
             complemento: address?.complemento ?? '',
             bairro: address.bairro,
             localidade: address.localidade,
             uf: address.uf,
-            userId: address?.userId ?? null
+            userId: address.userId
           });
         },
         error => {
@@ -94,7 +95,7 @@ export class AddressFormComponent {
     }
   }
   isNewAddress(): boolean {
-    return this.addressForm.get('id')?.value === -1;
+    return this.addressForm.get('id')?.value === '';
   }
 
   createAddress() {

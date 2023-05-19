@@ -4,7 +4,7 @@ import { Sizes } from './enums/Sizes.enum';
 import Decimal from 'decimal.js';
 
 export class Product {
-  id!: number;
+  id!: string;
   sku!: string;
   name!: string;
   description!: string;

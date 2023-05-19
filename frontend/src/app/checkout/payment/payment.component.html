@@ -1,1 +1,116 @@
-<p>payment works!</p>
+ <!-- Payment information -->
+ <div class="text-900 font-medium text-xl mt-4 lg:mt-0 mb-4 px-2">
+  Pagamento
+</div>
+
+  <div class="p-3 border-1 border-round-top surface-border" (click)="selectedValue = 'paymentPix'" [ngClass]="{'border-primary surface-50': selectedValue === 'paymentPix'}">
+      <p-radioButton name="paymentPix" value="paymentPix" [(ngModel)]="selectedValue" inputId="paymentPix"></p-radioButton>
+      <label for="paymentPix" class="text-900 ml-3">Pix</label>
+  </div>
+  <div class="p-3 border-x-1 surface-border" (click)="selectedValue = 'paymentCreditCard'" [ngClass]="{'border-primary surface-50': selectedValue === 'paymentCreditCard'}">
+      <p-radioButton name="paymentCreditCard" value="paymentCreditCard" [(ngModel)]="selectedValue" inputId="paymentCreditCard"></p-radioButton>
+      <label for="paymentCreditCard" class="text-900 ml-3">Cartão de Crédito</label>
+  </div>
+  <div class="p-3 border-1 border-round-bottom surface-border" (click)="selectedValue = 'paymentSlip'" [ngClass]="{'border-primary surface-50': selectedValue === 'paymentSlip'}">
+      <p-radioButton name="paymentSlip" value="paymentSlip" [(ngModel)]="selectedValue" inputId="paymentSlip"></p-radioButton>
+      <label for="paymentSlip" class="text-900 ml-3">Boleto de Pagamento</label>
+  </div>
+
+<div [ngSwitch]="selectedValue">
+  <!--OPTION PIX-->
+<div *ngSwitchCase="'paymentPix'" class="col-12 field border-3 border-round-sm">
+  <div class="relative">
+    <div class="col-12 field mb-4">
+      <label for="keyType" class="text-900 font-medium mb-3 mt-3 block">Você pagará R$ 257,00</label>
+      <div class="text-red-500">O código Pix é válido por 1h (uma hora). Em seu aplicativo de pagamentos, escaneie ou copie o código Pix que será gerado a seguir. Depois é só aguardar. Seu pedido será efetivado em alguns segundos!</div>
+    </div>
+  </div>
+</div>
+<!--OPTION CREDITCARD-->
+<div *ngSwitchCase="'paymentCreditCard'" class="col-12 field border-3 border-round-sm">
+  <form class="relative">
+    <div class="col-12 field mb-4 my-4">
+      <form  class="relative">
+        <label for="cardNumber" class="text-900 font-medium mb-3 block"
+          >Número do Cartão*</label
+        >
+        <input
+          id="cardNumber"
+          type="text"
+          name="cardNumber"
+          pInputText
+          placeholder="**** **** **** 1234"
+          style="margin-right: 0.5em"
+        />
+      </form>
+    </div>
+    <div class="col-12 field mb-0">
+      <label for="cardHolderName" class="text-900 font-medium mb-3"
+        >Nome do titular*</label
+      >
+      <input
+        id="cardHolderName"
+        type="text"
+        class="p-inputtext w-full mb-3"
+      />
+    </div>
+    <div class="col-12 lg:col-6 field mb-4">
+      <form #form2="ngForm" class="relative">
+        <label for="expiration" class="text-900 font-medium mb-3 block"
+          >Validade*</label
+        >
+        <input
+          id="expiration"
+          type="text"
+          name="expiration"
+          pInputText
+          placeholder="MM/YY"
+          style="margin-right: 0.5em"
+        />
+      </form>
+    </div>
+    <div class="col-12 lg:col-6 field mb-4">
+      <form #form3="ngForm" class="relative">
+        <label for="cvc" class="text-900 font-medium mb-3 block"
+          >Código de Segurança*</label
+        >
+        <input
+          id="cvc"
+          type="text"
+          name="cvc"
+          pInputText
+          placeholder="123"
+          style="margin-right: 0.5em"
+        />
+      </form>
+    </div>
+    <div class="col-12 field mb-0">
+      <label for="installments" class="text-900 font-medium mb-3"
+        >Parcelamento*</label
+      >
+      <p-dropdown
+        [options]="installments"
+        [(ngModel)]="selectedInstallments"
+        id="installments"
+      >
+        <ng-template let-installment pTemplate="item">
+          {{ installment }}x de R${{
+            calculateInstallments(installment)[0].toFixed(2)
+          }}
+        </ng-template>
+      </p-dropdown>
+    </div>
+  </form>
+</div>
+<!--OPTION SLIP-->
+<div *ngSwitchCase="'paymentSlip'" class="col-12 field border-3 border-round-sm">
+  <div class="relative">
+    <div class="col-12 field mb-4">
+      <label for="keyType" class="text-900 font-medium mb-3 mt-3 block">Você pagará R$ 257,00</label>
+      <div class="text-red-600 mb-2">O pagamento com boleto pode levar <strong>até 2 dias úteis para ser confirmado. </strong>Quanto antes for confirmado, mais cedo seu pedido será separado para entrega ;)</div>
+      <div class="font-italic">O boleto não é enviado pelo correio. Ele pode ser pago numa agência bancária ou pela internet, via site ou app do seu banco.</div>
+    </div>
+  </div>
+</div>
+</div>
+

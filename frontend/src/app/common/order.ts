@@ -1,30 +1,12 @@
-import { StatusOrder } from "./enums/status-order.enum";
 import { OrderItem } from "./order-item";
 import { Payment } from "./payment";
-import { User } from "./user";
+import { NewUserToOrder } from './NewUserToOrder';
+import { Address } from './address';
 
-export class Order {
-  id!: number;
-  moment!: Date;
-  statusOrder!: StatusOrder;
-  user!: User;
-  payment!: Payment;
-  items!: OrderItem[];
-
-  constructor(
-    id: number,
-    moment: Date,
-    statusOrder: StatusOrder,
-    user: User,
-    payment: Payment,
-    items: OrderItem[]
-  ) {
-    this.id = id;
-    this.moment = moment;
-    this.statusOrder = statusOrder;
-    this.user = user;
-    this.payment = payment;
-    this.items = items;
-  }
+export interface Order {
+  id: string;
+  moment: Date;
+  user: NewUserToOrder;
+  payment: Payment;
+  items: OrderItem[];
 }
-

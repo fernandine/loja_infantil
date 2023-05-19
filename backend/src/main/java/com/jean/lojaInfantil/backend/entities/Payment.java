@@ -7,22 +7,24 @@ import com.jean.lojaInfantil.backend.entities.enums.StatusPayment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tb_payment")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@type", include = JsonTypeInfo.As.EXTERNAL_PROPERTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", include = JsonTypeInfo.As.EXTERNAL_PROPERTY)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = PaymentSlip.class, name = "paymentSlip"),
-        @JsonSubTypes.Type(value = PaymentCreditCard.class, name = "paymentCreditCard")
+        @JsonSubTypes.Type(value = PaymentCreditCard.class, name = "paymentCreditCard"),
+        @JsonSubTypes.Type(value = PaymentPix.class, name = "paymentPix")
 })
 public abstract class Payment implements Serializable {
 
@@ -31,8 +33,8 @@ public abstract class Payment implements Serializable {
     @Column(name = "status_payment")
     private StatusPayment statusPayment;
 
-    @JsonFormat(pattern="dd/MM/yyyy")
-    private LocalDate moment;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant moment;
 
     @JsonIgnore
     @OneToOne
@@ -42,6 +44,7 @@ public abstract class Payment implements Serializable {
 
     public abstract void processPayment();
     protected void updateOrderStatus(StatusOrder newStatus) {
-        this.order.setStatus(newStatus);
+        this.order.setStatusOrder(newStatus);
     }
 }
+

@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/oauth/token';
+  private apiUrl = environment.shopUrl + '/oauth/token';
 
   constructor(
     private http: HttpClient,
@@ -50,7 +51,7 @@ export class AuthService {
   getCurrentUser(): {
     username: string;
     token: string;
-    id: number
+    id: string
     lastName: string;
     firstName: string;
     phone: string;
@@ -65,7 +66,7 @@ export class AuthService {
         email: currentUser.email || '',
         username: currentUser.username || '',
         token: currentUser.token || '',
-        id: currentUser.id,
+        id: currentUser.id || '',
         lastName: currentUser.lastName || '',
         firstName: currentUser.firstName || '',
         phone: currentUser.phone || '',

@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountComponent } from './account/account/account.component';
 import { AddressListComponent } from './account/address-list/address-list.component';
 import { FavoritesComponent } from './account/favorites/favorites.component';
-import { OrdersComponent } from './account/orders/orders.component';
 import { ProfilesComponent } from './account/profiles/profiles.component';
 import { AdminComponent } from './area-admin/admin/admin.component';
 import { CategoriesComponent } from './area-admin/categories/categories.component';
@@ -12,7 +11,6 @@ import { LoginComponent } from './autentication/login/login.component';
 import { RegisterComponent } from './autentication/register/register.component';
 import { CartDetailComponent } from './checkout/cart-detail/cart-detail.component';
 import { CheckoutComponent } from './checkout/checkout/checkout.component';
-import { DeliveryComponent } from './checkout/delivery/delivery.component';
 import { PaymentComponent } from './checkout/payment/payment.component';
 import { ProfileFormComponent } from './checkout/profile-form/profile-form.component';
 import { AboutComponent } from './components/about/about.component';
@@ -25,6 +23,7 @@ import { DiscountComponent } from './components/discount/discount.component';
 import { OrderHistoryComponent } from './account/order-history/order-history.component';
 import { OrderComponent } from './checkout/order/order.component';
 import { OrderDetailComponent } from './checkout/order-detail/order-detail.component';
+import { ShippingComponent } from './checkout/shipping/shipping.component';
 
 const routes: Routes = [
 
@@ -40,7 +39,7 @@ const routes: Routes = [
     { path: 'orders', component: OrderComponent },
     { path: 'orders/:id', component: OrderDetailComponent },
     { path: 'profile-form', component: ProfileFormComponent },
-    { path: 'deliver', component: DeliveryComponent },
+    { path: 'shipping', component: ShippingComponent },
     { path: 'payment', component: PaymentComponent },
   ]},
 

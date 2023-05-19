@@ -12,7 +12,7 @@ import { NotificationService } from 'src/app/services/notification.service';
 })
 export class AddressListComponent {
   adresses$!: Observable<Address[]>;
-  userId!: number;
+  userId!: string;
 
   showAddAddressDialog = false;
 
@@ -42,7 +42,7 @@ export class AddressListComponent {
     console.log('Endereço editado:', address);
   }
 
-  confirmDelete(id: number) {
+  confirmDelete(id: string) {
     if (confirm('Tem certeza que deseja excluir este endereço?')) {
       this.addressService.deleteAddress(id).subscribe(
         () => {

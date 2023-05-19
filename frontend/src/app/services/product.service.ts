@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http'
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { Product } from '../common/Product';
 import { Category } from '../common/category';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  private baseUrl =  'http://localhost:8080/products';
+  private baseUrl =  environment.shopUrl + '/products';
 
   private likedProducts: Product[] = [];
 

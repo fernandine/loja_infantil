@@ -1,16 +1,20 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.jean.lojaInfantil.backend.entities.enums.Brands;
-import com.jean.lojaInfantil.backend.entities.enums.Colors;
-import com.jean.lojaInfantil.backend.entities.enums.Sizes;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
+import com.jean.lojaInfantil.backend.entities.enums.Brands;
+import com.jean.lojaInfantil.backend.entities.enums.Colors;
+import com.jean.lojaInfantil.backend.entities.enums.Sizes;
+import org.hibernate.annotations.CreationTimestamp;
+
+import javax.persistence.Column;
 
 @Getter
 @Setter
@@ -26,7 +30,8 @@ public class ProductDto implements Serializable {
     private String image;
     private boolean favorite;
     private int unitsInStock;
-    private LocalDate dateCreated;
+
+    private Instant dateCreated;
     private int salesCount;
     private Colors productColor;
     private Brands productBrand;

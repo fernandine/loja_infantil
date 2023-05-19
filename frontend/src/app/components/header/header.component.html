@@ -33,6 +33,12 @@
             <span>Atendimento</span>
           </a>
       </li>
+      <li>
+        <a pRipple *ngIf="(isLoggedIn)" routerLink="/admin" class="text-yellow-500 no-underline flex px-0 lg:px-5 py-3 text-0 font-medium transition-colors transition-duration-150">
+          <i class="pi pi-cog mr-2"></i>
+          <span>Área do Administrador</span>
+        </a>
+    </li>
   </ul>
   </div>
 

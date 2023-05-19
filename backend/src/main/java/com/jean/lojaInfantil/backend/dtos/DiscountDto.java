@@ -1,14 +1,19 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.jean.lojaInfantil.backend.entities.Discount;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jean.lojaInfantil.backend.entities.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,17 +24,8 @@ public class DiscountDto implements Serializable {
     private Long id;
     private String code;
     private BigDecimal discountValue;
-    private LocalDate expirationDate;
-    private BigDecimal discountedPrice;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+    private Instant expirationDate;
     private Long productId;
-
-    public DiscountDto( Discount entity) {
-        id = entity.getId();
-        discountValue = entity.getDiscountValue();
-        code = entity.getCode();
-        expirationDate = entity.getExpirationDate();
-        productId = entity.getProduct().getId();
-        discountedPrice = entity.getDiscountedPrice();
-    }
 }
 

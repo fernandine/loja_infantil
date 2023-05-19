@@ -1,6 +1,5 @@
 package com.jean.lojaInfantil.backend.dtos;
 
-import com.jean.lojaInfantil.backend.entities.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
