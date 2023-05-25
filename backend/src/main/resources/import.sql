@@ -276,7 +276,7 @@ INSERT INTO tb_review (comment, rating, product_id, user_id) VALUES ('Que linda 
 -- -----------------------------------------------------
 -- Discounts
 -- -----------------------------------------------------
-INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO20', 0.2, TIMESTAMP WITH TIME ZONE '2022-07-25T13:00:00Z', 1);
-INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO30', 0.3, TIMESTAMP WITH TIME ZONE '2022-07-25T13:00:00Z', 2);
-INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO40', 0.4, TIMESTAMP WITH TIME ZONE '2022-07-25T13:00:00Z', 3);
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO20', 0.2, TIMESTAMP WITH TIME ZONE '2024-07-25T13:00:00Z', 1);
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO30', 0.3, TIMESTAMP WITH TIME ZONE '2024-07-25T13:00:00Z', 2);
+INSERT INTO tb_discount (code, discount_value, expiration_date, product_id) VALUES ('DESCONTO40', 0.4, TIMESTAMP WITH TIME ZONE '2024-07-25T13:00:00Z', 3);
 

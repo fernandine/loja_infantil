@@ -1,12 +1,13 @@
+import { Address } from "./address";
 import { OrderItem } from "./order-item";
 import { Payment } from "./payment";
-import { NewUserToOrder } from './NewUserToOrder';
-import { Address } from './address';
+import { User } from './user';
 
 export interface Order {
   id: string;
   moment: Date;
-  user: NewUserToOrder;
+  user: User;
+  address: Address;
   payment: Payment;
   items: OrderItem[];
 }

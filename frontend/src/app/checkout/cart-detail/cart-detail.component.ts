@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import Decimal from 'decimal.js';
 import { Observable } from 'rxjs';
 import { CartItem } from 'src/app/common/cart-item';
+import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { DiscountService } from 'src/app/services/discount.service';
 
@@ -20,16 +21,22 @@ export class CartDetailComponent {
   public discountValue: Decimal = new Decimal(0);
   subtotal: Decimal = new Decimal(0);
   total: Decimal = new Decimal(0);
+  isCartEmpty!: boolean;
 
 
   constructor(
     private cartService: CartService,
     private router: Router,
     private discountService: DiscountService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.cartItems$ = this.cartService.cartItems$;
+
+    this.cartItems$.subscribe((cartItems) => {
+      this.isCartEmpty = cartItems.length === 0;
+    });
   }
 
   checkDiscountCode(code: string): void {
@@ -88,10 +95,17 @@ export class CartDetailComponent {
     return total;
   }
 
-  public goToCheckout() {
-    this.router.navigate(['/checkout/orders'], {
-    });
+  goToCheckout() {
+    if (!this.authService.isAuthenticated()) {
+      // Usuário não está autenticado, redireciona para a página de login
+      this.router.navigate(['/auth-login']);
+      return;
+    }
+
+    // Usuário está autenticado, redireciona para a página de checkout
+    this.router.navigate(['/checkout/orders'], {});
   }
+
 
   getDiscountPercentage(discountValue: Decimal): string {
     return `${new Decimal(discountValue).times(100)}%`;

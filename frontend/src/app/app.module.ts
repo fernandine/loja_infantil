@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { AccountComponent } from './account/account/account.component';
 import { AddressFormComponent } from './account/address-form/address-form.component';
@@ -93,7 +93,8 @@ import { NotificationService } from './services/notification.service';
     CommonModule,
     PrimeNgModule,
     ReactiveFormsModule,
-    AppRoutingModule,
+    FormsModule,
+   AppRoutingModule,
   ],
   providers: [
     CartService,

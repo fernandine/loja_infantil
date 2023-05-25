@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Decimal from 'decimal.js';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { CartItem } from '../common/cart-item';
 import { StorageService } from './storage.service';
 
@@ -44,6 +44,11 @@ export class CartService {
 
   getStoredCartItems(): CartItem[] {
     return this.storage.getItem('cartItems') || [];
+  }
+
+  getCartItems(): Observable<CartItem[]> {
+    const cartItems = this.storage.getItem('cartItems') || [];
+    return of(cartItems);
   }
 
   updateStoredCartItems(cartItems: CartItem[]): void {

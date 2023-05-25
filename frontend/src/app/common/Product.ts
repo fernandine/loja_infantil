@@ -7,7 +7,7 @@ export class Product {
   id!: string;
   sku!: string;
   name!: string;
-  description!: string;
+  description?: string;
   unitPrice!: Decimal;
   image!: string;
   favorite!: boolean;

@@ -14,6 +14,8 @@ import { CartItem } from 'src/app/common/cart-item';
 import { CartService } from 'src/app/services/cart.service';
 import { OrderItem } from 'src/app/common/order-item';
 import { AddressService } from '../../services/address.service';
+import { ɵNullViewportScroller } from '@angular/common';
+import { StatusPayment } from 'src/app/common/enums/StatusPayment';
 
 
 @Component({
@@ -35,7 +37,7 @@ export class OrderComponent {
   order!: Order;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private storageService: StorageService,
     private orderService: OrderService,
     private router: Router,
@@ -44,40 +46,43 @@ export class OrderComponent {
   ) {}
 
   ngOnInit() {
+
     this.currentUser = this.storageService.getItem('currentUser');
+    this.orderForm = this.fb.group({
+
+      user: this.fb.group({
+        firstName: new FormControl('', Validators.required),
+        lastName: new FormControl('', Validators.required),
+        phone: new FormControl(null, Validators.required),
+        birthDay: new FormControl(null),
+        cpf: new FormControl('', Validators.required),
+        email: new FormControl('', [Validators.required, Validators.email]),
+      }),
+      address: this.fb.group({
+        cep: new FormControl(''),
+        logradouro: new FormControl(''),
+        numero: new FormControl(null, Validators.required),
+        complemento: new FormControl(''),
+        bairro: new FormControl('', Validators.required),
+        localidade: new FormControl('', Validators.required),
+        uf: new FormControl('', Validators.required),
+        referencia: new FormControl(''),
+  }),
+    payment: this.fb.group({
+        cardHolderName: new FormControl('', Validators.required),
+        cardNumber: new FormControl(null, Validators.required),
+        cvc: new FormControl(null, Validators.required),
+        expiration: new FormControl(null, Validators.required),
+        installments: new FormControl(null, Validators.required),
+      }),
+
+    });
 
     this.cartService.cartItems$.subscribe(cartItems => {
       this.cartItems = cartItems;
       this.subtotal = this.cartService.getSubtotal();
       this.discountValue = this.cartService.getDiscountValue();
       this.getTotal();
-    });
-
-    this.orderForm = this.formBuilder.group({
-
-      user: this.formBuilder.group({
-        firstName: new FormControl('', [Validators.required]),
-        lastName: new FormControl('', [Validators.required]),
-        phone: new FormControl('', [Validators.required]),
-        email: new FormControl('', [Validators.required, Validators.email]),
-        addressList: this.formBuilder.group({
-          cep: new FormControl('', [Validators.required]),
-          logradouro: new FormControl('', [Validators.required]),
-          complemento: new FormControl(),
-          bairro: new FormControl('', [Validators.required]),
-          localidade: new FormControl('', [Validators.required]),
-          uf: new FormControl('', [Validators.required])
-        })
-      }),
-      payment: this.formBuilder.group({
-        installments: new FormControl(null, [Validators.required]),
-        cardHolderName: new FormControl('', [Validators.required]),
-        cardNumber: new FormControl(null, [Validators.required]),
-        cvc: new FormControl(null, [Validators.required]),
-        expiration: new FormControl(),
-        cardType: new FormControl('', [Validators.required])
-      }),
-
     });
   }
 
@@ -108,7 +113,6 @@ export class OrderComponent {
   }
 
   onSubmit() {
-    const orderData: Order = this.orderForm.value;
     this.orderService.createOrder(this.order).subscribe(
       (response) => {
         // Lida com a resposta do backend e navega para a página de confirmação do pedido
@@ -119,35 +123,6 @@ export class OrderComponent {
         console.error('Erro ao criar pedido:', error);
       }
     );
-  }
-  value1!: string;
-
-  checked1: boolean = true;
-  checked2: boolean = false;
-
-  //-------------
-
-  orderItem!: OrderItem;
-
-
-  installments = [1, 2, 3, 4, 5, 6];
-  selectedInstallments = new FormControl();
-
-  calculateInstallments(installments: number) {
-    const installmentsValues = [];
-    const installmentValue = this.orderItem.totalValue / installments;
-    for (let i = 0; i < installments; i++) {
-      if (i === installments - 1) {
-        // última parcela pode ter diferença de centavos
-        installmentsValues.push(
-          this.orderItem.totalValue - installmentValue * i
-        );
-      } else {
-        installmentsValues.push(installmentValue);
-      }
-    }
-
-    return installmentsValues;
   }
 
 }

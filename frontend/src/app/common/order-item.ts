@@ -1,16 +1,15 @@
-
 import { CartItem } from "./cart-item";
 
-export interface OrderItem {
+export class OrderItem {
 
   productId: string;
   orderId: string;
   imageUrl: string;
   price: number;
   quantity: number;
-  totalValue: number;
-  subtotal: number;
-/*
+  totalValue!: number;
+  subtotal!: number;
+
 
   constructor(cartItem: CartItem) {
       this.imageUrl = cartItem.imageCart;
@@ -18,7 +17,7 @@ export interface OrderItem {
       this.price = cartItem.price;
       this.productId = cartItem.id;
       this.orderId = cartItem.id;
-  }*/
+  }
 }
 
 
